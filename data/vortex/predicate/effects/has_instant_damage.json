@@ -1,0 +1,9 @@
+{
+  "entity": "this",
+  "predicate": {
+    "effects": {
+      "minecraft:instant_damage": {}
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}

@@ -1,0 +1,11 @@
+# vortex:api/toggle/perm/cmd_on
+# Per-command permissions ON: every api/cmd/<name> wrapper needs the permission cmd.<name> (needs perm enforcement on).
+
+# Who may flip it: a server/console executor (no entity) or a player with the vortex.admin tag.
+execute if entity @s unless entity @s[tag=vortex.admin] run playsound vortex:perm.denied master @s ~ ~ ~ 1 1
+execute if entity @s unless entity @s[tag=vortex.admin] run tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"✘ ","color":"red"},{"translate":"vortex.msg.permission_denied","color":"red"}]
+execute if entity @s unless entity @s[tag=vortex.admin] run return 0
+
+data modify storage vortex:engine config.perm_cmd set value 1b
+function vortex:core/config/apply
+tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"per-command permissions","color":"aqua"},{"text":" → ","color":"#555555"},{"text":"on","color":"green"}]

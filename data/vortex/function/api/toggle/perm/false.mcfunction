@@ -1,0 +1,10 @@
+# vortex:api/toggle/perm/false — Disable the perm module: permission checks pass for everybody (cmd_gate stays strict)
+
+# Who may flip it: a server/console executor (no entity) or a player with the vortex.admin tag.
+execute if entity @s unless entity @s[tag=vortex.admin] run playsound vortex:perm.denied master @s ~ ~ ~ 1 1
+execute if entity @s unless entity @s[tag=vortex.admin] run tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"✘ ","color":"red"},{"translate":"vortex.msg.permission_denied","color":"red"}]
+execute if entity @s unless entity @s[tag=vortex.admin] run return 0
+
+data modify storage vortex:engine config.module_perm set value 0b
+function vortex:core/config/apply
+tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"perm","color":"aqua"},{"text":" → ","color":"#555555"},{"text":"disabled","color":"red"}]

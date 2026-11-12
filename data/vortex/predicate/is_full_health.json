@@ -1,0 +1,8 @@
+{
+  "entity": "this",
+  "predicate": {
+    "nbt": "{Health:20.0f}",
+    "type": "minecraft:player"
+  },
+  "condition": "minecraft:entity_properties"
+}

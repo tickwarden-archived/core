@@ -1,0 +1,11 @@
+{
+  "entity": "this",
+  "predicate": {
+    "equipment": {
+      "chest": {
+        "items": "minecraft:elytra"
+      }
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}
