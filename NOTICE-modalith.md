@@ -1,32 +1,18 @@
-# Third-party notice: Modalith
+# Origin notice: Modalith
 
 The dialog module (`data/vortex/function/api/dialog/`, `data/vortex/function/core/internal/dialog/`
-and `data/vortex/tags/function/hook/dialog_*.json`) is derived from Modalith 2.2.0
+and `data/vortex/tags/function/hook/dialog_*.json`) originates from Modalith 2.2.0
 (https://github.com/tickwarden/modalith), renamed into the `vortex` namespace.
 
-Modalith is licensed under the MIT License; the rest of this repository is under the Unlicense.
-The MIT terms apply to the derived files:
+Modalith is the same author's earlier project and is not third-party code. Its git history
+shows a single contributor identity (`tickwarden`).
 
-```
-MIT License
+## Licensing
 
-Copyright (c) 2026 Modalith contributors
+- In this repository the dialog module is released under the Unlicense, like the rest of the
+  repository (see `LICENSE`).
+- The standalone Modalith repository stays under the MIT License. Copies of Modalith that were
+  obtained from that repository remain under the MIT terms; this notice does not change them.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+If you want the MIT terms for the dialog module, take it from the Modalith repository instead
+of from this one.
