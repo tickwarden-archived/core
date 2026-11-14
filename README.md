@@ -1,4 +1,4 @@
-# Vortex (0.2.0)
+# Vortex (0.3.0)
 
 Library pack: it provides functions for other datapacks and does nothing useful on its own.
 Targets Minecraft 1.21.7-1.21.8 (pack_format 81). Renamed and reorganized from
@@ -12,6 +12,7 @@ macroEngine-Datapack-v26.3; old-to-new names for this layout are listed in `RENA
 | `player/` | Player helpers: `get/*`, `is/*`, `var/*`, `run/*`, plus `inv/` and `team/` | Yes |
 | `world/` | World helpers: `block/*`, `region/*` (clone, fill), `time/*`, `entity/*`, `weather` | Yes |
 | `input/` | Text-input capture: `anvil`, `sign`, `lectern`, ... with `give/*`, `summon/*` and `validate/*` | Yes |
+| `api/dialog/` | Runtime dialog builder (`begin`, `title`, `body`, `button`, `input`, `show`, ...): per-player tickets route non-OP button clicks back to server functions. Ported from Modalith 2.2.0, see https://github.com/vortaforge/docs and `NOTICE-modalith.md` | Yes |
 | `events/`, `tui/` | Event bus and text-UI helpers | Yes |
 | `systems/` | Reusable building blocks (`math`, `string`, `hook`, `flag`, `rng`, `uuid`, `log`, ...) | Yes |
 | `core/` | Engine runtime: `config`, `state`, `tick`, `queue`, `cooldown`, `dispatch`, `runtime` | No |

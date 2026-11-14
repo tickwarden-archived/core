@@ -22,5 +22,8 @@ function vortex:core/internal/player/init
 # Step 5: Core Main Load
 function vortex:core/internal/load/main
 
+# Step 6: Dialog Module (ported from Modalith; own objectives and storage, see CHANGELOG 0.3.0)
+function vortex:core/internal/dialog/load
+
 # Completion
 execute unless entity @a run say [Vortex] loaded

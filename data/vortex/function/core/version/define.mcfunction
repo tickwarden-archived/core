@@ -6,11 +6,11 @@
 
 scoreboard objectives add vortex.meta dummy
 scoreboard players set #vortaforge.packs.vortex.version.major vortex.meta 0
-scoreboard players set #vortaforge.packs.vortex.version.minor vortex.meta 2
+scoreboard players set #vortaforge.packs.vortex.version.minor vortex.meta 3
 scoreboard players set #vortaforge.packs.vortex.version.patch vortex.meta 0
 # Kept for code that still reads the old combined int (major*10+minor, no patch).
 # Equal to: major*10 + minor. Remove once nothing reads it anymore.
-scoreboard players set #vortaforge.packs.vortex.version vortex.meta 2
+scoreboard players set #vortaforge.packs.vortex.version vortex.meta 3
 
 execute unless data storage vortex:engine global run data modify storage vortex:engine global set value {}
-data modify storage vortex:engine global.version set value "0.2.0"
+data modify storage vortex:engine global.version set value "0.3.0"

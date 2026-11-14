@@ -1,5 +1,6 @@
 {
   "values": [
-    "vortex:core/tick"
+    "vortex:core/tick",
+    "vortex:core/internal/dialog/tick"
   ]
 }
