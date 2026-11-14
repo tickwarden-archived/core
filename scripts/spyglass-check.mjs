@@ -49,6 +49,7 @@ service.project.on('documentErrored', ({ uri, errors }) => {
 	else diagnostics.delete(uri)
 })
 
+await service.project.init()
 await service.project.ready()
 await service.project.analyzeProject()
 
