@@ -1,0 +1,103 @@
+name: Validate and Release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SPYGLASS_CORE_VERSION: "0.4.57"
+  SPYGLASS_JAVA_EDITION_VERSION: "0.3.70"
+  SPYGLASS_MCDOC_VERSION: "0.3.61"
+
+jobs:
+  validate:
+    name: Spyglass check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          # No "cache:" on purpose: this repo has no lock file.
+
+      # Tools are installed outside the repo, so the datapack repo needs no package.json.
+      - name: Install Spyglass
+        run: |
+          mkdir -p "$RUNNER_TEMP/spyglass"
+          cp scripts/spyglass-check.mjs "$RUNNER_TEMP/spyglass/"
+          cd "$RUNNER_TEMP/spyglass"
+          echo '{"name":"spyglass-runner","private":true,"type":"module"}' > package.json
+          npm install --no-audit --no-fund \
+            "@spyglassmc/core@$SPYGLASS_CORE_VERSION" \
+            "@spyglassmc/java-edition@$SPYGLASS_JAVA_EDITION_VERSION" \
+            "@spyglassmc/mcdoc@$SPYGLASS_MCDOC_VERSION"
+
+      - name: Run Spyglass
+        run: node "$RUNNER_TEMP/spyglass/spyglass-check.mjs" "$GITHUB_WORKSPACE"
+
+  package:
+    name: Package datapack
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      zip: ${{ steps.pack.outputs.zip }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build zip
+        id: pack
+        run: |
+          set -euo pipefail
+          name="${GITHUB_REPOSITORY##*/}"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="dev-${GITHUB_SHA::7}"
+          fi
+          zip_name="${name}-${version}.zip"
+
+          # pack.mcmeta and data/ must sit at the zip root for Minecraft to load it.
+          files=(pack.mcmeta data)
+          for optional in pack.png LICENSE README.md CHANGELOG.md; do
+            [ -e "$optional" ] && files+=("$optional")
+          done
+          zip -r -X "$zip_name" "${files[@]}"
+
+          # Sanity check: the zip must contain pack.mcmeta at its root.
+          unzip -l "$zip_name" | grep -qE ' pack\.mcmeta$'
+
+          echo "zip=$zip_name" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.pack.outputs.zip }}
+          path: ${{ steps.pack.outputs.zip }}
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.package.outputs.zip }}
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: ${{ needs.package.outputs.zip }}
+          generate_release_notes: true
