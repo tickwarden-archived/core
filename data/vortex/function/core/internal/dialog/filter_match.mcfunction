@@ -1,0 +1,3 @@
+# vortex:core/internal/dialog/filter_match [MACRO]
+execute if data storage vortex:dialog_filter options{query:""} run return run data modify storage vortex:dialog_filter model.items append from storage vortex:dialog_filter queue[0]
+$execute if data storage vortex:dialog_filter item{tags:["$(query)"]} run data modify storage vortex:dialog_filter model.items append from storage vortex:dialog_filter queue[0]
