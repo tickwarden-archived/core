@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- `vortex:api/notice/show`: a dialog (built with `vortex:api/dialog/*`) that tells players the pack was written with AI, that the dialog module was ported from Modalith instead of rewritten, what player data it keeps, that datapacks are not sandboxed, and where to report problems. It is shown once to every player who has not seen it (flag: `vortex.notice_seen`), including players online during a `/reload`; call it again with `execute as <player> run function vortex:api/notice/show`.
+- `vortex:core/internal/notice/load` (called from `vortex:setup`) and `vortex:core/internal/notice/tick` (registered in `#minecraft:tick`).
+
 ## 0.3.0
 
 Adds the dialog module, ported from [Modalith](https://github.com/tickwarden/modalith) 2.2.0 (MIT, see `NOTICE-modalith.md`).

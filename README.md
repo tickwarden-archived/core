@@ -8,7 +8,7 @@ macroEngine-Datapack-v26.3; old-to-new names for this layout are listed in `RENA
 
 | Folder | Purpose | Stable API? |
 |---|---|---|
-| `api/` | Public entry points, grouped by feature (`cmd`, `perm`, `store`, `toggle`, `title`, `cb`, `block`, `container`, ...) | Yes |
+| `api/` | Public entry points, grouped by feature (`cmd`, `perm`, `store`, `toggle`, `title`, `cb`, `block`, `container`, `notice`, ...) | Yes |
 | `player/` | Player helpers: `get/*`, `is/*`, `var/*`, `run/*`, plus `inv/` and `team/` | Yes |
 | `world/` | World helpers: `block/*`, `region/*` (clone, fill), `time/*`, `entity/*`, `weather` | Yes |
 | `input/` | Text-input capture: `anvil`, `sign`, `lectern`, ... with `give/*`, `summon/*` and `validate/*` | Yes |

@@ -25,5 +25,8 @@ function vortex:core/internal/load/main
 # Step 6: Dialog Module (ported from Modalith; own objectives and storage, see CHANGELOG 0.3.0)
 function vortex:core/internal/dialog/load
 
+# Step 7: Read-before-you-use notice (shown as a dialog, once per player)
+function vortex:core/internal/notice/load
+
 # Completion
 execute unless entity @a run say [Vortex] loaded
