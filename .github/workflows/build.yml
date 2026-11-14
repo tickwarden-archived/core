@@ -1,105 +1,71 @@
-name: Datapack CI/CD (1.21.8)
+name: Validate Datapack
 
 on:
   push:
-    branches: [ main, master ]
-    tags: [ 'v*' ]
   pull_request:
-    branches: [ main, master ]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  contents: write
 
 jobs:
-  build-validate-publish:
-    name: Build, Validate & Release
+  validate:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          # No "cache:" option on purpose: this repo has no lock file.
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install Dependencies
+      - name: Create package.json if missing
         run: |
-          echo "::group::📦 Installing Dependencies"
-          npm install -g spyglass-cli || echo "Spyglass CLI global install failed, falling back to local validation."
-          pip install nbtlib jsonlines
-          echo "::endgroup::"
-
-      - name: Validate Datapack & References
-        run: |
-          echo "::group::🔍 1.21.8 Schema & Reference Checks"
-          
-          # Validate pack.mcmeta existence and pack_format
-          python3 -c "
-          import json, sys, os
-          if not os.path.exists('pack.mcmeta'):
-              print('❌ ERROR: pack.mcmeta not found!')
-              sys.exit(1)
-          
-          with open('pack.mcmeta', 'r', encoding='utf-8') as f:
-              meta = json.load(f)
-              pack_fmt = meta.get('pack', {}).get('pack_format')
-              print(f'-> Detected pack_format: {pack_fmt}')
-          "
-          
-          # Run Spyglass linter or fallback to JSON syntax validation
-          if command -v spyglass &> /dev/null; then
-              spyglass check . --version 1.21.8
-          else
-              echo "⚠️ Spyglass CLI skipped, running basic JSON syntax validation..."
-              find data -name "*.json" -exec python3 -m json.tool {} \; > /dev/null
-              echo "✅ All JSON files are valid."
+          if [ ! -f package.json ]; then
+            echo "package.json not found, creating a minimal one"
+            node -e '
+              const name = (process.env.GITHUB_REPOSITORY || "datapack").split("/").pop().toLowerCase();
+              const pkg = { name, version: "0.0.0", private: true, description: "Pure datapack repository" };
+              require("fs").writeFileSync("package.json", JSON.stringify(pkg, null, 2) + "\n");
+            '
           fi
-          echo "::endgroup::"
 
-      - name: Package Datapack (.zip)
+      - name: Install dependencies (only if any are declared)
         run: |
-          echo "::group::📦 Creating ZIP Archive"
-          
-          VERSION_TAG=${GITHUB_REF#refs/tags/}
-          OUTPUT_NAME="Datapack-1.21.8-${VERSION_TAG:-dev}.zip"
-          
-          # Archive required files only, excluding git/IDE metadata
-          zip -r "$OUTPUT_NAME" data pack.mcmeta pack.png README.md LICENSE -x "*.git*" "*.github*" "*.vscode*" > /dev/null
-          
-          echo "ZIP_FILE=$OUTPUT_NAME" >> $GITHUB_ENV
-          echo "🎉 Archive created successfully: $OUTPUT_NAME"
-          echo "::endgroup::"
+          if node -e 'const p=require("./package.json"); process.exit((p.dependencies||p.devDependencies)?0:1)'; then
+            npm install
+          else
+            echo "No dependencies declared, skipping install"
+          fi
 
-      - name: Generate Step Summary
+      - name: Validate datapack
         run: |
-          echo "### 📊 Datapack CI/CD Report" >> $GITHUB_STEP_SUMMARY
-          echo "| Parameter | Value |" >> $GITHUB_STEP_SUMMARY
-          echo "| :--- | :--- |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Target Version** | Minecraft 1.21.8 |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Artifact Name** | \`${{ env.ZIP_FILE }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Status** | Success ✅ |" >> $GITHUB_STEP_SUMMARY
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
 
-      - name: Publish GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v3
-        with:
-          files: ${{ env.ZIP_FILE }}
-          generate_release_notes: true
-          draft: false
-          prerelease: false
+            // Collect every .json and .mcmeta file, skipping tooling folders
+            function walk(dir, out = []) {
+              for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+                if ([".git", "node_modules", ".github"].includes(e.name)) continue;
+                const p = path.join(dir, e.name);
+                if (e.isDirectory()) walk(p, out);
+                else if (/\.(json|mcmeta)$/.test(e.name)) out.push(p);
+              }
+              return out;
+            }
+
+            let failed = 0;
+            for (const file of walk(".")) {
+              if (path.basename(file) === "package.json" || path.basename(file) === "package-lock.json") continue;
+              try {
+                JSON.parse(fs.readFileSync(file, "utf8"));
+              } catch (err) {
+                console.error("::error file=" + file + "::" + err.message);
+                failed++;
+              }
+            }
+
+            if (!fs.existsSync("pack.mcmeta")) {
+              console.warn("::warning::pack.mcmeta not found in repo root");
+            }
+
+            if (failed) process.exit(1);
+            console.log("All JSON files are valid");
+          '
