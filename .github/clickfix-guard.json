@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "block_by_default": true,
+  "exempt_author_associations": ["OWNER", "MEMBER", "COLLABORATOR"],
+  "label": "clickfix-blocked"
+}

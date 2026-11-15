@@ -1,0 +1,43 @@
+# AI-assisted: written with Claude (Anthropic); see the PR description and commit trailer.
+name: ClickFix guard
+
+# ON by default: .github/clickfix-guard.json ("enabled": true).
+# Security notes:
+#  - pull_request_target runs with write permissions, so this job never checks out or runs
+#    pull request code. It checks out the default branch only and reads the event payload.
+#  - Untrusted text is read from GITHUB_EVENT_PATH by the script, never interpolated into
+#    a shell command or a ${{ }} expression.
+on:
+  issues:
+    types: [opened, edited, reopened]
+  issue_comment:
+    types: [created, edited]
+  pull_request_target:
+    types: [opened, edited, reopened]
+  pull_request_review:
+    types: [submitted, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  guard:
+    name: Scan for ClickFix lures
+    runs-on: ubuntu-latest
+    if: github.event.sender.type != 'Bot'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+          sparse-checkout: .github
+
+      - name: Scan and block
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/clickfix_guard.py
