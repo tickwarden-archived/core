@@ -3,6 +3,15 @@
 ## Unreleased
 
 ### Added
+- Macro toggles: `module_macro_cmd` (every `$$(cmd)` line) and `module_macro_function` (every `$function $(id)` line whose target comes from the caller). Both default to `1b`. Switch them with `vortex:api/toggle/macro_cmd/{true,false}` and `vortex:api/toggle/macro_function/{true,false}` (vortex.admin only), the toggle menu, or `core/config/set`. `$function` lines with a fixed target (dialog, rate_limit, rng, fiber plumbing) are not gated, so turning the toggle off cannot break the engine itself.
+- `vortex:api/callback/run` and `vortex:api/callback/run_id`: a shared callback runner that has no module toggle and no config flag. The ID is read from storage `vortex:callback in`, pushed on a stack, compared by the handlers listed in the function tag `#vortex:callback/dispatch` (each handler checks `stack[-1].id` itself), and removed afterwards. Re-entrant.
+- `vortex:systems/dbg/{out,err,show,clear}`: storage-based debug output (`vortex:dbg out` / `err`, 50 entries each). `show` is the only place that prints to chat.
+- Input rules, not a gate: `vortex:input/validate/rule_define` (`allow`, `deny`, `ignore_case`) and `vortex:input/validate/rule`. Example: `allow:["yes","no"]` or `allow:[0,1]`. The result goes to `vortex:input_validate result` like the other validators.
+
+### Changed
+- The diagnostic `tellraw` lines in `api/cb/*` (10), `core/internal/api/gamerule/debug_print` and the "passed the dynamic-command gate" notice to admins now write to `vortex:dbg` instead of chat. Menu and permission messages are unchanged.
+
+### Added
 - `vortex:api/notice/show`: a dialog (built with `vortex:api/dialog/*`) that tells players the pack was written with AI, that the dialog module was ported from Modalith instead of rewritten, what player data it keeps, that datapacks are not sandboxed, and where to report problems. It is shown once to every player who has not seen it (flag: `vortex.notice_seen`), including players online during a `/reload`; call it again with `execute as <player> run function vortex:api/notice/show`.
 - `vortex:core/internal/notice/load` (called from `vortex:setup`) and `vortex:core/internal/notice/tick` (registered in `#minecraft:tick`).
 

@@ -22,6 +22,7 @@ execute if data storage vortex:engine modules{macro:0b} run return 0
 $execute store result storage vortex:engine _macro_pipe.$(var) int 1 run scoreboard players get $(player) $(objective)
 
 # Call target function with pipe as macro source
+execute if data storage vortex:engine modules{macro_function:0b} run return 0
 $function $(func) with storage vortex:engine _macro_pipe
 
 # Clear pipe

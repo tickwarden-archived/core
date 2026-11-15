@@ -19,4 +19,5 @@
 
 execute unless entity @a run return 0
 
+execute if data storage vortex:engine modules{macro_function:0b} run return 0
 $function $(func) with storage vortex:engine _dispatch

@@ -18,7 +18,7 @@
 
 # Verify required input
 execute if data storage vortex:engine modules{cb:0b} run return 0
-execute unless data storage vortex:input cb.cmd run tellraw @s [{"text":"[VORTEX/cb] ","color":"#00AAAA","bold":true},{"text":"cb.cmd not set","color":"red"}]
+execute unless data storage vortex:input cb.cmd run function vortex:systems/dbg/err {src:"cb",msg:"cb.cmd not set"}
 execute unless data storage vortex:input cb.cmd run return 0
 
 # Fill coordinate defaults

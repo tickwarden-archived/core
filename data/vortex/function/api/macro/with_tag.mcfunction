@@ -14,4 +14,5 @@ $execute as @a[name=$(player),limit=1,tag=$(tag)] run data modify storage vortex
 $execute as @a[name=$(player),limit=1,tag=!$(tag)] run data modify storage vortex:engine _macro_pipe.$(var) set value 0b
 
 # Call target function with pipe as macro source
+execute if data storage vortex:engine modules{macro_function:0b} run return 0
 $function $(func) with storage vortex:engine _macro_pipe
