@@ -25,20 +25,20 @@
 # ─────────────────────────────────────────────────────────────────
 
 execute if data storage vortex:engine modules{cb:0b} run return 0
-execute unless data storage vortex:input cb.cmd run tellraw @s [{"text":"[VORTEX/cb] ","color":"#00AAAA","bold":true},{"text":"cb.cmd not set","color":"red"}]
+execute unless data storage vortex:input cb.cmd run function vortex:systems/dbg/err {src:"cb",msg:"cb.cmd not set"}
 execute unless data storage vortex:input cb.cmd run return 0
-execute unless data storage vortex:input cb.times run tellraw @s [{"text":"[VORTEX/cb] ","color":"#00AAAA","bold":true},{"text":"cb.times not set","color":"red"}]
+execute unless data storage vortex:input cb.times run function vortex:systems/dbg/err {src:"cb",msg:"cb.times not set"}
 execute unless data storage vortex:input cb.times run return 0
 
 scoreboard players set #cb_rep_n vortex.tmp 0
 execute store result score #cb_rep_n vortex.tmp run data get storage vortex:input cb.times
-execute unless score #cb_rep_n vortex.tmp matches 1..100 run tellraw @s [{"text":"[VORTEX/cb] ","color":"#00AAAA","bold":true},{"text":"cb.times must be a number from 1 to 100","color":"red"}]
+execute unless score #cb_rep_n vortex.tmp matches 1..100 run function vortex:systems/dbg/err {src:"cb",msg:"cb.times must be a number from 1 to 100"}
 execute unless score #cb_rep_n vortex.tmp matches 1..100 run return 0
 
 execute unless data storage vortex:input cb.interval run data modify storage vortex:input cb.interval set value 2
 scoreboard players set #cb_rep_i vortex.tmp 0
 execute store result score #cb_rep_i vortex.tmp run data get storage vortex:input cb.interval
-execute unless score #cb_rep_i vortex.tmp matches 1.. run tellraw @s [{"text":"[VORTEX/cb] ","color":"#00AAAA","bold":true},{"text":"cb.interval must be a number >= 1","color":"red"}]
+execute unless score #cb_rep_i vortex.tmp matches 1.. run function vortex:systems/dbg/err {src:"cb",msg:"cb.interval must be a number >= 1"}
 execute unless score #cb_rep_i vortex.tmp matches 1.. run return 0
 
 function vortex:core/internal/api/cb/apply_defaults

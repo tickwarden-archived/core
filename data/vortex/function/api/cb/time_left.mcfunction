@@ -22,7 +22,7 @@
 # ─────────────────────────────────────────────────────────────────
 
 execute if data storage vortex:engine modules{cb:0b} run return 0
-execute unless data storage vortex:input cb.id run tellraw @s [{"text":"[VORTEX/cb] ","color":"#00AAAA","bold":true},{"text":"cb.id not set","color":"red"}]
+execute unless data storage vortex:input cb.id run function vortex:systems/dbg/err {src:"cb",msg:"cb.id not set"}
 execute unless data storage vortex:input cb.id run return 0
 scoreboard players set #cb_cid vortex.tmp 0
 execute store result score #cb_cid vortex.tmp run data get storage vortex:input cb.id

@@ -8,7 +8,7 @@
 #   /function vortex:api/toggle/<Module>/<State>
 #   where <State> is "true" (enable) or "false" (disable).
 #
-# Supported modules: hook, interaction, perm, wand, geo, cb, block, container
+# Supported modules: hook, interaction, perm, wand, geo, cb, block, container, macro_cmd, macro_function
 #
 # BACKPORT NOTE (1.21.2): the original (26.x) opened this as a native
 # `dialog show` screen with a free-text "Module Name" field and a boolean
@@ -29,3 +29,5 @@ tellraw @s ["",{"text":"geo        ","color":"white"},{"text":"[ON] ","color":"g
 tellraw @s ["",{"text":"cb         ","color":"white"},{"text":"[ON] ","color":"green","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/cb/true"}},{"text":"[OFF]","color":"red","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/cb/false"}}]
 tellraw @s ["",{"text":"block      ","color":"white"},{"text":"[ON] ","color":"green","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/block/true"}},{"text":"[OFF]","color":"red","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/block/false"}}]
 tellraw @s ["",{"text":"container  ","color":"white"},{"text":"[ON] ","color":"green","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/container/true"}},{"text":"[OFF]","color":"red","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/container/false"}}]
+tellraw @s ["",{"text":"macro_cmd  ","color":"white"},{"text":"[ON] ","color":"green","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/macro_cmd/true"}},{"text":"[OFF]","color":"red","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/macro_cmd/false"}}]
+tellraw @s ["",{"text":"macro_function","color":"white"},{"text":"[ON] ","color":"green","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/macro_function/true"}},{"text":"[OFF]","color":"red","bold":true,"click_event":{"action":"run_command","command":"/function vortex:api/toggle/macro_function/false"}}]

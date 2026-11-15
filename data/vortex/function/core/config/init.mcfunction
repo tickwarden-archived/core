@@ -46,6 +46,8 @@ data modify storage vortex:engine config_schema merge value {validate_max_name:{
 data modify storage vortex:engine config_schema merge value {store_tok_pvar:{t:"bool"},store_tok_args:{t:"bool"},store_keep_unknown:{t:"bool"},title_fade_in:{t:"int",min:0,max:1200},title_stay:{t:"int",min:0,max:72000},title_fade_out:{t:"int",min:0,max:1200}}
 data modify storage vortex:engine config_schema merge value {dynamic_cmd:{t:"bool"},dynamic_cmd_max_len:{t:"int",min:1,max:4096},perm_enforce:{t:"bool"},perm_cmd:{t:"bool"}}
 
+data modify storage vortex:engine config_schema merge value {module_macro_cmd:{t:"bool"},module_macro_function:{t:"bool"}}
+
 # Legacy values: worlds from before the config existed keep what an admin had set
 scoreboard objectives add vortex.tick_flags dummy
 execute unless data storage vortex:engine config.module_cb if data storage vortex:engine modules.cb run data modify storage vortex:engine config.module_cb set from storage vortex:engine modules.cb
@@ -68,6 +70,8 @@ execute unless data storage vortex:engine config.module_gamerule run data modify
 execute unless data storage vortex:engine config.module_interaction run data modify storage vortex:engine config.module_interaction set value 1b
 execute unless data storage vortex:engine config.module_item run data modify storage vortex:engine config.module_item set value 1b
 execute unless data storage vortex:engine config.module_macro run data modify storage vortex:engine config.module_macro set value 1b
+execute unless data storage vortex:engine config.module_macro_cmd run data modify storage vortex:engine config.module_macro_cmd set value 1b
+execute unless data storage vortex:engine config.module_macro_function run data modify storage vortex:engine config.module_macro_function set value 1b
 execute unless data storage vortex:engine config.module_perm run data modify storage vortex:engine config.module_perm set value 1b
 execute unless data storage vortex:engine config.module_block run data modify storage vortex:engine config.module_block set value 1b
 execute unless data storage vortex:engine config.module_container run data modify storage vortex:engine config.module_container set value 1b

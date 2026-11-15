@@ -28,3 +28,35 @@ Other data folders: `advancement/`, `predicate/`, `loot_table/`, `item_modifier/
 - Scoreboard objectives, entity tags and macro keys are `snake_case` and prefixed `vortex.` (objectives and tags).
 - Storage IDs are `vortex:<module>` with no leading underscore.
 - Files use LF line endings, end with a newline, and JSON uses 2-space indentation.
+
+## Callbacks (`api/callback`)
+
+`function vortex:api/callback/run` is a shared runner. It cannot be disabled by any toggle.
+Put the ID in storage, run it; handlers registered in `#vortex:callback/dispatch` compare the ID themselves:
+
+```mcfunction
+# caller
+data modify storage vortex:callback in set value {id:"mypack:round_won",args:{team:"red"}}
+function vortex:api/callback/run
+
+# handler, listed in data/vortex/tags/function/callback/dispatch.json by your pack
+execute if data storage vortex:callback stack[-1]{id:"mypack:round_won"} run function mypack:on_round_won
+```
+
+Handlers only read `stack[-1]`; the runner removes it afterwards.
+
+## Debug output (`systems/dbg`)
+
+`function vortex:systems/dbg/out {src:"mypack",msg:"text"}` and `.../err` append to `vortex:dbg out` / `err` (50 entries each) instead of printing. `function vortex:systems/dbg/show` (vortex.admin) prints them on request.
+
+## Input rules (`input/validate/rule*`)
+
+Restrict or block values without a gate; your datapack decides what a failure means:
+
+```mcfunction
+function vortex:input/validate/rule_define {name:"yesno",rule:{allow:["yes","no"],ignore_case:1b}}
+function vortex:input/validate/rule {source:"book.raw",rule:"yesno"}
+execute if data storage vortex:input_validate result{valid:1b} run say ok
+```
+
+`allow` = only these values, `deny` = never these, entries may be strings or numbers (`allow:[0,1]`).
