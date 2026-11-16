@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Fixed
+- Callback runner and example handler failed to load on 1.21.8 (`Invalid NBT path element ... stack[-1]<--[HERE]`): `stack[-1]{...}` is not valid NBT path syntax. The runner now mirrors the active entry to `vortex:callback top`; filter handlers with `top{id:"..."}`. `top` is restored after nested callbacks and cleared when the stack is empty.
+
 ### Added
 - Macro toggles: `module_macro_cmd` (every `$$(cmd)` line) and `module_macro_function` (every `$function $(id)` line whose target comes from the caller). Both default to `1b`. Switch them with `vortex:api/toggle/macro_cmd/{true,false}` and `vortex:api/toggle/macro_function/{true,false}` (vortex.admin only), the toggle menu, or `core/config/set`. `$function` lines with a fixed target (dialog, rate_limit, rng, fiber plumbing) are not gated, so turning the toggle off cannot break the engine itself.
 - Shared callback runner `vortex:core/internal/callback/run`, with `vortex:api/callback/run` and `run_id` as thin public wrappers. No module toggle and no config flag. The ID comes from storage `vortex:callback in`, is string-checked (coerced to a string, rejected when empty or when it has a quote or backslash, lower-cased), pushed on a stack, and passed to the handlers in the function tags. Handlers compare the ID themselves (`stack[-1].id`). Re-entrant up to 8 levels; deeper calls are dropped and logged to `dbg.err`.
