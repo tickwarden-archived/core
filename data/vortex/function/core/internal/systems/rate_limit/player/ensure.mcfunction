@@ -1,4 +1,4 @@
-# vortex:systems/rate_limit/player/internal/ensure — Seed player bucket from template [MACRO]
+# vortex:core/internal/systems/rate_limit/player/ensure — Seed player bucket from template [MACRO]
 # Input: $(tpl), $(full)
 # Called only when bucket doesn't exist yet for this player.
 

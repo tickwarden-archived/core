@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/unbind_exec [MACRO]
+# vortex:core/internal/systems/hook/unbind_exec [MACRO]
 # INPUT: $(event)
 # Filters all binds belonging to $(event) from hook_binds.
 

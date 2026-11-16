@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/check_bind [MACRO]
+# vortex:core/internal/systems/hook/check_bind [MACRO]
 # INPUT: $(event) - event field of the bind in _hook_ctx
 # If it matches _hook_fire_event, run func or cmd.
 # @s = the triggering player

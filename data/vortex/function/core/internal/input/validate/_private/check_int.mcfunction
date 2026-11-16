@@ -1,7 +1,7 @@
 # ======================================================================================
 # vortex:core/internal/input/validate/_private/check_int  [INTERNAL]
 # ======================================================================================
-# A whole number: optional leading '-', then one or more digits. Delegates to
+# A whole number: optional leading '-', then one or more digits. Hands off to
 # vortex:core/internal/text/num_check, which walks the string one character at a
 # time and never substitutes the input into a command line.
 # ======================================================================================

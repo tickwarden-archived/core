@@ -1,17 +1,17 @@
 # vortex:core/internal/dialog/input
-scoreboard players operation #gate vortex.dialog_tmp = @s vortex.dialog_input
+scoreboard players operation #ticket vortex.dialog_tmp = @s vortex.dialog_input
 scoreboard players operation #digit vortex.dialog_tmp = @s vortex.dialog_input
 scoreboard players reset @s vortex.dialog_input
 function vortex:core/internal/dialog/context
 function vortex:core/internal/dialog/get_form with storage vortex:dialog_ctx
 execute store result score #factor vortex.dialog_tmp run data get storage vortex:dialog_event route.factor
 execute unless score #factor vortex.dialog_tmp matches 10..1000000 run return run function vortex:core/internal/dialog/reject_input
-scoreboard players operation #gate vortex.dialog_tmp /= #factor vortex.dialog_tmp
+scoreboard players operation #ticket vortex.dialog_tmp /= #factor vortex.dialog_tmp
 scoreboard players operation #digit vortex.dialog_tmp %= #factor vortex.dialog_tmp
 execute store result score #expected vortex.dialog_tmp run data get storage vortex:dialog_event route.ticket
 execute store result score #min vortex.dialog_tmp run data get storage vortex:dialog_event route.min
 execute store result score #max vortex.dialog_tmp run data get storage vortex:dialog_event route.max
-execute unless score #gate vortex.dialog_tmp = #expected vortex.dialog_tmp run return run function vortex:core/internal/dialog/reject_input
+execute unless score #ticket vortex.dialog_tmp = #expected vortex.dialog_tmp run return run function vortex:core/internal/dialog/reject_input
 execute if score #digit vortex.dialog_tmp < #min vortex.dialog_tmp run return run function vortex:core/internal/dialog/reject_input
 execute if score #digit vortex.dialog_tmp > #max vortex.dialog_tmp run return run function vortex:core/internal/dialog/reject_input
 execute store result score #rules_ok vortex.dialog_tmp run function vortex:core/internal/dialog/form_rules

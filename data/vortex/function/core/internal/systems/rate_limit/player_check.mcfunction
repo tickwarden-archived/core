@@ -1,4 +1,4 @@
-# vortex:systems/rate_limit/internal/player_check — Auto-ensure player bucket if needed [MACRO]
+# vortex:core/internal/systems/rate_limit/player_check — Auto-ensure player bucket if needed [MACRO]
 # Input: $(ensure_key) — the full compound key from check
 #
 # Only acts when:

@@ -26,3 +26,14 @@ Nothing live referenced any of the items below.
 - `core/internal/text/count` and `core/internal/text/has`: helper API of the text module.
 - `core/internal/events/fire_deferred`: `events/fire_queued` points at the wrong path, `events/internal/fire_deferred`, so the queued event never runs. Fix the path there rather than deleting this function.
 - Predicates, loot tables, item modifiers and recipes: public assets for dependent packs, not referenced internally by design.
+
+
+## Re-check during the 0.4.0 restructure
+
+The list above was re-verified against the full call graph, including `minecraft:` tags and runtime string references. Nothing is removed by this pass, and two earlier notes are out of date:
+
+- `core/internal/events/fire_deferred` is alive. `events/fire_queued` already points at `core/internal/events/fire_deferred`, so the path bug described under "Kept on purpose" is fixed.
+- `core/internal/dialog/tick` and `core/internal/notice/tick` are alive: both are in `minecraft:tick`.
+- `systems/log/print_entry` is alive: `systems/log/show` names it as a string.
+- `core/internal/core/lib/fiber/resume_dispatch` is reached through the queue and dispatch tag chain described in its header.
+- `core/internal/systems/hook/on_open_gui` is reached through the `core/internal/player/open_gui` tag chain.

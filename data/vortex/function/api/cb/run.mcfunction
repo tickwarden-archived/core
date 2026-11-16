@@ -9,7 +9,6 @@
 #   y     (int)     — CB block Y          [default: -64]
 #   z     (int)     — CB block Z          [default: 0]
 #
-# No permission gate — caller is trusted as-is.
 #
 # EXAMPLE:
 #   data modify storage vortex:input cb set value {cmd:"say hello"}

@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/fire [MACRO]
+# vortex:core/internal/systems/hook/fire [MACRO]
 # INPUT: $(event) — event name to fire
 # @s = the triggering player
 # Copies hook_binds list and dispatches it.

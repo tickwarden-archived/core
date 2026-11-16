@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/player_scan
+# vortex:core/internal/systems/geo/region_watch/player_scan
 # @s = the player to check
 # Reads coordinates to storage, then iterates all regions.
 

@@ -1,4 +1,4 @@
-# vortex:api/gamerule/internal/persist [MACRO]
+# vortex:core/internal/api/gamerule/persist [MACRO]
 # Writes the normalized rule name + value into vortex:engine gamerules compound.
 # Called exclusively by vortex:api/gamerule/set — do NOT call directly.
 #

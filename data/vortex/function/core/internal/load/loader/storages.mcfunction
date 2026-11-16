@@ -114,7 +114,6 @@ execute unless data storage vortex:engine wand_cooldowns run data modify storage
 
 # ─────────────────────────────────────────────────────────────────
 # Security module (v26.3+)
-# No permission gate exists in this pack — the trust_players /
 # cmd_min_level / sandbox_cmd_min_level / admin_min_level / sandbox_allowlist
 # fields that used to live here (and the check_all function that read
 # them) were removed. Nothing enforces vortex.perm_level anymore.

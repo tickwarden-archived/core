@@ -1,5 +1,5 @@
 # vortex:core/internal/api/cmd/other/multi_cmd/cond_tag_simple
-# Normalises the string shorthand into {name:"...",has:1b} and delegates.
+# Normalises the string shorthand into {name:"...",has:1b} and hands off.
 
 data modify storage vortex:engine _mcmd_cond_tmp set value {}
 data modify storage vortex:engine _mcmd_cond_tmp.name set from storage vortex:engine _mcmd_cond_eval.tag

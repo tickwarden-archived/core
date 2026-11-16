@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/seq_expand
+# vortex:core/internal/systems/cb/seq_expand
 # Converts cb.cmds list + interval into individual cb_queue entries.
 # Each entry gets ticks_left = (index + 1) * interval.
 

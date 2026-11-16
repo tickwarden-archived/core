@@ -1,4 +1,4 @@
-# vortex:systems/rate_limit/internal/prune — Remove hits outside the sliding window [MACRO]
+# vortex:core/internal/systems/rate_limit/prune — Remove hits outside the sliding window [MACRO]
 # Input: $(rule_key), vortex:rate_limit.prune_before (int, from evaluate)
 #
 # Strategy: iterate hits array from index 0 upward.

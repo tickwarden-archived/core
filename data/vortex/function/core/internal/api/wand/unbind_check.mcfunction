@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/unbind_check [MACRO]
+# vortex:core/internal/api/wand/unbind_check [MACRO]
 # $(tag) is the tag of the current record. Add back if it does not match _wand_filter_tag.
 
 $execute unless data storage vortex:engine {_wand_filter_tag:"$(tag)"} run data modify storage vortex:engine wand_binds append from storage vortex:engine _wand_cur

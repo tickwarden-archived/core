@@ -15,5 +15,5 @@
 execute if data storage vortex:engine modules{rate_limit:0b} run return 0
 $execute unless data storage vortex:engine "rate_limit.rules.player:$(key):$(player)" run function vortex:core/internal/systems/rate_limit/player/ensure {tpl:"$(key)",full:"player:$(key):$(player)"}
 
-# Delegate to generic check with full compound key
+# Hand off to generic check with full compound key
 $function vortex:systems/rate_limit/check {key:"player:$(key):$(player)"}

@@ -1,4 +1,4 @@
-# vortex:core/lib/batch/internal/add_func [MACRO]
+# vortex:core/internal/core/lib/batch/add_func [MACRO]
 # INPUT: $(id) — func is NBT-copied from vortex:input, not macro-spliced
 # Called with func field guaranteed.
 

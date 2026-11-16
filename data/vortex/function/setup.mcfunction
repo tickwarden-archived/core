@@ -3,8 +3,6 @@
 
 # Initialization
 
-# Step 0: Load Gate
-
 # Step 0.5: Load Begin
 
 # Step 1: Internal Text Module

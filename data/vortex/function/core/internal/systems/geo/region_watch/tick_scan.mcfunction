@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/tick_scan
+# vortex:core/internal/systems/geo/region_watch/tick_scan
 # Called directly from core/tick/queue_systems.mcfunction.
 # If region_watches is non-empty, checks all regions for each player.
 

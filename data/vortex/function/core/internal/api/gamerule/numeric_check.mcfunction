@@ -1,4 +1,4 @@
-# vortex:api/gamerule/internal/numeric_check [MACRO]
+# vortex:core/internal/api/gamerule/numeric_check [MACRO]
 # Converts value string to score, checks against gr_matches range, calls gr_on_value.
 # Called exclusively by dispatch — do NOT call directly.
 #

@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/unbind_filter
+# vortex:core/internal/api/wand/unbind_filter
 # Write back entries from _wand_unbinds that do not match _wand_filter_tag.
 
 execute unless data storage vortex:engine _wand_unbinds[0] run return 0

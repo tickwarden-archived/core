@@ -1,4 +1,4 @@
-# vortex:systems/math/vec/internal/angle_exec [MACRO]
+# vortex:core/internal/systems/math/vec/angle_exec [MACRO]
 # INPUT: $(ax), $(ay), $(az), $(bx), $(by), $(bz)
 # RULE: Lines without $(var) must NOT have a $ prefix.
 

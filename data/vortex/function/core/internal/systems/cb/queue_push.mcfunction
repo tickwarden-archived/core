@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/queue_push
+# vortex:core/internal/systems/cb/queue_push
 # Reads vortex:input cb {cmd, delay, x, y, z}; no macro, so nothing from the
 # caller is pasted into SNBT (a cmd containing a quote can no longer break out of
 # the entry or inject keys).

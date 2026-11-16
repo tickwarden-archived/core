@@ -9,7 +9,7 @@
 # compound as macro context to the target function — not just func.
 # This lets callers stash extra fields (alongside func) on _dispatch
 # before dispatching, and have the target read them as $(...) macro
-# args, without this gateway needing to know what those fields are.
+# args, without this dispatcher needing to know what those fields are.
 # Added so vortex:core/lib/fiber/internal/resume_dispatch (dispatched
 # via the process_queue -> queue_run_func -> #vortex:internal/dispatch
 # chain) can read $(id)/$(resume) directly instead of relying on a
@@ -19,5 +19,4 @@
 
 execute unless entity @a run return 0
 
-execute if data storage vortex:engine modules{macro_function:0b} run return run function vortex:core/internal/callback/blocked/function {site:"core/dispatch/exec"}
 $function $(func) with storage vortex:engine _dispatch

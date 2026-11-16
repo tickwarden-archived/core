@@ -1,4 +1,4 @@
-# vortex:systems/color/internal/validate_exec [MACRO]
+# vortex:core/internal/systems/color/validate_exec [MACRO]
 # Internal — called by api/color/validate.
 # Sets vortex:output result to 1b if $(color) is a known named color,
 # or if it begins with "#" (hex shorthand detection).

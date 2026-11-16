@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/unregister_check [MACRO]
+# vortex:core/internal/systems/geo/region_watch/unregister_check [MACRO]
 # INPUT: $(id) — _rw_cur'dan beslenir
 # If id does not match, add to _rw_new (keep).
 

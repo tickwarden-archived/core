@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/fire_entry
+# vortex:core/internal/systems/cb/fire_entry
 # Fires the command in _cb_entry via command block.
 # Reuses api/cb/internal machinery.
 

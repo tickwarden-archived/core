@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/seq_expand_loop
+# vortex:core/internal/systems/cb/seq_expand_loop
 # Pops first cmd from _cb_seq.cmds, computes its delay, pushes to queue.
 
 # Increment step counter and compute cumulative delay

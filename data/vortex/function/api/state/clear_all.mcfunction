@@ -1,0 +1,2 @@
+# vortex:api/state/clear_all
+data remove storage vortex:engine states

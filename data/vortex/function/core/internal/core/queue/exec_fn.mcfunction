@@ -1,4 +1,4 @@
-# vortex:core/queue/internal/exec_fn
+# vortex:core/internal/core/queue/exec_fn
 # Runs a queued function in server (non-entity) context.
 # Called with storage vortex:engine _wq_job as macro source.
 #

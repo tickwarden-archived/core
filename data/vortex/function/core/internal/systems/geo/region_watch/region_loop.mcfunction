@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/region_loop
+# vortex:core/internal/systems/geo/region_watch/region_loop
 # @s = the player being checked
 # Consumes _rw_iter list, calls check_region for each region.
 

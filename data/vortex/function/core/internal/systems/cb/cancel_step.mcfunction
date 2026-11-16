@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/cancel_step
+# vortex:core/internal/systems/cb/cancel_step
 # Pops the first entry of _cb_cwork; keeps it in cb_queue unless its id == #cb_cid.
 
 data modify storage vortex:engine _cb_centry set from storage vortex:engine _cb_cwork[0]

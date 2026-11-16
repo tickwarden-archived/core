@@ -9,5 +9,4 @@ execute unless entity @s[tag=vortex.admin] run return run tellraw @s {"text":"[e
 function vortex_example:setup
 function vortex_example:demo/callback
 function vortex_example:demo/validate
-function vortex_example:demo/blocked
 function vortex_example:demo/dbg

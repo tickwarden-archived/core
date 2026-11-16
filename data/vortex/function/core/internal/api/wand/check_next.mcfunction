@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/check_next
+# vortex:core/internal/api/wand/check_next
 # Iterate bind list: match the tag of the held item.
 
 execute unless data storage vortex:engine _wand_iter[0] run return 0

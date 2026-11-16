@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/give_lore_exec [MACRO]
+# vortex:core/internal/api/wand/give_lore_exec [MACRO]
 # INPUT (macro): $(player), $(tag), $(name), $(lore), $(color)
 #
 # Writes with lore directly to mainhand via item replace weapon.mainhand.

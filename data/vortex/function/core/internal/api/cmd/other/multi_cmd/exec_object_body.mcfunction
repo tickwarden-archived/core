@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────
 # vortex:core/internal/api/cmd/other/multi_cmd/exec_object_body
 # The execution half of exec_object, reached only when the entry's
-# condition passed (or it had none). Split out so the gate in
+# condition passed (or it had none). Split out so the check in
 # exec_object can be a plain positive `execute if` with no `return`.
 # ─────────────────────────────────────────────────────────────────
 

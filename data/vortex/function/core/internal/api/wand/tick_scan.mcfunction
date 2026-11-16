@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/tick_scan
+# vortex:core/internal/api/wand/tick_scan
 # Every tick: detect players with vortex.right_click score 1+,
 # check their held item, run the matching bind.
 

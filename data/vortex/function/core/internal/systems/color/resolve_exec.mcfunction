@@ -1,4 +1,4 @@
-# vortex:systems/color/internal/resolve_exec [MACRO]
+# vortex:core/internal/systems/color/resolve_exec [MACRO]
 # Called with storage vortex:engine color {} — reads palette.$(color).
 # If the key exists in palette, copies it to vortex:output result.
 # Uses the outer $(color) macro arg captured by api/color/resolve.

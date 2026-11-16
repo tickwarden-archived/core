@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────
 # vortex:core/dispatch/run
-# Central function dispatch gateway — called via #vortex:internal/dispatch.
+# Central function dispatch hub — called via #vortex:internal/dispatch.
 # Reads func from vortex:engine._dispatch and calls exec via vortex.
 #
 # Override #vortex:internal/dispatch in your overlay/pack to inject

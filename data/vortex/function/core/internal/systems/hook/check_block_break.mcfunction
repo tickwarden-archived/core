@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/check_block_break
+# vortex:core/internal/systems/hook/check_block_break
 # @s = player being checked
 #
 # METHOD:

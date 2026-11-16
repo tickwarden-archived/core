@@ -1,4 +1,4 @@
-# vortex:core/internal/load/all — full init pipeline (no fork / rt_origin / confirm gates)
+# vortex:core/internal/load/all — full init pipeline
 
 # forceload classic marker chunk (legacy features)
 forceload add -30000000 1600

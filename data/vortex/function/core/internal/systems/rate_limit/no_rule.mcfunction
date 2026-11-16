@@ -1,4 +1,4 @@
-# vortex:systems/rate_limit/internal/no_rule — Warn when check called on unregistered key [MACRO]
+# vortex:core/internal/systems/rate_limit/no_rule — Warn when check called on unregistered key [MACRO]
 # Input: $(key)
 # Fail-open: result stays 1b (ALLOWED) so callers aren't broken by missing config.
 execute if data storage vortex:engine modules{rate_limit:0b} run return 0

@@ -1,5 +1,5 @@
 # vortex:api/dialog/form_digit [MACRO]
-# Integer input named value, validated in 0..9. Gate+digit transported atomically.
+# Integer input named value, validated in 0..9. Ticket+digit transported atomically.
 $data modify storage vortex:dialog_work route set value {label:$(label),callback:$(callback),payload:$(payload),min:$(min),max:$(max),factor:10}
 execute store result score #min vortex.dialog_tmp run data get storage vortex:dialog_work route.min
 execute store result score #max vortex.dialog_tmp run data get storage vortex:dialog_work route.max

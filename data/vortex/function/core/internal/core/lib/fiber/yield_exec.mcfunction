@@ -1,4 +1,4 @@
-# vortex:core/lib/fiber/internal/yield_exec [MACRO]
+# vortex:core/internal/core/lib/fiber/yield_exec [MACRO]
 # INPUT: $(id), $(resume), $(delay)
 
 # Do not continue if fiber is dead

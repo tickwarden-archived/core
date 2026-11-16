@@ -1,6 +1,5 @@
 # vortex:core/internal/callback/normalize_id
 # String handling for vortex:callback in.id. RETURN 1 when in.id is now a safe, lower-case string, else 0
-# (the reason goes to dbg.err). Uses the text module the same way systems/cmd_gate/check does:
 # text/safe first, then text/lower.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.
 

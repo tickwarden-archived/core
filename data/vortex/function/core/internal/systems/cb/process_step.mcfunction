@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/process_step
+# vortex:core/internal/systems/cb/process_step
 # Pops first entry from _cb_work.
 # ticks_left == 1 → fire now.
 # ticks_left > 1  → decrement and return to cb_queue.

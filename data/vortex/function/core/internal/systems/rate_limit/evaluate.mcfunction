@@ -1,4 +1,4 @@
-# vortex:systems/rate_limit/internal/evaluate — Sliding window core [MACRO]
+# vortex:core/internal/systems/rate_limit/evaluate — Sliding window core [MACRO]
 # Input: $(key), $(limit), $(window), $(hits) (array, not used directly here)
 #
 # Algorithm:

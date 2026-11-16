@@ -1,4 +1,4 @@
-# vortex:core/lib/fiber/internal/is_alive_exec [MACRO]
+# vortex:core/internal/core/lib/fiber/is_alive_exec [MACRO]
 # INPUT: $(id)
 
 data modify storage vortex:output result set value 0b

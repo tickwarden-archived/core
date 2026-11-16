@@ -11,7 +11,7 @@
 #   issue_count   length of issues
 #   notice_count  length of notices
 #   issues        list of problem codes, e.g. "module.mismatch:hook"   (see docs/diagnostics.md)
-#   notices       list of informational codes, e.g. "security.dynamic_cmd_enabled"
+#   notices       list of informational codes, e.g. "config.applied"
 #   modules       {enabled:int, disabled:int}
 #   queue         {size:int, cap:int}
 #   audit         {count:int}

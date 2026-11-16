@@ -44,9 +44,7 @@ data modify storage vortex:engine config_schema merge value {sys_time:{t:"bool"}
 data modify storage vortex:engine config_schema merge value {hook_interval:{t:"int",min:1,max:1200},geo_interval:{t:"int",min:1,max:1200},interaction_interval:{t:"int",min:1,max:1200},wand_interval:{t:"int",min:1,max:1200},perm_trigger_interval:{t:"int",min:1,max:1200},queue_max_depth:{t:"int",min:1,max:4096},log_level:{t:"int",min:0,max:4},reload_warn:{t:"bool"}}
 data modify storage vortex:engine config_schema merge value {validate_max_name:{t:"int",min:8,max:256},store_default_lang:{t:"str",max:16},store_max_template:{t:"int",min:16,max:32767},store_max_tokens:{t:"int",min:1,max:1024},store_tok_score:{t:"bool"},store_tok_player:{t:"bool"},store_tok_entity:{t:"bool"},store_tok_global:{t:"bool"}}
 data modify storage vortex:engine config_schema merge value {store_tok_pvar:{t:"bool"},store_tok_args:{t:"bool"},store_keep_unknown:{t:"bool"},title_fade_in:{t:"int",min:0,max:1200},title_stay:{t:"int",min:0,max:72000},title_fade_out:{t:"int",min:0,max:1200}}
-data modify storage vortex:engine config_schema merge value {dynamic_cmd:{t:"bool"},dynamic_cmd_max_len:{t:"int",min:1,max:4096},perm_enforce:{t:"bool"},perm_cmd:{t:"bool"}}
-
-data modify storage vortex:engine config_schema merge value {module_macro_cmd:{t:"bool"},module_macro_function:{t:"bool"}}
+data modify storage vortex:engine config_schema merge value {perm_enforce:{t:"bool"},perm_cmd:{t:"bool"}}
 
 # Legacy values: worlds from before the config existed keep what an admin had set
 scoreboard objectives add vortex.tick_flags dummy
@@ -70,8 +68,6 @@ execute unless data storage vortex:engine config.module_gamerule run data modify
 execute unless data storage vortex:engine config.module_interaction run data modify storage vortex:engine config.module_interaction set value 1b
 execute unless data storage vortex:engine config.module_item run data modify storage vortex:engine config.module_item set value 1b
 execute unless data storage vortex:engine config.module_macro run data modify storage vortex:engine config.module_macro set value 1b
-execute unless data storage vortex:engine config.module_macro_cmd run data modify storage vortex:engine config.module_macro_cmd set value 1b
-execute unless data storage vortex:engine config.module_macro_function run data modify storage vortex:engine config.module_macro_function set value 1b
 execute unless data storage vortex:engine config.module_perm run data modify storage vortex:engine config.module_perm set value 1b
 execute unless data storage vortex:engine config.module_block run data modify storage vortex:engine config.module_block set value 1b
 execute unless data storage vortex:engine config.module_container run data modify storage vortex:engine config.module_container set value 1b
@@ -121,9 +117,7 @@ execute unless data storage vortex:engine config.store_keep_unknown run data mod
 execute unless data storage vortex:engine config.title_fade_in run data modify storage vortex:engine config.title_fade_in set value 10
 execute unless data storage vortex:engine config.title_stay run data modify storage vortex:engine config.title_stay set value 70
 execute unless data storage vortex:engine config.title_fade_out run data modify storage vortex:engine config.title_fade_out set value 20
-# Stored-string command execution is OFF by default; see docs/cmd_gate.md.
-execute unless data storage vortex:engine config.dynamic_cmd run data modify storage vortex:engine config.dynamic_cmd set value 1b
-execute unless data storage vortex:engine config.dynamic_cmd_max_len run data modify storage vortex:engine config.dynamic_cmd_max_len set value 256
+# Stored-string commands and caller-supplied macro targets run directly; no runtime switch limits them.
 
 # Permission system switches (docs/perm.md).
 #   perm_default  (vortex:engine perm_default, NOT inside config, so core/config/reset keeps it) is the value
@@ -137,8 +131,8 @@ execute unless data storage vortex:engine config.perm_cmd run data modify storag
 # Revision marker: core/config/ensure compares it, so adding a key means bumping this number.
 data modify storage vortex:engine config_rev set value 4
 
-# Permission gates live in api/perm/* and systems/cmd_gate (see core/internal/load/loader/storages
-# for the remaining, non-gate security. fields: sandbox_allowlist,
+# Permission checks live in api/perm/* (see core/internal/load/loader/storages
+# for the remaining security fields: sandbox_allowlist,
 # multi_type_allowlist).
 execute unless data storage vortex:engine security run data modify storage vortex:engine security set value {}
 

@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/check_item [MACRO]
+# vortex:core/internal/api/wand/check_item [MACRO]
 # $(tag) → custom_data tag name
 # If the item in the player's main hand has this tag, run the bind.
 

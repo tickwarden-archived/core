@@ -1,6 +1,5 @@
 # vortex:api/toggle/perm/enforce_off
 # Turn permission enforcement OFF: every api/perm/require and api/perm/check passes for everybody.
-# systems/cmd_gate (stored-string commands) is strict and keeps enforcing cmd.dynamic.
 
 # Who may flip it: a server/console executor (no entity) or a player with the vortex.admin tag.
 execute if entity @s unless entity @s[tag=vortex.admin] run playsound vortex:perm.denied master @s ~ ~ ~ 1 1
