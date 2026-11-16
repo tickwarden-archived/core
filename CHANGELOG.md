@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Removed
+- `pack.png` (CI packages it only when present).
+
 ### Fixed
 - Callback runner and example handler failed to load on 1.21.8 (`Invalid NBT path element ... stack[-1]<--[HERE]`): `stack[-1]{...}` is not valid NBT path syntax. The runner now mirrors the active entry to `vortex:callback top`; filter handlers with `top{id:"..."}`. `top` is restored after nested callbacks and cleared when the stack is empty.
 
@@ -15,6 +18,9 @@
 - `examples/vortex-example`: a demo datapack for the callback runner, the module callback tags, the blocked-macro hooks, input rules and dbg. It is not part of the release zip.
 
 ### Changed
+- Breaking for callers (function IDs moved): top-level `player/`, `input/` and `tui/` moved to `api/player/`, `api/input/` and `api/tui/`. `core/cooldown`, `core/state`, `core/queue` and `core/lib` split: entry points used from outside now live in `api/cooldown`, `api/state`, `api/queue` and `systems/lib/`; helpers and handlers moved to `core/internal/core/`. Old-to-new table: `RENAMES.md`.
+- Every `.mcfunction` header ID now matches its file path (125 headers were stale).
+- `systems/cmd_gate` stays: 12 callers gate stored-string command execution.
 - The diagnostic `tellraw` lines in `api/cb/*` (10), `core/internal/api/gamerule/debug_print` and the "passed the dynamic-command gate" notice to admins now write to `vortex:dbg` instead of chat. Menu and permission messages are unchanged.
 
 ### Added

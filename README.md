@@ -8,23 +8,23 @@ macroEngine-Datapack-v26.3; old-to-new names for this layout are listed in `RENA
 
 | Folder | Purpose | Stable API? |
 |---|---|---|
-| `api/` | Public entry points, grouped by feature (`cmd`, `perm`, `store`, `toggle`, `title`, `cb`, `block`, `container`, `notice`, ...) | Yes |
-| `player/` | Player helpers: `get/*`, `is/*`, `var/*`, `run/*`, plus `inv/` and `team/` | Yes |
-| `world/` | World helpers: `block/*`, `region/*` (clone, fill), `time/*`, `entity/*`, `weather` | Yes |
-| `input/` | Text-input capture: `anvil`, `sign`, `lectern`, ... with `give/*`, `summon/*` and `validate/*` | Yes |
+| `api/` | Public entry points, grouped by feature (`cmd`, `perm`, `store`, `toggle`, `title`, `cb`, `block`, `container`, `notice`, `cooldown`, `state`, `queue`, ...) | Yes |
+| `api/player/` | Player helpers (moved from top-level `player/` in 0.4.0): `get/*`, `is/*`, `var/*`, `run/*`, plus `inv/` and `team/` | Yes |
+| `api/input/` | Text-input capture (moved from top-level `input/` in 0.4.0): `anvil`, `sign`, `lectern`, ... with `give/*`, `summon/*` and `validate/*` | Yes |
+| `api/tui/` | Text-UI helpers (moved from top-level `tui/` in 0.4.0) | Yes |
 | `api/dialog/` | Runtime dialog builder (`begin`, `title`, `body`, `button`, `input`, `show`, ...): per-player tickets route non-OP button clicks back to server functions. Ported from Modalith 2.2.0, see https://github.com/vortaforge/docs and `NOTICE-modalith.md` | Yes |
-| `events/`, `tui/` | Event bus and text-UI helpers | Yes |
+| `events/`, `world/` | Event bus; world helpers (`block/*`, `region/*`, `time/*`, `entity/*`, `weather`) | Yes |
 | `systems/` | Reusable building blocks (`math`, `string`, `hook`, `flag`, `rng`, `uuid`, `log`, ...) | Yes |
-| `core/` | Engine runtime: `config`, `state`, `tick`, `queue`, `cooldown`, `dispatch`, `runtime` | No |
-| `core/lib/` | Scheduling toolkit, one folder per feature: `schedule/`, `wait/`, `repeat/`, `once/`, `debounce/`, `queue/`, `for_each/`, `batch/`, `fiber/`, `string/` | No |
-| `core/internal/` | Implementation behind the folders above (mirrors their layout) | No |
+| `systems/lib/` | Scheduling toolkit, one folder per feature: `schedule/`, `wait/`, `repeat/`, `once/`, `debounce/`, `queue/`, `for_each/`, `batch/`, `fiber/`, `string/` (moved from `core/lib/` in 0.4.0) | Yes |
+| `core/` | Engine runtime: `config`, `tick`, `dispatch`, `runtime`, `version` | No |
+| `core/internal/` | Implementation and handlers behind the folders above. Internal parts of the moved modules live at `core/internal/core/{lib,queue,state,cooldown}/` | No |
 
 Other data folders: `advancement/`, `predicate/`, `loot_table/`, `item_modifier/`, `recipe/`, `tags/`.
 
 ## Conventions
 
 - Every `.mcfunction` carries its own function ID in its header comment, plus `[MACRO]` when it uses `$` lines.
-- Function folders group by feature, then by action: `player/var/set`, `core/lib/wait/cmd_as`.
+- Function folders group by feature, then by action: `api/player/var/set`, `systems/lib/wait/cmd_as`.
 - Scoreboard objectives, entity tags and macro keys are `snake_case` and prefixed `vortex.` (objectives and tags).
 - Storage IDs are `vortex:<module>` with no leading underscore.
 - Files use LF line endings, end with a newline, and JSON uses 2-space indentation.
@@ -52,13 +52,13 @@ execute if data storage vortex:callback top{id:"mypack:round_won"} run function 
 
 `function vortex:systems/dbg/out {src:"mypack",msg:"text"}` and `.../err` append to `vortex:dbg out` / `err` (50 entries each) instead of printing. `function vortex:systems/dbg/show` (vortex.admin) prints them on request.
 
-## Input rules (`input/validate/rule*`)
+## Input rules (`api/input/validate/rule*`)
 
 Restrict or block values without a gate; your datapack decides what a failure means:
 
 ```mcfunction
-function vortex:input/validate/rule_define {name:"yesno",rule:{allow:["yes","no"],ignore_case:1b}}
-function vortex:input/validate/rule {source:"book.raw",rule:"yesno"}
+function vortex:api/input/validate/rule_define {name:"yesno",rule:{allow:["yes","no"],ignore_case:1b}}
+function vortex:api/input/validate/rule {source:"book.raw",rule:"yesno"}
 execute if data storage vortex:input_validate result{valid:1b} run say ok
 ```
 
