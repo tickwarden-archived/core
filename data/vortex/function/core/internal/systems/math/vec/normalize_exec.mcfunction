@@ -1,4 +1,4 @@
-# vortex:systems/math/vec/internal/normalize_exec [MACRO]
+# vortex:core/internal/systems/math/vec/normalize_exec [MACRO]
 # INPUT: $(x), $(y), $(z)
 # Compute length via math/distance3d, then ×1000 / length
 # RULE: Lines without $(var) must NOT have a $ prefix.

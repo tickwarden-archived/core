@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/register_exec [MACRO]
+# vortex:core/internal/systems/geo/region_watch/register_exec [MACRO]
 # INPUT: $(id), $(x1), $(y1), $(z1), $(x2), $(y2), $(z2)
 #        $(on_enter), $(on_leave) — opsiyonel func
 #        $(on_enter_cmd), $(on_leave_cmd) — opsiyonel cmd

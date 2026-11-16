@@ -1,4 +1,4 @@
-# vortex:core/lib/fiber/internal/spawn_exec [MACRO]
+# vortex:core/internal/core/lib/fiber/spawn_exec [MACRO]
 # INPUT: $(id), $(func)
 
 # Delete if same id exists

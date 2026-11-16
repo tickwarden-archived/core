@@ -1,4 +1,4 @@
-# vortex:systems/math/vec/internal/arccos_lookup
+# vortex:core/internal/systems/math/vec/arccos_lookup
 # $vang_dot vortex.tmp = cos×1000 value ([-1000, 1000])
 # 10° resolution arccos lookup table.
 

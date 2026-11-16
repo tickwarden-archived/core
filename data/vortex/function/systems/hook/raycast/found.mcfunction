@@ -18,7 +18,7 @@ execute store result storage vortex:hook placed.tick int 1 run scoreboard player
 execute as @s run function vortex:systems/uuid/from_entity
 data modify storage vortex:hook placed.uuid set from storage vortex:output uuid
 
-execute as @s run function vortex:player/get/name
+execute as @s run function vortex:api/player/get/name
 data modify storage vortex:hook placed.name set from storage vortex:names temp.NAME
 data modify storage vortex:hook placed.uuid_array set from storage vortex:names temp.UUID
 

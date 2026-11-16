@@ -1,4 +1,4 @@
-# vortex:core/lib/fiber/internal/kill_exec [MACRO]
+# vortex:core/internal/core/lib/fiber/kill_exec [MACRO]
 # INPUT: $(id)
 
 $execute unless data storage vortex:engine fibers.$(id) run return 0

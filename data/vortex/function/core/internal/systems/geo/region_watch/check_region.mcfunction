@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/check_region [MACRO]
+# vortex:core/internal/systems/geo/region_watch/check_region [MACRO]
 # INPUT (from _rw_cur): $(id), $(x1), $(y1), $(z1), $(x2), $(y2), $(z2)
 # @s = the player being checked
 # Player coordinates: vortex:engine _rw_player.{x,y,z}

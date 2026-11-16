@@ -1,4 +1,4 @@
-# vortex:systems/math/vec/internal/add_exec [MACRO]
+# vortex:core/internal/systems/math/vec/add_exec [MACRO]
 # INPUT: $(ax), $(ay), $(az), $(bx), $(by), $(bz)
 
 $scoreboard players set $vx vortex.tmp $(ax)

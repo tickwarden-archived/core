@@ -1,4 +1,4 @@
-# vortex:core/queue/internal/exec_next
+# vortex:core/internal/core/queue/exec_next
 # Pops work_queue[0] into _wq_job, removes it from the list,
 # then dispatches to the appropriate runner.
 # player field present → execute as that player (skipped if offline).

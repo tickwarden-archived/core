@@ -12,7 +12,7 @@ function vortex:api/macro/with_function {source:"vortex_example:provider/one",ta
 function vortex:api/toggle/macro_function/true
 
 function vortex:api/toggle/macro_cmd/false
-function vortex:core/lib/once/cmd {key:"vortex_example_once",cmd:"say never runs while macro_cmd is off"}
+function vortex:core/internal/core/lib/once/cmd {key:"vortex_example_once",cmd:"say never runs while macro_cmd is off"}
 function vortex:api/toggle/macro_cmd/true
 
 # toggles on again: the same call now runs the provider and the consumer

@@ -1,4 +1,4 @@
-# vortex:api/cb/internal/exec
+# vortex:core/internal/api/cb/exec
 # Macro: called via "function ... with storage vortex:input cb"
 # Expected keys: cmd (string), x (int), y (int), z (int)
 # The command is copied from storage (vortex:input cb.cmd), not pasted

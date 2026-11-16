@@ -17,6 +17,6 @@
     }
   },
   "rewards": {
-    "function": "vortex:input/private/anvil_open"
+    "function": "vortex:api/input/private/anvil_open"
   }
 }

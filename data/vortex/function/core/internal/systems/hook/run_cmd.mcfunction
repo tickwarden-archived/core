@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/run_cmd [MACRO]
+# vortex:core/internal/systems/hook/run_cmd [MACRO]
 # INPUT: $(cmd)
 # @s = the triggering player
 # Gated by systems/cmd_gate/check (config dynamic_cmd + cmd.dynamic permission + blocklist).

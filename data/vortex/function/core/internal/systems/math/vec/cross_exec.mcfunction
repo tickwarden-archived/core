@@ -1,4 +1,4 @@
-# vortex:systems/math/vec/internal/cross_exec [MACRO]
+# vortex:core/internal/systems/math/vec/cross_exec [MACRO]
 # INPUT: $(ax), $(ay), $(az), $(bx), $(by), $(bz)
 
 # cx = ay*bz - az*by

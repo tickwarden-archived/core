@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/seq_push_entry
+# vortex:core/internal/systems/cb/seq_push_entry
 # Pushes current sequence step as a cb_queue entry.
 # Reads: _cb_seq_cmd (string), _cb_delay (score), _cb_seq.{x,y,z}
 

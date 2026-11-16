@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/on_advancement_fire [MACRO]
+# vortex:core/internal/systems/hook/on_advancement_fire [MACRO]
 # INPUT: $(advancement)
 # @s = player who earned the advancement
 

@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/unregister_exec [MACRO]
+# vortex:core/internal/systems/geo/region_watch/unregister_exec [MACRO]
 # INPUT: $(id)
 # region_watches in list format — always run filter,
 # if id not found, list remains unchanged.

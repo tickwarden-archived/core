@@ -1,4 +1,4 @@
-# vortex:systems/geo/region_watch/internal/unregister_filter
+# vortex:core/internal/systems/geo/region_watch/unregister_filter
 # Iterates _rw_src list.
 # Copies entries whose id does not match _rw_unbind_id to _rw_new.
 

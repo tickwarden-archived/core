@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/unbind_check [MACRO]
+# vortex:core/internal/systems/hook/unbind_check [MACRO]
 # INPUT: $(event) — event field of the current bind
 # If it does not match _hook_filter_event, put back into hook_binds.
 

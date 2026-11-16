@@ -1,4 +1,4 @@
-# vortex:api/wand/internal/fire [MACRO]
+# vortex:core/internal/api/wand/fire [MACRO]
 # Run the bind based on func or cmd field.
 
 execute if data storage vortex:engine _wand_current.func run function vortex:core/internal/api/wand/call_func with storage vortex:engine _wand_current

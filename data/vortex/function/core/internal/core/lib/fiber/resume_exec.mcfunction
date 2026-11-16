@@ -1,4 +1,4 @@
-# vortex:core/lib/fiber/internal/resume_exec [MACRO]
+# vortex:core/internal/core/lib/fiber/resume_exec [MACRO]
 # INPUT: $(id), $(func)
 # Fed from _fib_cur.
 

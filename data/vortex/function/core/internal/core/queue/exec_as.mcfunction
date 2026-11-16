@@ -1,4 +1,4 @@
-# vortex:core/queue/internal/exec_as
+# vortex:core/internal/core/queue/exec_as
 # Runs a queued function as the named player (if online).
 # If the player is offline the item is silently dropped — no retry.
 #

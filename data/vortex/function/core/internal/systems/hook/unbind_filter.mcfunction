@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/unbind_filter
+# vortex:core/internal/systems/hook/unbind_filter
 # Iterates over the _hook_unbinds list.
 # Copies back binds that do not match _hook_filter_event to hook_binds.
 

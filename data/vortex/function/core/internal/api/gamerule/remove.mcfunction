@@ -1,4 +1,4 @@
-# vortex:api/gamerule/internal/remove [MACRO]
+# vortex:core/internal/api/gamerule/remove [MACRO]
 # Removes a single gamerule key from engine storage.
 # Called by reset only.
 $data remove storage vortex:engine gamerules.$(_gamerule_norm)

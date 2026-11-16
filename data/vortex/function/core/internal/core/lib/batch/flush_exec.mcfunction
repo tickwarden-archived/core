@@ -1,4 +1,4 @@
-# vortex:core/lib/batch/internal/flush_exec [MACRO]
+# vortex:core/internal/core/lib/batch/flush_exec [MACRO]
 # INPUT: $(id)
 # For each item, delay = floor(idx * spread_over / total) is computed.
 # Item'lar tek tek process_queue'ya eklenir — slice storage gerekmez.

@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/dispatch
+# vortex:core/internal/systems/hook/dispatch
 # Iterates _hook_iter list, runs matching events.
 
 execute unless data storage vortex:engine _hook_iter[0] run return 0

@@ -1,4 +1,4 @@
-# vortex:systems/cb/internal/tick
+# vortex:core/internal/systems/cb/tick
 # Called each tick when cb_queue is non-empty.
 # Processes all entries: decrements ticks_left, fires those that reach 0.
 

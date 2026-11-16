@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/bind_exec [MACRO]
+# vortex:core/internal/systems/hook/bind_exec [MACRO]
 # INPUT: $(event) - required
 # vortex:input.func OR vortex:input.cmd - one must exist
 #

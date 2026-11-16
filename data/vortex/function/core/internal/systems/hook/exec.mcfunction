@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/exec [MACRO]
+# vortex:core/internal/systems/hook/exec [MACRO]
 # INPUT: $(func) — guaranteed present (check_bind ensures func exists)
 # @s = the triggering player
 

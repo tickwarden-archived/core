@@ -1,4 +1,4 @@
-# vortex:systems/hook/internal/tick_scan
+# vortex:core/internal/systems/hook/tick_scan
 # Her tick'te hook event'lerini tespit eder.
 # Runs only if hook_binds is non-empty.
 

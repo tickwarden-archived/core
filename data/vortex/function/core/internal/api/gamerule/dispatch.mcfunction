@@ -1,4 +1,4 @@
-# vortex:api/gamerule/internal/dispatch
+# vortex:core/internal/api/gamerule/dispatch
 # Evaluates the value and calls the appropriate callback function.
 # Called exclusively by vortex:api/gamerule/set — do NOT call directly.
 #
