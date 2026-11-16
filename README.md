@@ -40,13 +40,13 @@ data modify storage vortex:callback in set value {id:"mypack:round_won",args:{te
 function vortex:api/callback/run
 
 # handler, listed by your pack in data/vortex/tags/function/callback/dispatch.json
-execute if data storage vortex:callback stack[-1]{id:"mypack:round_won"} run function mypack:on_round_won
+execute if data storage vortex:callback top{id:"mypack:round_won"} run function mypack:on_round_won
 ```
 
 - IDs are stored lower-case; empty IDs and IDs with a quote or backslash are rejected (reason in `dbg.err`).
 - Tags: `#vortex:callback/dispatch` sees every callback. `#vortex:callback/macro_cmd` and `#vortex:callback/macro_function` additionally run for callbacks with `module:"macro_cmd"` / `"macro_function"`.
 - When `macro_cmd` or `macro_function` is switched off, every guarded `$$(cmd)` / `$function $(id)` site fires `vortex:macro_cmd_blocked` / `vortex:macro_function_blocked` before it stops; `stack[-1].site` names the blocked function. The macro value is not forwarded.
-- Handlers only read `stack[-1]`. Nesting is allowed up to 8 levels.
+- Handlers only read `top` (a copy of `stack[-1]`; `stack[-1]{...}` is not valid NBT path syntax, so filter on `top{...}`). Nesting is allowed up to 8 levels.
 
 ## Debug output (`systems/dbg`)
 

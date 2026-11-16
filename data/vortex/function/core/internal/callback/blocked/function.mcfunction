@@ -8,7 +8,7 @@
 # into a macro string is exactly what the toggle exists to stop.
 #
 # Handler example (listed in #vortex:callback/macro_function or #vortex:callback/dispatch):
-#   execute if data vortex:callback stack[-1]{id:"vortex:macro_function_blocked"} run function mypack:on_blocked
+#   execute if data storage vortex:callback top{id:"vortex:macro_function_blocked"} run function mypack:on_blocked
 #   (the blocked function path is in vortex:callback stack[-1].site)
 #
 # RETURN 0: the guarded function still stops, exactly as before.

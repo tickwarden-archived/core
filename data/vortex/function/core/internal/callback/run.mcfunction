@@ -17,7 +17,9 @@
 #   2. in is pushed on storage vortex:callback stack and removed
 #   3. module-specific tag first (#vortex:callback/<module>), then the shared tag
 #      #vortex:callback/dispatch, which sees every callback
-#   4. stack[-1] is removed, so storage is clean afterwards
+#   4. stack[-1] is removed and `top` is restored (or cleared), so storage is clean afterwards
+#   `top` is a copy of stack[-1] made for handlers: filter it with top{id:"..."}, because
+#   stack[-1]{...} is not valid NBT path syntax
 #
 # DEPTH: a handler may fire callbacks itself, up to 8 levels. A deeper call is dropped and
 # logged to dbg.err, which also stops a handler that trips a blocked macro site from looping.
@@ -41,9 +43,16 @@ execute if data storage vortex:callback in.module unless data storage vortex:cal
 data modify storage vortex:callback stack append from storage vortex:callback in
 data remove storage vortex:callback in
 
-execute if data storage vortex:callback stack[-1]{module:"macro_cmd"} run function #vortex:callback/macro_cmd
-execute if data storage vortex:callback stack[-1]{module:"macro_function"} run function #vortex:callback/macro_function
+# NBT paths cannot take a compound filter after an index ("stack[-1]{id:...}" fails to parse,
+# "Invalid NBT path element"), so the active entry is mirrored to `top`, which handlers can filter.
+data modify storage vortex:callback top set from storage vortex:callback stack[-1]
+
+execute if data storage vortex:callback top{module:"macro_cmd"} run function #vortex:callback/macro_cmd
+execute if data storage vortex:callback top{module:"macro_function"} run function #vortex:callback/macro_function
 function #vortex:callback/dispatch
 
+# pop, then point `top` back at the caller's entry (nested callbacks) or clear it
 data remove storage vortex:callback stack[-1]
+data remove storage vortex:callback top
+execute if data storage vortex:callback stack[-1] run data modify storage vortex:callback top set from storage vortex:callback stack[-1]
 return 1
