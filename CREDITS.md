@@ -8,7 +8,9 @@ commits carry an `AI-assisted:` trailer.
 
 | Change | Files | AI |
 |---|---|---|
+| Macro toggles (`macro_cmd`, `macro_function`) | `api/toggle/macro_*`, guard lines before `$$(cmd)` / `$function $(id)`, blocked-macro hooks via `core/internal/callback/run`, `core/config/*` | Claude (Anthropic) |
 | Shared callback runner | `api/callback/*`, `tags/function/callback/dispatch.json` | Claude (Anthropic) |
+| Macro toggles (`macro_cmd`, `macro_function`) | `api/toggle/macro_*`, guard lines before `$$(cmd)` / `$function $(id)`, blocked-macro hooks via `core/internal/callback/run`, `core/config/*` | Claude (Anthropic) |
 | Shared callback runner | `core/internal/callback/*`, `api/callback/*`, `tags/function/callback/*` | Claude (Anthropic) |
 | Example datapack | `examples/vortex-example/*` | Claude (Anthropic) |
 | Storage debug output | `systems/dbg/*`, converted `tellraw` lines | Claude (Anthropic) |

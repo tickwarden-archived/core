@@ -45,6 +45,7 @@ data modify storage vortex:engine config_schema merge value {hook_interval:{t:"i
 data modify storage vortex:engine config_schema merge value {validate_max_name:{t:"int",min:8,max:256},store_default_lang:{t:"str",max:16},store_max_template:{t:"int",min:16,max:32767},store_max_tokens:{t:"int",min:1,max:1024},store_tok_score:{t:"bool"},store_tok_player:{t:"bool"},store_tok_entity:{t:"bool"},store_tok_global:{t:"bool"}}
 data modify storage vortex:engine config_schema merge value {store_tok_pvar:{t:"bool"},store_tok_args:{t:"bool"},store_keep_unknown:{t:"bool"},title_fade_in:{t:"int",min:0,max:1200},title_stay:{t:"int",min:0,max:72000},title_fade_out:{t:"int",min:0,max:1200}}
 data modify storage vortex:engine config_schema merge value {perm_enforce:{t:"bool"},perm_cmd:{t:"bool"}}
+data modify storage vortex:engine config_schema merge value {module_macro_cmd:{t:"bool"},module_macro_function:{t:"bool"}}
 
 # Legacy values: worlds from before the config existed keep what an admin had set
 scoreboard objectives add vortex.tick_flags dummy
@@ -68,6 +69,8 @@ execute unless data storage vortex:engine config.module_gamerule run data modify
 execute unless data storage vortex:engine config.module_interaction run data modify storage vortex:engine config.module_interaction set value 1b
 execute unless data storage vortex:engine config.module_item run data modify storage vortex:engine config.module_item set value 1b
 execute unless data storage vortex:engine config.module_macro run data modify storage vortex:engine config.module_macro set value 1b
+execute unless data storage vortex:engine config.module_macro_cmd run data modify storage vortex:engine config.module_macro_cmd set value 1b
+execute unless data storage vortex:engine config.module_macro_function run data modify storage vortex:engine config.module_macro_function set value 1b
 execute unless data storage vortex:engine config.module_perm run data modify storage vortex:engine config.module_perm set value 1b
 execute unless data storage vortex:engine config.module_block run data modify storage vortex:engine config.module_block set value 1b
 execute unless data storage vortex:engine config.module_container run data modify storage vortex:engine config.module_container set value 1b
@@ -117,7 +120,8 @@ execute unless data storage vortex:engine config.store_keep_unknown run data mod
 execute unless data storage vortex:engine config.title_fade_in run data modify storage vortex:engine config.title_fade_in set value 10
 execute unless data storage vortex:engine config.title_stay run data modify storage vortex:engine config.title_stay set value 70
 execute unless data storage vortex:engine config.title_fade_out run data modify storage vortex:engine config.title_fade_out set value 20
-# Stored-string commands and caller-supplied macro targets run directly; no runtime switch limits them.
+# Macro execution toggles (module_macro_cmd / module_macro_function): 1b = the macro runs,
+# 0b = the call is reported through vortex:core/internal/callback/run instead of running.
 
 # Permission system switches (docs/perm.md).
 #   perm_default  (vortex:engine perm_default, NOT inside config, so core/config/reset keeps it) is the value

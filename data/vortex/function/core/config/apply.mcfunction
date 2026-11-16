@@ -20,6 +20,8 @@ data modify storage vortex:engine modules.gamerule set from storage vortex:engin
 data modify storage vortex:engine modules.interaction set from storage vortex:engine config.module_interaction
 data modify storage vortex:engine modules.item set from storage vortex:engine config.module_item
 data modify storage vortex:engine modules.macro set from storage vortex:engine config.module_macro
+data modify storage vortex:engine modules.macro_cmd set from storage vortex:engine config.module_macro_cmd
+data modify storage vortex:engine modules.macro_function set from storage vortex:engine config.module_macro_function
 data modify storage vortex:engine modules.perm set from storage vortex:engine config.module_perm
 data modify storage vortex:engine modules.block set from storage vortex:engine config.module_block
 data modify storage vortex:engine modules.container set from storage vortex:engine config.module_container
