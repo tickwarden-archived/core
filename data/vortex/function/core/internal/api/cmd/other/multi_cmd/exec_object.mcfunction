@@ -7,12 +7,12 @@
 #   {func:"...", condition:{}}
 #   {commands:[...], condition:{}}     nested group, expanded in place
 #
-# THE GATE IS POSITIVE ON PURPOSE. An earlier revision read:
+# THE CHECK IS POSITIVE ON PURPOSE. An earlier revision read:
 #
 #     execute ... matches 0 run return run function .../exec_object_skipped
 #
 # That silently disabled every condition. exec_object_skipped's only line
-# was gated on _mcmd_options.profile:1b, and all four entry points default
+# was conditioned on _mcmd_options.profile:1b, and all four entry points default
 # profile to 0b, so the function ran no command at all; `return run` does
 # not return from the caller when the command it wraps fails, so
 # exec_object fell straight through to the execution lines. The condition

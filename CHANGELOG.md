@@ -3,25 +3,22 @@
 ## Unreleased
 
 ### Removed
+- Stored-string command checks, the command blocklist and the macro execution switches: stored-string commands and caller-supplied macro targets now run directly, with no runtime check in between. The toggle menu and config no longer carry those switches, and worlds keep no setting for them.
 - `pack.png` (CI packages it only when present).
 
 ### Fixed
 - Callback runner and example handler failed to load on 1.21.8 (`Invalid NBT path element ... stack[-1]<--[HERE]`): `stack[-1]{...}` is not valid NBT path syntax. The runner now mirrors the active entry to `vortex:callback top`; filter handlers with `top{id:"..."}`. `top` is restored after nested callbacks and cleared when the stack is empty.
 
 ### Added
-- Macro toggles: `module_macro_cmd` (every `$$(cmd)` line) and `module_macro_function` (every `$function $(id)` line whose target comes from the caller). Both default to `1b`. Switch them with `vortex:api/toggle/macro_cmd/{true,false}` and `vortex:api/toggle/macro_function/{true,false}` (vortex.admin only), the toggle menu, or `core/config/set`. `$function` lines with a fixed target (dialog, rate_limit, rng, fiber plumbing) are not gated, so turning the toggle off cannot break the engine itself.
 - Shared callback runner `vortex:core/internal/callback/run`, with `vortex:api/callback/run` and `run_id` as thin public wrappers. No module toggle and no config flag. The ID comes from storage `vortex:callback in`, is string-checked (coerced to a string, rejected when empty or when it has a quote or backslash, lower-cased), pushed on a stack, and passed to the handlers in the function tags. Handlers compare the ID themselves (`stack[-1].id`). Re-entrant up to 8 levels; deeper calls are dropped and logged to `dbg.err`.
-- Module-specific callback tags: `#vortex:callback/macro_cmd` and `#vortex:callback/macro_function` run (before the shared `#vortex:callback/dispatch`) for callbacks with `module:"macro_cmd"` / `"macro_function"`.
-- When `module_macro_cmd` / `module_macro_function` is off, each of the 21 guarded `$$(cmd)` / `$function $(id)` sites now fires a callback (`vortex:macro_cmd_blocked` / `vortex:macro_function_blocked`, `stack[-1].site` = the blocked function path) before it returns 0. The macro value itself is not forwarded.
 - `vortex:systems/dbg/{out,err,show,clear}`: storage-based debug output (`vortex:dbg out` / `err`, 50 entries each). `show` is the only place that prints to chat.
-- Input rules, not a gate: `vortex:input/validate/rule_define` (`allow`, `deny`, `ignore_case`) and `vortex:input/validate/rule`. Example: `allow:["yes","no"]` or `allow:[0,1]`. The result goes to `vortex:input_validate result` like the other validators.
-- `examples/vortex-example`: a demo datapack for the callback runner, the module callback tags, the blocked-macro hooks, input rules and dbg. It is not part of the release zip.
+- Input rules: `vortex:api/input/validate/rule_define` (`allow`, `deny`, `ignore_case`) and `vortex:api/input/validate/rule`. Example: `allow:["yes","no"]` or `allow:[0,1]`. The result goes to `vortex:input_validate result` like the other validators.
+- `examples/vortex-example`: a demo datapack for the callback runner, input rules and dbg. It is not part of the release zip.
 
 ### Changed
 - Breaking for callers (function IDs moved): top-level `player/`, `input/` and `tui/` moved to `api/player/`, `api/input/` and `api/tui/`. `core/cooldown`, `core/state`, `core/queue` and `core/lib` split: entry points used from outside now live in `api/cooldown`, `api/state`, `api/queue` and `systems/lib/`; helpers and handlers moved to `core/internal/core/`. Old-to-new table: `RENAMES.md`.
 - Every `.mcfunction` header ID now matches its file path (125 headers were stale).
-- `systems/cmd_gate` stays: 12 callers gate stored-string command execution.
-- The diagnostic `tellraw` lines in `api/cb/*` (10), `core/internal/api/gamerule/debug_print` and the "passed the dynamic-command gate" notice to admins now write to `vortex:dbg` instead of chat. Menu and permission messages are unchanged.
+- The diagnostic `tellraw` lines in `api/cb/*` (10), `core/internal/api/gamerule/debug_print` and the diagnostic notice to admins now write to `vortex:dbg` instead of chat. Menu and permission messages are unchanged.
 
 ### Added
 - `vortex:api/notice/show`: a dialog (built with `vortex:api/dialog/*`) that tells players the pack was written with AI, that the dialog module was ported from Modalith instead of rewritten, what player data it keeps, that datapacks are not sandboxed, and where to report problems. It is shown once to every player who has not seen it (flag: `vortex.notice_seen`), including players online during a `/reload`; call it again with `execute as <player> run function vortex:api/notice/show`.

@@ -37,4 +37,3 @@ The list above was re-verified against the full call graph, including `minecraft
 - `systems/log/print_entry` is alive: `systems/log/show` names it as a string.
 - `core/internal/core/lib/fiber/resume_dispatch` is reached through the queue and dispatch tag chain described in its header.
 - `core/internal/systems/hook/on_open_gui` is reached through the `core/internal/player/open_gui` tag chain.
-- `systems/cmd_gate/*` has 12 callers and gates stored-string command execution. It is not dead.

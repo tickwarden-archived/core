@@ -1,4 +1,4 @@
-# vortex:api/toggle/perm/false — Disable the perm module: permission checks pass for everybody (cmd_gate stays strict)
+# vortex:api/toggle/perm/false — Disable the perm module: permission checks pass for everybody
 
 # Who may flip it: a server/console executor (no entity) or a player with the vortex.admin tag.
 execute if entity @s unless entity @s[tag=vortex.admin] run playsound vortex:perm.denied master @s ~ ~ ~ 1 1

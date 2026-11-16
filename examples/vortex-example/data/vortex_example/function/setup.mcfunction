@@ -1,7 +1,7 @@
 # vortex_example:setup
 # Runs on load (#minecraft:load) and at the start of demo/run_all.
-# Defines three input rules. Rules are NOT a gate: nothing is blocked until a datapack
-# calls vortex:api/input/validate/rule and decides what a failure means.
+# Defines three input rules. A datapack calls vortex:api/input/validate/rule
+# itself and decides what a failure means.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md in the repo root.
 
 # only "yes" or "no", any case

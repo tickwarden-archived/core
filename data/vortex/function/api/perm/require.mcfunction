@@ -11,8 +11,7 @@
 # NOT A MACRO FUNCTION - the name is passed through storage, not as a macro argument.
 #
 # INPUT  (storage vortex:perm_require):  in.perm   e.g. "shop.use"
-#         optional in.strict 1b: ignore the off-switches (perm_enforce 0b, module_perm 0b). Used by
-#         systems/cmd_gate so stored-command execution is never opened by turning permissions off.
+#         optional in.strict 1b: ignore the off-switches (perm_enforce 0b, module_perm 0b).
 #         Not strict = when the permission system is off, the result is 1 for everybody.
 # OUTPUT: return value 1 = allowed, 0 = denied.  vortex:output result 1b / 0b.
 #
@@ -24,7 +23,7 @@
 #   execute unless function vortex:api/perm/require run return 0
 # ======================================================================================
 
-# Strict callers (systems/cmd_gate) set in.strict:1b and are never bypassed by the switches below.
+# Strict callers set in.strict:1b and are never bypassed by the switches below.
 execute store success score #vortex.pr_strict vortex.tmp if data storage vortex:perm_require in{strict:1b}
 data remove storage vortex:perm_require in.strict
 execute if score #vortex.pr_strict vortex.tmp matches 1 if data storage vortex:engine modules{perm:0b} run return 0

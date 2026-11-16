@@ -44,8 +44,7 @@ execute if data storage vortex:callback top{id:"mypack:round_won"} run function 
 ```
 
 - IDs are stored lower-case; empty IDs and IDs with a quote or backslash are rejected (reason in `dbg.err`).
-- Tags: `#vortex:callback/dispatch` sees every callback. `#vortex:callback/macro_cmd` and `#vortex:callback/macro_function` additionally run for callbacks with `module:"macro_cmd"` / `"macro_function"`.
-- When `macro_cmd` or `macro_function` is switched off, every guarded `$$(cmd)` / `$function $(id)` site fires `vortex:macro_cmd_blocked` / `vortex:macro_function_blocked` before it stops; `stack[-1].site` names the blocked function. The macro value is not forwarded.
+- Tags: `#vortex:callback/dispatch` sees every callback.
 - Handlers only read `top` (a copy of `stack[-1]`; `stack[-1]{...}` is not valid NBT path syntax, so filter on `top{...}`). Nesting is allowed up to 8 levels.
 
 ## Debug output (`systems/dbg`)
@@ -54,7 +53,7 @@ execute if data storage vortex:callback top{id:"mypack:round_won"} run function 
 
 ## Input rules (`api/input/validate/rule*`)
 
-Restrict or block values without a gate; your datapack decides what a failure means:
+Restrict or block values; your datapack decides what a failure means:
 
 ```mcfunction
 function vortex:api/input/validate/rule_define {name:"yesno",rule:{allow:["yes","no"],ignore_case:1b}}
@@ -66,4 +65,4 @@ execute if data storage vortex:input_validate result{valid:1b} run say ok
 
 ## Example pack
 
-`examples/vortex-example` is a small datapack that uses the callback runner, the module callback tags, the blocked-macro hooks, input rules and dbg. See its README.
+`examples/vortex-example` is a small datapack that uses the callback runner, input rules and dbg. See its README.

@@ -1,6 +1,5 @@
 # vortex:api/input/validate/_rule_lower_s (internal)
 # Lower-cases vortex:input_validate _r.s for ignore_case; sets _r.fail 1b when the text has a quote or backslash
-# (text/safe runs first, the same order systems/cmd_gate/check uses).
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.
 
 data modify storage vortex:text s set from storage vortex:input_validate _r.s

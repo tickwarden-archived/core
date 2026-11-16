@@ -1,5 +1,4 @@
 # vortex:core/internal/api/container/slot_set_do [INTERNAL]
-# Body of api/container/slot_set (no module gate, so api/block can reuse it).
 data modify storage vortex:output container set value {ok:0b}
 execute unless data storage vortex:input item.id run return 0
 execute unless data storage vortex:input slot run return 0

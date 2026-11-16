@@ -25,7 +25,7 @@ scoreboard players add $rng_span vortex.tmp 1
 function vortex:core/internal/systems/rng/_core
 
 # INT_MIN has no positive counterpart in a 32-bit score, so fold it to
-# INT_MAX first; otherwise the negate below leaves it negative.
+# INT_MAX first; otherwise the negation below leaves it negative.
 execute if score $rng_state vortex.tmp matches -2147483648 run scoreboard players set $rng_state vortex.tmp 2147483647
 execute if score $rng_state vortex.tmp matches ..-1 run scoreboard players set $rng_neg vortex.tmp -1
 execute if score $rng_state vortex.tmp matches ..-1 run scoreboard players operation $rng_state vortex.tmp *= $rng_neg vortex.tmp

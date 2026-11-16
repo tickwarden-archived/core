@@ -6,7 +6,7 @@
 # freeze system is idle.
 #
 # For each anchor stand: switch execution position to the stand,
-# then delegate to anchor_tp which identifies and teleports the
+# then hand off to anchor_tp which identifies and teleports the
 # matching frozen player back to that position.
 # ─────────────────────────────────────────────────────────────────
 

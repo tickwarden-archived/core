@@ -10,7 +10,6 @@
 #   perm_trigger_interval -> #<key> (vortex.tick)
 #   queue_max_depth    -> #queue_cap (vortex.tick)
 #   log_level          -> #vortex.log_level (vortex.log_level)
-#   dynamic_cmd        -> #dynamic_cmd (vortex.tick_flags; read by systems/cmd_gate tests)
 #   perm_enforce, perm_cmd -> #perm_enforce, #perm_cmd (vortex.tick_flags; read by api/perm/require, api/perm/check, api/cmd/*)
 # The store_*, title_*, validate_max_name and reload_warn keys are read straight from storage.
 
@@ -21,8 +20,6 @@ data modify storage vortex:engine modules.gamerule set from storage vortex:engin
 data modify storage vortex:engine modules.interaction set from storage vortex:engine config.module_interaction
 data modify storage vortex:engine modules.item set from storage vortex:engine config.module_item
 data modify storage vortex:engine modules.macro set from storage vortex:engine config.module_macro
-data modify storage vortex:engine modules.macro_cmd set from storage vortex:engine config.module_macro_cmd
-data modify storage vortex:engine modules.macro_function set from storage vortex:engine config.module_macro_function
 data modify storage vortex:engine modules.perm set from storage vortex:engine config.module_perm
 data modify storage vortex:engine modules.block set from storage vortex:engine config.module_block
 data modify storage vortex:engine modules.container set from storage vortex:engine config.module_container
@@ -48,7 +45,6 @@ execute store result score #sys_player vortex.tick_flags run data get storage vo
 execute store result score #sys_queue vortex.tick_flags run data get storage vortex:engine config.sys_queue
 execute store result score #sys_hud vortex.tick_flags run data get storage vortex:engine config.sys_hud
 execute store result score #sys_admin vortex.tick_flags run data get storage vortex:engine config.sys_admin
-execute store result score #dynamic_cmd vortex.tick_flags run data get storage vortex:engine config.dynamic_cmd
 execute store result score #perm_enforce vortex.tick_flags run data get storage vortex:engine config.perm_enforce
 execute store result score #perm_cmd vortex.tick_flags run data get storage vortex:engine config.perm_cmd
 

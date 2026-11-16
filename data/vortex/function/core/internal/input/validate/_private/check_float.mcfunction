@@ -3,7 +3,7 @@
 # ======================================================================================
 # A whole number or a decimal: optional leading '-', digits, and at most one '.' that has
 # digits on both sides ("1." and ".5" are rejected as ambiguous rather than guessed at).
-# Delegates to vortex:core/internal/text/num_check with allow_dot set.
+# Hands off to vortex:core/internal/text/num_check with allow_dot set.
 # ======================================================================================
 data modify storage vortex:text s set from storage vortex:input_validate scratch.value
 data modify storage vortex:text allow_dot set value 1b

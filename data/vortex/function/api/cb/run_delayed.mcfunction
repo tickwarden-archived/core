@@ -12,7 +12,6 @@
 # OUTPUT (storage vortex:output):
 #   cb_id   (int)  — id of the queued entry, usable with api/cb/cancel_id
 #
-# No permission gate — caller is trusted as-is.
 #
 # EXAMPLE:
 #   data modify storage vortex:input cb set value {cmd:"say delayed!",delay:40}

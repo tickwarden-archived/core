@@ -4,7 +4,6 @@
 #
 # No input required. Clears the entire queue.
 #
-# No permission gate — caller is trusted as-is.
 #
 # EXAMPLE:
 #   function vortex:api/cb/cancel

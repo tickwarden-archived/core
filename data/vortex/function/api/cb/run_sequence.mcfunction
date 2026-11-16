@@ -14,7 +14,6 @@
 #   cb_id   (int)  — one id shared by every step; api/cb/cancel_id cancels the
 #                     steps that have not fired yet
 #
-# No permission gate — caller is trusted as-is.
 #
 # EXAMPLE:
 #   data modify storage vortex:input cb set value {cmds:["say one","say two","say three"],interval:20}

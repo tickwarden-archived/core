@@ -8,8 +8,6 @@
 #   • Writes vortex:engine _cb_last {x,y,z} for the cleanup step.
 #   • Schedules vortex:api/cb/internal/reset 2t later.
 
-data modify storage vortex:cmd_gate in.cmd set from storage vortex:input cb.cmd
-execute unless function vortex:systems/cmd_gate/check run return 0
 $data modify storage vortex:engine _cb_last set value {x:$(x),y:$(y),z:$(z)}
 $forceload add $(x) $(z)
 $setblock $(x) $(y) $(z) minecraft:command_block{Command:"",auto:0b,TrackOutput:0b} replace

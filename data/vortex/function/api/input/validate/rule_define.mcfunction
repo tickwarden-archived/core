@@ -1,5 +1,5 @@
 # vortex:api/input/validate/rule_define [MACRO]
-# Defines (or replaces) a named input rule. Rules are NOT a gate: nothing is blocked unless
+# Defines (or replaces) a named input rule. Rules never block anything by themselves:
 # YOUR datapack calls input/validate/rule and acts on the answer.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.
 #

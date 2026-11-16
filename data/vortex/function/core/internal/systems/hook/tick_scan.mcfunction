@@ -10,11 +10,11 @@ execute unless score #scan_mod vortex.tick matches 0 run return 0
 
 execute unless data storage vortex:engine hook_binds[0] run return 0
 
-# player_join — delegated to #vortex:core/internal/player/joined (fired by player_action when player_action.join >= 1)
+# player_join — handled by #vortex:core/internal/player/joined (fired by player_action when player_action.join >= 1)
 # Only score management remains here to prevent double-fire
 execute as @a run scoreboard players set @s vortex.hook_online 1
 
-# player_death — delegated to #vortex:core/internal/player/died (fired by player_action when player_action.death >= 1)
+# player_death — handled by #vortex:core/internal/player/died (fired by player_action when player_action.death >= 1)
 # Only score reset remains here to prevent double-fire
 execute as @a[scores={vortex.hook_deaths=1..}] run scoreboard players set @s vortex.hook_deaths 0
 
@@ -77,7 +77,7 @@ execute as @a[scores={vortex.hook_dim_changed=1..}] run scoreboard players set @
 execute as @a[scores={vortex.hook_traded=1..}] run function vortex:core/internal/systems/hook/on_trade
 execute as @a[scores={vortex.hook_traded=1..}] run scoreboard players set @s vortex.hook_traded 0
 
-# jumped — delegated to #vortex:core/internal/player/jumped (fired by player_action when player_action.jump >= 1)
+# jumped — handled by #vortex:core/internal/player/jumped (fired by player_action when player_action.jump >= 1)
 # Only score reset remains here to prevent double-fire
 execute as @a[scores={vortex.hook_jump=1..}] run scoreboard players reset @s vortex.hook_jump
 

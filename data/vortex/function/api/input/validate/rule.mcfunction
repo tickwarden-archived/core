@@ -1,6 +1,5 @@
 # vortex:api/input/validate/rule [MACRO]
 # Checks one captured value against a named rule (see input/validate/rule_define).
-# Reads the value; never executes or pastes it. Not a gate: you decide what a failure does.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.
 #
 # INPUT (macro args): source  dot-path INTO vortex:input, e.g. "book.raw"

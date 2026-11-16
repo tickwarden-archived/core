@@ -15,6 +15,4 @@ data remove storage vortex:engine _pr_tmp
 $execute if score #pr_deny vortex.tmp matches 1 run execute as @a if score @s vortex.pid = $pr_pid vortex.tmp run tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"✘ ","color":"red"},{"text":"$(perm)","color":"yellow"},{"text":" — you don't have this permission.","color":"red"}]
 execute if score #pr_deny vortex.tmp matches 1 run return 0
 
-# Dynamic commands are off by default (config dynamic_cmd). See docs/cmd_gate.md.
-execute unless data storage vortex:engine config{dynamic_cmd:1b} run return 0
 $execute as @a if score @s vortex.pid = $pr_pid vortex.tmp at @s run $(cmd)
