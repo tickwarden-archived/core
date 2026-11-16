@@ -4,5 +4,5 @@
 
 $data modify storage vortex:cmd_gate in.cmd set value "$(on_leave_cmd)"
 execute unless function vortex:systems/cmd_gate/check run return 0
-execute if data storage vortex:engine modules{macro_cmd:0b} run return 0
+execute if data storage vortex:engine modules{macro_cmd:0b} run return run function vortex:core/internal/callback/blocked/cmd {site:"core/internal/systems/geo/region_watch/fire_leave_cmd"}
 $$(on_leave_cmd)
