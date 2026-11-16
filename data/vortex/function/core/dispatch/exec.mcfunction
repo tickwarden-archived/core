@@ -18,5 +18,6 @@
 # ─────────────────────────────────────────────────────────────────
 
 execute unless entity @a run return 0
+execute if data storage vortex:engine modules{macro_function:0b} run return run function vortex:core/internal/callback/blocked/function {site:"core/dispatch/exec"}
 
 $function $(func) with storage vortex:engine _dispatch

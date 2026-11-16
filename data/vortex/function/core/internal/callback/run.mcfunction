@@ -6,18 +6,22 @@
 #
 # INPUT (storage vortex:callback in):
 #   id      (string)  callback ID, e.g. "mypack:round_won"        [REQUIRED]
+#   module  (string)  optional: "macro_cmd" | "macro_function"
+#                     selects the module-specific tag below
+#   site    (string)  optional: set by the blocked-macro hooks (function path)
 #   args    (any)     optional payload
 #
 # FLOW
 #   1. string handling: id is coerced to a string, rejected when empty or when it holds a
 #      quote or backslash (text/safe), then lower-cased (text/lower)
 #   2. in is pushed on storage vortex:callback stack and removed
+#   3. module-specific tag first (#vortex:callback/<module>), then the shared tag
 #   3. stack[-1] is removed and `top` is restored (or cleared), so storage is clean afterwards
 #   `top` is a copy of stack[-1] made for handlers: filter it with top{id:"..."}, because
 #   stack[-1]{...} is not valid NBT path syntax
 #
 # DEPTH: a handler may fire callbacks itself, up to 8 levels. A deeper call is dropped and
-# logged to dbg.err.
+# logged to dbg.err, which also stops a handler that trips a blocked macro site from looping.
 #
 # RETURN 1 when dispatched, 0 when rejected.
 
@@ -34,6 +38,8 @@ execute if score #vortex.cb_ok vortex.tmp matches 0 run data remove storage vort
 execute if score #vortex.cb_ok vortex.tmp matches 0 run return 0
 
 
+execute if data storage vortex:callback in.module unless data storage vortex:callback in{module:"macro_cmd"} unless data storage vortex:callback in{module:"macro_function"} run function vortex:systems/dbg/err {src:"callback",msg:"unknown callback module, shared tag only"}
+
 data modify storage vortex:callback stack append from storage vortex:callback in
 data remove storage vortex:callback in
 
@@ -41,6 +47,8 @@ data remove storage vortex:callback in
 # "Invalid NBT path element"), so the active entry is mirrored to `top`, which handlers can filter.
 data modify storage vortex:callback top set from storage vortex:callback stack[-1]
 
+execute if data storage vortex:callback top{module:"macro_cmd"} run function #vortex:callback/macro_cmd
+execute if data storage vortex:callback top{module:"macro_function"} run function #vortex:callback/macro_function
 function #vortex:callback/dispatch
 
 # pop, then point `top` back at the caller's entry (nested callbacks) or clear it
