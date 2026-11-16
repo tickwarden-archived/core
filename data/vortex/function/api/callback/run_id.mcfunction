@@ -6,4 +6,4 @@
 # $(id) is written by the datapack author, not by players: do not pass player input.
 
 $data modify storage vortex:callback in set value {id:"$(id)"}
-return run function vortex:api/callback/run
+return run function vortex:core/internal/callback/run
