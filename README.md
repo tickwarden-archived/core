@@ -1,4 +1,4 @@
-# Vortex (0.3.0)
+# Vortex (0.4.0)
 
 Library pack: it provides functions for other datapacks and does nothing useful on its own.
 Targets Minecraft 1.21.7-1.21.8 (pack_format 81). Renamed and reorganized from

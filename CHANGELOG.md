@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0
+
 ### Changed
 - Repository layout: the datapack moved from the repository root into `vortex-dp/` (`vortex-dp/pack.mcmeta`, `vortex-dp/data/`). The release zip is unchanged — pack.mcmeta and data/ still sit at the zip root; CI now builds it from `vortex-dp/`. Function IDs, storage paths and tags did not change.
 - Breaking for worlds (not for callers): scoreboard objectives and entity tags `player_action.*` are now `vortex.player_action.*`, and the objective `load.status` is now `vortex.load_status`, so every name Vortex creates carries its own prefix. Old scores stay in orphaned objectives; see RENAMES.md for the manual cleanup.
