@@ -94,6 +94,65 @@ await service.project.init()
 await service.project.ready({ projectRootsWatcher: new StaticFileWatcher(projectRoots) })
 const analysis = await service.project.analyzeProject()
 
+// Known Spyglass false positives, suppressed with a hard count cap.
+// Each entry matches one exact diagnostic shape (file and/or message, at one
+// severity). `max` is the number of occurrences that exist today: if the
+// count ever grows past it, the extra diagnostics are reported (and fail
+// the run) instead of being hidden — so this list can never silently absorb
+// new findings. Every entry names the Spyglass limitation behind it. Remove
+// entries (do not raise `max`) once the pinned Spyglass versions catch up.
+const SUPPRESSED = [
+	{
+		id: 'quoted-component-nbt-path',
+		file: 'data/vortex/function/api/input/private/sign_capture_from_components.mcfunction',
+		message: 'Expected nothing',
+		severity: 'error',
+		max: 8,
+		reason: 'Spyglass parser cannot continue an NBT path after a quoted component key (components."minecraft:sign_text_front"...); the syntax is valid vanilla.',
+	},
+	{
+		id: 'unknown-key-plain',
+		message: 'Unknown key “plain”',
+		severity: 'warning',
+		max: 35,
+		reason: 'Text components with "plain" are emitted by the list/menu helpers; the 1.21.8 mcdoc schema does not know the key yet.',
+	},
+	{
+		id: 'unknown-key-clock',
+		message: 'Unknown key “clock”',
+		severity: 'warning',
+		max: 2,
+		reason: 'minecraft:time_check "clock" field (is_daytime/is_night predicates); the 1.21.8 mcdoc schema does not know the key yet.',
+	},
+	{
+		id: 'unknown-key-comment',
+		message: 'Unknown key “_comment”',
+		severity: 'warning',
+		max: 2,
+		reason: 'Documentation-only "_comment" keys in item_modifier JSON files; ignored by the game.',
+	},
+	{
+		id: 'unknown-key-nbt-schema',
+		message: /^Unknown key “(text|Invisible|entity_type)”$/,
+		severity: 'warning',
+		max: 3,
+		reason: 'Entity/advancement NBT keys used by the input-capture helpers and hook advancements; the 1.21.8 mcdoc schema does not know them yet.',
+	},
+]
+const suppressedCount = new Map(SUPPRESSED.map((r) => [r.id, 0]))
+const matchSuppression = (file, level, message) => {
+	for (const rule of SUPPRESSED) {
+		if (rule.severity !== level) continue
+		if (rule.file && rule.file !== file) continue
+		const matches = rule.message instanceof RegExp ? rule.message.test(message) : rule.message === message
+		if (!matches) continue
+		if (suppressedCount.get(rule.id) >= rule.max) continue
+		suppressedCount.set(rule.id, suppressedCount.get(rule.id) + 1)
+		return rule
+	}
+	return undefined
+}
+
 const names = ['hint', 'info', 'warning', 'error']
 let errors = 0
 let warnings = 0
@@ -112,6 +171,7 @@ for (const [uri, list] of [...diagnostics].sort(([a], [b]) => a.localeCompare(b)
 	for (const e of list) {
 		if (e.severity < ErrorSeverity.Warning) continue
 		const level = names[e.severity]
+		if (matchSuppression(file, level, e.message)) continue
 		let line = 1
 		let col = 1
 		if (e.posRange?.start) {
@@ -140,6 +200,13 @@ if (!analysis || analysis.totalFiles === 0) {
 	process.exit(1)
 }
 
-console.log(`Spyglass finished: ${errors} error(s), ${warnings} warning(s) in ${analysis.analyzedFiles} file(s)`)
+const suppressedTotal = [...suppressedCount.values()].reduce((a, b) => a + b, 0)
+if (suppressedTotal > 0) {
+	for (const rule of SUPPRESSED) {
+		const count = suppressedCount.get(rule.id)
+		if (count > 0) console.log(`note: suppressed ${count} known diagnostic(s) [${rule.id}] — ${rule.reason}`)
+	}
+}
+console.log(`Spyglass finished: ${errors} error(s), ${warnings} warning(s) in ${analysis.analyzedFiles} file(s); ${suppressedTotal} known false positive(s) suppressed`)
 await service.project.close?.()
 process.exit(errors > 0 ? 1 : 0)
