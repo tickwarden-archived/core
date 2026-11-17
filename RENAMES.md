@@ -15,7 +15,7 @@ Every function ID not listed here is unchanged. IDs are `vortex:<path>`.
 
 Frozen on purpose: `api/cmd/*` (dispatched dynamically by `api/cmd/$(type)`), `api/perm/*` advancements, and all function tags under `tags/function/`.
 
-## Namespace discipline rename (unreleased)
+## Namespace discipline rename (0.4.0)
 
 No name ships without the pack prefix anymore (enforced by
 `scripts/check-namespace.mjs` in CI). Function IDs did not change; the

@@ -11,7 +11,7 @@ If a requirement is not written here, Vortex does not have it.
 |---|---|
 | Minecraft Java Edition | **1.21.7 – 1.21.8** |
 | `pack_format` | **81** (`vortex-dp/pack.mcmeta`) |
-| Pack version | 0.3.0 (`vortex-dp/data/vortex/function/core/version/define.mcfunction` is the single source) |
+| Pack version | 0.4.0 (`vortex-dp/data/vortex/function/core/version/define.mcfunction` is the single source) |
 | Persistent-state schema | 1 (`vortex:engine global.state_version`, see "State and migrations") |
 
 Both target versions share pack_format 81 and the same command grammar for
