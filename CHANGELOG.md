@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- `examples/vortex-example` updated for 0.4.0: now also demonstrates module-specific callbacks (`module:"macro_cmd"` plus the `args.mod` filter pattern for user modules) and the `#vortex:events/on_load` hook; demo numbering and the `needs vortex 0.4+` requirement updated accordingly.
+
 ## 0.4.0
 
 ### Changed

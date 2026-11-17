@@ -4,7 +4,7 @@
 # IDs are stored lower-case, so write them lower-case.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md in the repo root.
 
-tellraw @s {"text":"[example] 1/4 callback","color":"aqua","bold":true}
+tellraw @s {"text":"[example] 1/5 callback","color":"aqua","bold":true}
 data modify storage vortex:callback in set value {id:"vortex_example:hello",args:{team:"red"}}
 function vortex:api/callback/run
 
