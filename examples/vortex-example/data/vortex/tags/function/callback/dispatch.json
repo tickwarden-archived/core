@@ -1,5 +1,6 @@
 {
   "values": [
-    "vortex_example:callback/dispatch_handler"
+    "vortex_example:callback/dispatch_handler",
+    "vortex_example:callback/on_custom_module"
   ]
 }

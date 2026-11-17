@@ -5,13 +5,16 @@
 # Needs vortex.admin (the toggles check it). Both toggles are restored at the end.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md in the repo root.
 
-tellraw @s {"text":"[example] 3/4 blocked macro sites","color":"aqua","bold":true}
+tellraw @s {"text":"[example] 3/5 blocked macro sites","color":"aqua","bold":true}
 
 function vortex:api/toggle/macro_function/false
 function vortex:api/macro/with_function {source:"vortex_example:provider/one",target:"vortex_example:consumer/print"}
 function vortex:api/toggle/macro_function/true
 
 function vortex:api/toggle/macro_cmd/false
+# Deliberate exception: this call hits an internal guarded site (core/internal/...)
+# only to make the blocked-macro report fire. Internal paths are not stable API -
+# do not copy this call shape into a real pack; call a public feature instead.
 function vortex:core/internal/core/lib/once/cmd {key:"vortex_example_once",cmd:"say never runs while macro_cmd is off"}
 function vortex:api/toggle/macro_cmd/true
 

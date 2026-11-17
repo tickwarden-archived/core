@@ -10,4 +10,5 @@ function vortex_example:setup
 function vortex_example:demo/callback
 function vortex_example:demo/validate
 function vortex_example:demo/blocked
+function vortex_example:demo/module
 function vortex_example:demo/dbg
