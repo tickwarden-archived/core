@@ -5,7 +5,7 @@
 # Needs vortex.admin (the toggles check it). Both toggles are restored at the end.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md in the repo root.
 
-tellraw @s {"text":"[example] 3/5 blocked macro sites","color":"aqua","bold":true}
+tellraw @s {"text":"[example] 3/6 blocked macro sites","color":"aqua","bold":true}
 
 function vortex:api/toggle/macro_function/false
 function vortex:api/macro/with_function {source:"vortex_example:provider/one",target:"vortex_example:consumer/print"}

@@ -5,7 +5,7 @@
 # modules, mark `args` and let handlers filter on it (second call below).
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md in the repo root.
 
-tellraw @s {"text":"[example] 4/5 module callbacks","color":"aqua","bold":true}
+tellraw @s {"text":"[example] 4/6 module callbacks","color":"aqua","bold":true}
 
 # 1) built-in module: handler vortex_example:callback/on_module_hello is
 #    registered in #vortex:callback/macro_cmd and runs before dispatch.
