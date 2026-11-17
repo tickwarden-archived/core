@@ -44,11 +44,19 @@ jobs:
             "@spyglassmc/mcdoc@$SPYGLASS_MCDOC_VERSION"
 
       - name: Run Spyglass
-        run: node "$RUNNER_TEMP/spyglass/spyglass-check.mjs" "$GITHUB_WORKSPACE"
+        run: node "$RUNNER_TEMP/spyglass/spyglass-check.mjs" "$GITHUB_WORKSPACE/vortex-dp"
+
+  namespace:
+    name: Namespace check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check vortex prefix discipline
+        run: node scripts/check-namespace.mjs vortex-dp
 
   package:
     name: Package datapack
-    needs: validate
+    needs: [validate, namespace]
     runs-on: ubuntu-latest
     outputs:
       zip: ${{ steps.pack.outputs.zip }}
@@ -67,12 +75,14 @@ jobs:
           fi
           zip_name="${name}-${version}.zip"
 
-          # pack.mcmeta and data/ must sit at the zip root for Minecraft to load it.
-          files=(pack.mcmeta data)
-          for optional in pack.png LICENSE README.md CHANGELOG.md; do
-            [ -e "$optional" ] && files+=("$optional")
+          # The datapack lives in vortex-dp/; its contents (pack.mcmeta,
+          # data/) must sit at the zip root for Minecraft to load it.
+          mkdir stage
+          cp -r vortex-dp/. stage/
+          for optional in pack.png LICENSE README.md CHANGELOG.md API.md COMPATIBILITY.md; do
+            [ -e "$optional" ] && cp "$optional" stage/
           done
-          zip -r -X "$zip_name" "${files[@]}"
+          (cd stage && zip -r -X "../$zip_name" .)
 
           # Sanity check: the zip must contain pack.mcmeta at its root.
           unzip -l "$zip_name" | grep -qE ' pack\.mcmeta$'
