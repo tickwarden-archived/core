@@ -113,16 +113,6 @@ execute unless data storage vortex:engine batches run data modify storage vortex
 execute unless data storage vortex:engine wand_cooldowns run data modify storage vortex:engine wand_cooldowns set value {}
 
 # ─────────────────────────────────────────────────────────────────
-# Security module (v26.3+)
-# cmd_min_level / sandbox_cmd_min_level / admin_min_level / sandbox_allowlist
-# fields that used to live here (and the check_all function that read
-# them) were removed. Nothing enforces vortex.perm_level anymore.
-#
-# Remaining fields:
-#   multi_type_allowlist  compound of permitted multiCommands.type values
-# ─────────────────────────────────────────────────────────────────
-
-# ─────────────────────────────────────────────────────────────────
 # Module toggle init (vortex:api/toggle)
 # Each module defaults to enabled (1b) on first load.
 # Preserved across reloads via 'unless data' guards — admin toggles survive /reload.

@@ -135,10 +135,5 @@ execute unless data storage vortex:engine config.perm_cmd run data modify storag
 # Revision marker: core/config/ensure compares it, so adding a key means bumping this number.
 data modify storage vortex:engine config_rev set value 4
 
-# Permission checks live in api/perm/* (see core/internal/load/loader/storages
-# for the remaining security fields: sandbox_allowlist,
-# multi_type_allowlist).
-execute unless data storage vortex:engine security run data modify storage vortex:engine security set value {}
-
 # Generic flag storage used by systems/flag/*.
 execute unless data storage vortex:engine flags run data modify storage vortex:engine flags set value {}
