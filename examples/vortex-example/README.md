@@ -1,12 +1,12 @@
 <!-- AI-assisted: written with Claude (Anthropic); see CREDITS.md in the repo root. -->
 # vortex example pack
 
-A small datapack that uses vortex. It is a demo, not part of the vortex release zip (the release only packs `pack.mcmeta` and `data/` from the repo root).
+A small datapack that uses vortex. It is a demo, not part of the vortex release zip (the release packs the contents of `vortex-dp/` in the repo (its `pack.mcmeta` and `data/`) into the zip root).
 
 Needs vortex 0.3+ with the callback, input-rule, dbg and macro-toggle changes (PRs #5 and #7). Minecraft 1.21.7-1.21.8 (pack_format 81).
 
 ## Install
-Put the `vortex-example` folder (or a zip of it with `pack.mcmeta` and `data/` at its root) into the world's `datapacks/` folder next to vortex, then `/reload`.
+Put the `vortex-example` folder (or a zip of it with `pack.mcmeta` and `data/` at its root) into the world's `datapacks/` folder next to vortex (the `vortex-dp` folder or its release zip), then `/reload`.
 
 ## Run
 ```mcfunction

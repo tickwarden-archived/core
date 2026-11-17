@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Changed
+- Repository layout: the datapack moved from the repository root into `vortex-dp/` (`vortex-dp/pack.mcmeta`, `vortex-dp/data/`). The release zip is unchanged — pack.mcmeta and data/ still sit at the zip root; CI now builds it from `vortex-dp/`. Function IDs, storage paths and tags did not change.
+- Breaking for worlds (not for callers): scoreboard objectives and entity tags `player_action.*` are now `vortex.player_action.*`, and the objective `load.status` is now `vortex.load_status`, so every name Vortex creates carries its own prefix. Old scores stay in orphaned objectives; see RENAMES.md for the manual cleanup.
+
+### Added
+- `API.md`: the public contract — stability policy, the naming/prefix table, public storage contracts, hook tags, and the generated index of public functions (`api/`, `events/`, `world/`, `systems/`). Everything else (notably `core/internal/` and `*/private/`) is internal.
+- `COMPATIBILITY.md`: version target (Minecraft 1.21.7–1.21.8, pack_format 81), requirements, explicit non-assumptions (world, player count, other packs, execution order) and the state/migration model.
+- Persistent-state schema versioning: `vortex:engine global.state_version` (currently 1) with a migration chain in `core/internal/load/migrate` + `migrations/to_<n>`, run on every load/reload before the already-loaded early return.
+- `scripts/check-namespace.mjs` + CI job: fails when a scoreboard objective, entity tag, team, bossbar or storage the pack creates is not `vortex.`- / `vortex:`-prefixed.
+- `#vortex:events/on_load` now actually fires: once per load/reload at the end of `vortex:setup`. It is no longer chained from `#vortex:init` (which only runs on the full-init path, which /reload skips).
+
 ### Removed
 - Stored-string command checks and the command blocklist: stored-string commands now run directly, with no runtime check in between.
 - `pack.png` (CI packages it only when present).

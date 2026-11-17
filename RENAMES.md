@@ -13,7 +13,22 @@ branding, and must keep matching whatever a pre-existing world already has on di
 
 Every function ID not listed here is unchanged. IDs are `vortex:<path>`.
 
-Frozen on purpose: `api/cmd/*` (dispatched dynamically by `api/cmd/$(type)`), `api/perm/*` advancements, all function tags under `tags/function/`, `load.status`, and the `player_action.*` objectives and tags.
+Frozen on purpose: `api/cmd/*` (dispatched dynamically by `api/cmd/$(type)`), `api/perm/*` advancements, and all function tags under `tags/function/`.
+
+## Namespace discipline rename (unreleased)
+
+No name ships without the pack prefix anymore (enforced by
+`scripts/check-namespace.mjs` in CI). Function IDs did not change; the
+scoreboard objectives, entity tags and fake-player holders below did.
+Scores stored under the old objective names cannot be migrated in code —
+they stay in orphaned objectives until removed manually
+(`scoreboard objectives remove <old name>`).
+
+| Old | New |
+|---|---|
+| `player_action.*` (objectives and entity tags) | `vortex.player_action.*` |
+| `load.status` (objective) | `vortex.load_status` |
+| `#player_action.*` (fake-player holders) | `#vortex.player_action.*` |
 
 ## Functions
 

@@ -4,7 +4,13 @@ Library pack: it provides functions for other datapacks and does nothing useful 
 Targets Minecraft 1.21.7-1.21.8 (pack_format 81). Renamed and reorganized from
 macroEngine-Datapack-v26.3; old-to-new names for this layout are listed in `RENAMES.md`.
 
-## Layout (`data/vortex/function/`)
+The datapack itself lives in **`vortex-dp/`** (that folder's `pack.mcmeta` + `data/`
+are the pack root; release zips are built from it). This repository root only adds
+docs, scripts, CI and `examples/` around it. The public contract — stable function
+IDs, storage paths and hook tags — is [API.md](API.md); requirements, version
+targets and world assumptions are in [COMPATIBILITY.md](COMPATIBILITY.md).
+
+## Layout (`vortex-dp/data/vortex/function/`)
 
 | Folder | Purpose | Stable API? |
 |---|---|---|
@@ -25,7 +31,7 @@ Other data folders: `advancement/`, `predicate/`, `loot_table/`, `item_modifier/
 
 - Every `.mcfunction` carries its own function ID in its header comment, plus `[MACRO]` when it uses `$` lines.
 - Function folders group by feature, then by action: `api/player/var/set`, `systems/lib/wait/cmd_as`.
-- Scoreboard objectives, entity tags and macro keys are `snake_case` and prefixed `vortex.` (objectives and tags).
+- Scoreboard objectives, entity tags and macro keys are `snake_case` and prefixed `vortex.` (objectives and tags); storage and function names use `vortex:`. No exceptions — `scripts/check-namespace.mjs` enforces the prefix in CI. (This release renamed the last unprefixed names, `player_action.*` and `load.status`; see RENAMES.md.)
 - Storage IDs are `vortex:<module>` with no leading underscore.
 - Files use LF line endings, end with a newline, and JSON uses 2-space indentation.
 
