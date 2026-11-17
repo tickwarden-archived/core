@@ -1,17 +1,18 @@
 // Headless Spyglass check for a pure datapack repository.
 // Usage: node scripts/spyglass-check.mjs [projectRoot]
 // Exit code 1 when at least one error-level diagnostic is found.
-import { ErrorSeverity, fileUtil, ProfilerFactory, Service } from '@spyglassmc/core'
+import { ErrorSeverity, EventDispatcher, fileUtil, ProfilerFactory, Service, UriStore } from '@spyglassmc/core'
 import { NodeJsExternals } from '@spyglassmc/core/lib/nodejs.js'
 import * as je from '@spyglassmc/java-edition'
 import * as mcdoc from '@spyglassmc/mcdoc'
-import { mkdtempSync } from 'node:fs'
+import { mkdtempSync, readFileSync, readdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = resolve(process.argv[2] ?? '.')
 const cacheRoot = process.env.SPYGLASS_CACHE_DIR ?? mkdtempSync(join(tmpdir(), 'spyglass-cache-'))
+const projectRoots = [fileUtil.ensureEndingSlash(pathToFileURL(root).toString())]
 
 // Setup problems (e.g. vanilla data could not be downloaded) must fail the run,
 // otherwise the check would silently pass without validating anything.
@@ -32,6 +33,46 @@ const logger = {
 	},
 }
 
+// Project.ready() only tracks files reported by a FileWatcher; with no
+// watcher it sees just the dependency archives, so analyzeProject() would
+// analyze 0 project files and report success without checking anything.
+// This static watcher performs a one-off recursive scan of the project roots
+// (skipping the directories Spyglass excludes by default) so every project
+// file is tracked before analysis.
+class StaticFileWatcher extends EventDispatcher {
+	#store = new UriStore()
+	constructor(roots) {
+		super()
+		this.roots = roots
+	}
+	get watchedFiles() {
+		return this.#store
+	}
+	async ready() {
+		for (const rootUri of this.roots) {
+			this.#scan(fileURLToPath(rootUri))
+		}
+	}
+	async close() {}
+	#scan(dir) {
+		let entries
+		try {
+			entries = readdirSync(dir, { withFileTypes: true })
+		} catch {
+			return
+		}
+		for (const entry of entries) {
+			if (entry.isSymbolicLink()) continue
+			if (entry.isDirectory()) {
+				if (entry.name.startsWith('.') || entry.name === 'node_modules' || entry.name === '__pycache__') continue
+				this.#scan(join(dir, entry.name))
+			} else if (entry.isFile()) {
+				this.#store.add(pathToFileURL(join(dir, entry.name)).toString())
+			}
+		}
+	}
+}
+
 const service = new Service({
 	logger,
 	profilers: new ProfilerFactory(logger, []),
@@ -39,7 +80,7 @@ const service = new Service({
 		cacheRoot: fileUtil.ensureEndingSlash(pathToFileURL(cacheRoot).toString()),
 		externals: NodeJsExternals,
 		initializers: [mcdoc.initialize, je.initialize],
-		projectRoots: [fileUtil.ensureEndingSlash(pathToFileURL(root).toString())],
+		projectRoots,
 	},
 })
 
@@ -50,21 +91,38 @@ service.project.on('documentErrored', ({ uri, errors }) => {
 })
 
 await service.project.init()
-await service.project.ready()
-await service.project.analyzeProject()
+await service.project.ready({ projectRootsWatcher: new StaticFileWatcher(projectRoots) })
+const analysis = await service.project.analyzeProject()
 
 const names = ['hint', 'info', 'warning', 'error']
 let errors = 0
 let warnings = 0
 for (const [uri, list] of [...diagnostics].sort(([a], [b]) => a.localeCompare(b))) {
 	const file = fileURLToPath(uri).replace(root + '/', '')
+	// Diagnostics carry a 0-based posRange (and sometimes a raw offset
+	// range). Files checked here are not client-managed, so
+	// getClientManaged() has no document to map offsets with; fall back to
+	// computing the position from the file text.
+	let text
+	try {
+		text = readFileSync(fileURLToPath(uri), 'utf8')
+	} catch {
+		text = undefined
+	}
 	for (const e of list) {
 		if (e.severity < ErrorSeverity.Warning) continue
 		const level = names[e.severity]
-		const doc = service.project.getClientManaged(uri)?.doc
-		const pos = doc ? doc.positionAt(e.range.start) : { line: 0, character: 0 }
-		const line = pos.line + 1
-		const col = pos.character + 1
+		let line = 1
+		let col = 1
+		if (e.posRange?.start) {
+			line = e.posRange.start.line + 1
+			col = e.posRange.start.character + 1
+		} else if (typeof e.range?.start === 'number' && text) {
+			const start = e.range.start
+			const before = text.slice(0, start)
+			line = before.split('\n').length
+			col = start - before.lastIndexOf('\n')
+		}
 		console.log(`::${level === 'error' ? 'error' : 'warning'} file=${file},line=${line},col=${col}::${e.message}`)
 		if (e.severity === ErrorSeverity.Error) errors++
 		else warnings++
@@ -76,6 +134,12 @@ if (setupFailures > 0) {
 	process.exit(1)
 }
 
-console.log(`Spyglass finished: ${errors} error(s), ${warnings} warning(s) in ${diagnostics.size} file(s)`)
+// An empty analysis means the checker validated nothing; never pass silently.
+if (!analysis || analysis.totalFiles === 0) {
+	console.error(`::error::Spyglass analyzed 0 files under ${root}; refusing to pass an empty check`)
+	process.exit(1)
+}
+
+console.log(`Spyglass finished: ${errors} error(s), ${warnings} warning(s) in ${analysis.analyzedFiles} file(s)`)
 await service.project.close?.()
 process.exit(errors > 0 ? 1 : 0)
