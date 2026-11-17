@@ -10,3 +10,6 @@ function vortex:api/input/validate/rule_define {name:"yesno",rule:{allow:["yes",
 function vortex:api/input/validate/rule_define {name:"bit",rule:{allow:[0,1]}}
 # anything except these names, any case
 function vortex:api/input/validate/rule_define {name:"no_admin",rule:{deny:["admin","owner"],ignore_case:1b}}
+
+# hook binds are persistent storage; register binds them once (guard inside)
+function vortex_example:hook/register
