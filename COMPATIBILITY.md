@@ -16,8 +16,7 @@ If a requirement is not written here, Vortex does not have it.
 
 The target is a snapshot, so the grammar below is exactly the one of
 26.4-snapshot-10; nothing older is accepted (`min_format` = `max_format` =
-128). Notable version-sensitive features, all verified against a real
-26.4-snapshot-10 dedicated server:
+128). Notable version-sensitive features:
 
 - function macros (`$` lines) — since 1.20.2;
 - SNBT-style text components and the `dialog` command family — 1.21.6+;
@@ -112,3 +111,14 @@ Vortex does not assume:
 1. Replace the pack files (or drop the new release zip into `datapacks/`).
 2. `/reload`. Migrations and config `ensure` run as described above.
 3. Optional cleanup for the renamed objectives (RENAMES.md).
+
+## Validation policy
+
+Server tests are prohibited (see `AGENTS.md`): nobody may start a
+Minecraft client, server, or player bot to validate this pack — not
+locally, not in a sandbox, not in CI. Validation is static only:
+Spyglass (`scripts/spyglass-check.mjs`), the namespace check
+(`scripts/check-namespace.mjs`) and JSON parsing must all pass, and the
+diff must be reviewed against the target version's documented changes.
+(The 0.5.0 port to 26.4-snapshot-10 predates this rule; it is the last
+change that was validated on a live server.)

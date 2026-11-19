@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Added
+- Project rule (`AGENTS.md`, restated in `COMPATIBILITY.md`): server-based testing is prohibited — no Minecraft client, server, or player bot may be started to validate this pack, in any environment. Validation is static only (Spyglass, namespace check, JSON parse, diff review against documented version changes).
+
 ## 0.5.0
 
 Minecraft target moved from 1.21.7–1.21.8 to **26.4-snapshot-10** (the new
