@@ -4,5 +4,5 @@
     "min": 0.1,
     "max": 0.9
   },
-  "function": "minecraft:set_damage"
+  "type": "minecraft:set_damage"
 }

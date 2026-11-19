@@ -1,8 +1,8 @@
 # vortex:world/time/phase
-# Rewritten from a 26.x ("World Clocks") build: `time query minecraft:day` does
-# not exist on 1.21.8. The ranges below (0..23999) need ticks-into-day, i.e.
-# the older `daytime` argument.
-execute store result score $tp_t vortex.tmp run time query daytime
+# 26.x ("World Clocks") grammar: `time query day` returns ticks-into-day
+# (0..23999), which is what the ranges below need. The old `time query
+# daytime` argument no longer exists.
+execute store result score $tp_t vortex.tmp run time query day
 execute store result storage vortex:output daytime int 1 run scoreboard players get $tp_t vortex.tmp
 data modify storage vortex:output is_day set value 0b
 data modify storage vortex:output is_night set value 0b

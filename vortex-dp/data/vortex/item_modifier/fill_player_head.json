@@ -1,4 +1,4 @@
 {
-  "function": "minecraft:fill_player_head",
-  "entity": "this"
+  "entity": "this",
+  "type": "minecraft:fill_player_head"
 }

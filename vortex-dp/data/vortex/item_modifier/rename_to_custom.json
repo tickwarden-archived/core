@@ -5,5 +5,5 @@
     "italic": false,
     "color": "gold"
   },
-  "function": "minecraft:set_name"
+  "type": "minecraft:set_name"
 }

@@ -3,18 +3,16 @@
     "interact_cake": {
       "trigger": "minecraft:default_block_use",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": [
-                  "minecraft:cake"
-                ]
-              }
+        "location": {
+          "predicate": {
+            "block": {
+              "blocks": [
+                "minecraft:cake"
+              ]
             }
-          }
-        ]
+          },
+          "type": "minecraft:location_check"
+        }
       }
     }
   },

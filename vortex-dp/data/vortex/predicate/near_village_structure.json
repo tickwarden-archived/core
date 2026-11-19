@@ -2,5 +2,5 @@
   "predicate": {
     "structures": "#minecraft:village"
   },
-  "condition": "minecraft:location_check"
+  "type": "minecraft:location_check"
 }

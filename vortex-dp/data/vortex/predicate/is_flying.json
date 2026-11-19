@@ -5,5 +5,5 @@
       "is_flying": true
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

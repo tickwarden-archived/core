@@ -5,5 +5,5 @@
       "minecraft:wind_charged": {}
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

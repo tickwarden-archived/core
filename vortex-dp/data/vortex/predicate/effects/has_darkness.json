@@ -5,5 +5,5 @@
       "minecraft:darkness": {}
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

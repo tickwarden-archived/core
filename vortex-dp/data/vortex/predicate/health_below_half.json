@@ -5,5 +5,5 @@
       "max": 10
     }
   },
-  "condition": "minecraft:entity_scores"
+  "type": "minecraft:entity_scores"
 }

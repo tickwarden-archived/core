@@ -3,16 +3,14 @@
     "open": {
       "trigger": "minecraft:default_block_use",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": "#minecraft:anvil"
-              }
+        "location": {
+          "predicate": {
+            "block": {
+              "blocks": "#minecraft:anvil"
             }
-          }
-        ]
+          },
+          "type": "minecraft:location_check"
+        }
       }
     }
   },

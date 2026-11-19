@@ -5,5 +5,5 @@
       "minecraft:health_boost": {}
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

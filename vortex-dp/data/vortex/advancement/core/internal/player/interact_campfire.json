@@ -3,19 +3,17 @@
     "interact_campfire": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": [
-                  "minecraft:campfire",
-                  "minecraft:soul_campfire"
-                ]
-              }
+        "location": {
+          "predicate": {
+            "block": {
+              "blocks": [
+                "minecraft:campfire",
+                "minecraft:soul_campfire"
+              ]
             }
-          }
-        ]
+          },
+          "type": "minecraft:location_check"
+        }
       }
     }
   },

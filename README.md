@@ -1,7 +1,7 @@
-# Vortex (0.4.0)
+# Vortex (0.5.0)
 
 Library pack: it provides functions for other datapacks and does nothing useful on its own.
-Targets Minecraft 1.21.7-1.21.8 (pack_format 81). Renamed and reorganized from
+Targets Minecraft 26.4-snapshot-10 (data pack format 128.0). Renamed and reorganized from
 macroEngine-Datapack-v26.3; old-to-new names for this layout are listed in `RENAMES.md`.
 
 The datapack itself lives in **`vortex-dp/`** (that folder's `pack.mcmeta` + `data/`

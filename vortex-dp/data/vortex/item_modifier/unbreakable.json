@@ -2,5 +2,5 @@
   "components": {
     "minecraft:unbreakable": {}
   },
-  "function": "minecraft:set_components"
+  "type": "minecraft:set_components"
 }

@@ -1,4 +1,4 @@
 {
   "count": 16,
-  "function": "minecraft:set_count"
+  "type": "minecraft:set_count"
 }

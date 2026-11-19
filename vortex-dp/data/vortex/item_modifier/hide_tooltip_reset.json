@@ -2,5 +2,5 @@
   "components": {
     "!minecraft:tooltip_display": {}
   },
-  "function": "minecraft:set_components"
+  "type": "minecraft:set_components"
 }

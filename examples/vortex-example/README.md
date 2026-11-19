@@ -3,7 +3,7 @@
 
 A small datapack that uses vortex. It is a demo, not part of the vortex release zip (the release packs the contents of `vortex-dp/` in the repo (its `pack.mcmeta` and `data/`) into the zip root).
 
-Needs **vortex 0.4.0** (the callback runner, module callbacks, the `#vortex:events/on_load` hook and the macro toggles all ship in it; see `API.md` and `COMPATIBILITY.md` in the repo root). Minecraft 1.21.7-1.21.8 (pack_format 81).
+Needs **vortex 0.5.0** (the callback runner, module callbacks, the `#vortex:events/on_load` hook and the macro toggles all ship in it; see `API.md` and `COMPATIBILITY.md` in the repo root). Minecraft 26.4-snapshot-10 (data pack format 128.0).
 
 ## Install
 Put the `vortex-example` folder (or a zip of it with `pack.mcmeta` and `data/` at its root) into the world's `datapacks/` folder next to vortex (the `vortex-dp` folder or its release zip), then `/reload`.

@@ -9,26 +9,42 @@ If a requirement is not written here, Vortex does not have it.
 
 | Item | Value |
 |---|---|
-| Minecraft Java Edition | **1.21.7 – 1.21.8** |
-| `pack_format` | **81** (`vortex-dp/pack.mcmeta`) |
-| Pack version | 0.4.0 (`vortex-dp/data/vortex/function/core/version/define.mcfunction` is the single source) |
+| Minecraft Java Edition | **26.4-snapshot-10** |
+| Data pack format | **128.0** (`min_format`/`max_format` in `vortex-dp/pack.mcmeta`; the single `pack_format` field was removed in 1.21.9) |
+| Pack version | 0.5.0 (`vortex-dp/data/vortex/function/core/version/define.mcfunction` is the single source) |
 | Persistent-state schema | 1 (`vortex:engine global.state_version`, see "State and migrations") |
 
-Both target versions share pack_format 81 and the same command grammar for
-everything Vortex uses, so one build serves both. Syntax that only exists in
-one of them is not used. Notable version-sensitive features, all available
-in both targets:
+The target is a snapshot, so the grammar below is exactly the one of
+26.4-snapshot-10; nothing older is accepted (`min_format` = `max_format` =
+128). Notable version-sensitive features, all verified against a real
+26.4-snapshot-10 dedicated server:
 
 - function macros (`$` lines) — since 1.20.2;
-- SNBT-style text components and the `dialog` command family — 1.21.6+,
-  unchanged between 1.21.7 and 1.21.8 for the shapes used here;
-- data-component NBT paths on items/blocks (e.g. `components."..."`).
+- SNBT-style text components and the `dialog` command family — 1.21.6+;
+- data-component NBT paths on items/blocks (e.g. `components."..."`);
+- game rules are registry entries with snake_case IDs since 1.21.11
+  (`advance_time`, not `doDaylightCycle`) — `api/cmd/gamerule` passes rule
+  names through, so callers must use the new names;
+- the 26.x world-clock `time` grammar: `time query day` (ticks into the
+  day) and `time query day repetition` (day count) replace the removed
+  `time query daytime` / old `time query day` meanings, and
+  `time rate <rate>` sets the clock speed (`api/cmd/set_clock_rate`);
+- entity predicates use component keys since 26.2: `minecraft:entity_type`
+  and `minecraft:type_specific/<type>` replace `type` / `type_specific`;
+  unrecognised entity-predicate keys are now rejected, not ignored;
+- loot conditions and loot functions dispatch on `"type"` (the old
+  `"condition"` / `"function"` dispatch keys are gone), `value_check` was
+  split into `int_value_check` / `float_value_check`, and advancement
+  criteria take single condition objects instead of condition lists;
+- `/item` and `execute if/unless items` take slot sources since 26.3 —
+  plain slot names (`weapon.mainhand`, `container.0`, `contents`, …) remain
+  valid slot sources and are what Vortex uses.
 
-Outside 1.21.7–1.21.8 the pack is **not supported**: earlier versions lack
-the dialog grammar, later versions are untested. When the target moves, the
-move must update `pack.mcmeta`, this table, the Spyglass versions pinned in
-`.github/workflows/validate.yml`, and be re-validated end to end — a
-`pack_format` bump alone is not a port.
+Outside 26.4-snapshot-10 the pack is **not supported**: earlier versions
+cannot read format 128 (and lack the grammars above), later versions are
+untested. When the target moves, the move must update `pack.mcmeta`, this
+table, the Spyglass versions pinned in `.github/workflows/validate.yml`,
+and be re-validated end to end — a format bump alone is not a port.
 
 ## Requirements
 

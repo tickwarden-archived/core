@@ -2,8 +2,8 @@
   "entity": "this",
   "predicate": {
     "vehicle": {
-      "type": "minecraft:donkey"
+      "minecraft:entity_type": "minecraft:donkey"
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

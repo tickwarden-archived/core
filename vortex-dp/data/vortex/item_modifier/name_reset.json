@@ -3,5 +3,5 @@
     "!minecraft:item_name": {},
     "!minecraft:custom_name": {}
   },
-  "function": "minecraft:set_components"
+  "type": "minecraft:set_components"
 }
