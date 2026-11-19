@@ -3,6 +3,27 @@
 ## Unreleased
 
 ### Added
+- Project rule (`AGENTS.md`, restated in `COMPATIBILITY.md`): server-based testing is prohibited — no Minecraft client, server, or player bot may be started to validate this pack, in any environment. Validation is static only (Spyglass, namespace check, JSON parse, diff review against documented version changes).
+
+## 0.5.0
+
+Minecraft target moved from 1.21.7–1.21.8 to **26.4-snapshot-10** (the new
+year-based version scheme; data pack format 128.0). The port was validated
+end to end on a real 26.4-snapshot-10 dedicated server: the pack loads with
+no function, predicate or advancement errors. Worlds on older versions can
+no longer load the pack.
+
+### Changed
+- `vortex-dp/pack.mcmeta`: the removed `pack_format` field (gone since 1.21.9) is replaced by `min_format`/`max_format` = 128. The example pack's `pack.mcmeta` moved the same way.
+- Game rules (renamed to snake_case registry IDs in 1.21.11): `api/cmd/time_of` pause/resume now uses `gamerule advance_time` instead of the removed `doDaylightCycle`. Callers of `api/cmd/gamerule` must pass the new rule names (e.g. `keep_inventory`, not `keepInventory`); see RENAMES.md.
+- `world/time/get` and `world/time/phase`: `time query daytime` no longer exists in the 26.x world-clock grammar — daytime is now `time query day` and the day count is `time query day repetition`.
+- Entity predicates (26.2 component-key format): `"type"` became `"minecraft:entity_type"` and `"type_specific"` became `"minecraft:type_specific/<type>"` in `is_creative`, `is_survival`, `is_full_health`, `is_freezing`, the `riding_*` predicates and the `interact_click_entity` advancement. Predicate IDs and caller-visible behaviour are unchanged; unrecognised entity-predicate keys are now rejected by the game, so the old keys had to go.
+- Loot conditions, loot functions and item modifiers: the dispatch key `"condition"` became `"type"` in every predicate/loot/advancement JSON, and the loot-function dispatch key `"function"` became `"type"` (advancement reward `"function"` entries are function IDs, not dispatch keys, and did not change). The removed `minecraft:value_check` condition was split by Mojang into `int_value_check`/`float_value_check`; `equals_uuid` now uses `minecraft:int_value_check` with `test` instead of `range`.
+- Advancement criteria: `entity`/`location` condition lists became single condition objects (26.x trigger codecs no longer accept a list).
+- `api/cmd/time_of`: the `rate` action still refuses, but now points at `api/cmd/set_clock_rate` (`time rate <rate>`, which exists in 26.x) instead of claiming rate control is impossible.
+- `scripts/spyglass-check.mjs`: the pinned Spyglass now resolves the pack as 26.4-snapshot-4, whose schemas know the previously suppressed `plain`/`clock`/NBT keys and the quoted-component NBT paths - those suppression rules were removed. Two new capped rules cover snapshot-4 grammar lag (numeric `return <int>` form, loot-entry `functions` key); both shapes are verified valid on a real 26.4-snapshot-10 server, which is the authoritative check for this port.
+
+### Added
 - `examples/vortex-example`: `demo/hook_callback` - processing bound through `vortex:systems/hook` still running when `macro_function` is off, via the `vortex:macro_function_blocked` callback and a whitelist dispatch on `vortex:engine _dispatch.func` (one-shot bind registration in `hook/register`).
 
 ### Changed

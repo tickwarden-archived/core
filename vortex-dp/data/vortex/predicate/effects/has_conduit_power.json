@@ -5,5 +5,5 @@
       "minecraft:conduit_power": {}
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

@@ -2,5 +2,5 @@
   "predicate": {
     "biomes": "minecraft:end_highlands"
   },
-  "condition": "minecraft:location_check"
+  "type": "minecraft:location_check"
 }

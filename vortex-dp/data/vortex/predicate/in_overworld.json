@@ -2,5 +2,5 @@
   "predicate": {
     "dimension": "minecraft:overworld"
   },
-  "condition": "minecraft:location_check"
+  "type": "minecraft:location_check"
 }

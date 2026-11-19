@@ -5,5 +5,5 @@
     "max": 23999
   },
   "period": 24000,
-  "condition": "minecraft:time_check"
+  "type": "minecraft:time_check"
 }

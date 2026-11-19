@@ -1,8 +1,8 @@
 # vortex:world/time/get
-# Rewritten from a 26.x ("World Clocks") build: `time query minecraft:day` and
-# `time query minecraft:day repetition` do not exist on 1.21.8. They map to the
-# older `daytime` and `day` arguments respectively (confirmed against the
-# 0..23999 range checks in world/time/phase, which need daytime, not day count).
-execute store result storage vortex:output daytime int 1 run time query daytime
+# 26.x ("World Clocks") grammar: `time query day` returns the ticks elapsed
+# in the current repetition of the minecraft:day timeline (= daytime,
+# 0..23999), and `time query day repetition` returns the day count. The old
+# `time query daytime` argument no longer exists.
+execute store result storage vortex:output daytime int 1 run time query day
 execute store result storage vortex:output total int 1 run time query gametime
-execute store result storage vortex:output day int 1 run time query day
+execute store result storage vortex:output day int 1 run time query day repetition

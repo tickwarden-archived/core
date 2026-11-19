@@ -343,3 +343,23 @@ Top-level `player/`, `input/` and `tui/` moved under `api/`. The `core/` modules
 | `tui/divider` | `api/tui/divider` |
 | `tui/header` | `api/tui/header` |
 | `tui/line` | `api/tui/line` |
+
+## Minecraft 26.4 port (0.5.0)
+
+The Minecraft target moved 1.21.7–1.21.8 → 26.4-snapshot-10. No Vortex
+function ID, storage path or tag changed; the renames below are Mojang-side
+grammar that Vortex files (and callers passing names through Vortex) must
+follow.
+
+| Old (≤1.21.8) | New (26.4-snapshot-10) | Where it matters |
+|---|---|---|
+| `"pack_format": 81` | `"min_format": 128, "max_format": 128` | `vortex-dp/pack.mcmeta`, example pack (single `pack_format` field removed in 1.21.9) |
+| `gamerule doDaylightCycle` | `gamerule advance_time` | `api/cmd/time_of`; all game rules became snake_case registry IDs in 1.21.11 (e.g. `keepInventory` → `keep_inventory`, `doFireTick` removed) — matters for anything passed to `api/cmd/gamerule` |
+| `time query daytime` | `time query day` | `world/time/get`, `world/time/phase` (ticks into the current day) |
+| `time query day` (day count) | `time query day repetition` | `world/time/get` |
+| entity predicate `"type": ...` | `"minecraft:entity_type": ...` | 26.2 entity-predicate component keys; old key is now rejected |
+| entity predicate `"type_specific": {"type": "minecraft:player", ...}` | `"minecraft:type_specific/player": {...}` | `is_creative`, `is_survival` predicates |
+| loot condition `"condition": "minecraft:..."` | `"type": "minecraft:..."` | every predicate/loot/advancement JSON (dispatch key rename) |
+| loot function `"function": "minecraft:..."` | `"type": "minecraft:..."` | loot tables and item modifiers (advancement reward `"function"` is an ID and did not change) |
+| condition `"minecraft:value_check"` with `"range"` | `"minecraft:int_value_check"` with `"test"` | `equals_uuid` predicate (`value_check` was split into int/float variants) |
+| advancement criteria `"entity": [ <condition> ]` / `"location": [ <condition> ]` | `"entity": <condition>` / `"location": <condition>` | 26.x trigger codecs take a single condition object, not a list |

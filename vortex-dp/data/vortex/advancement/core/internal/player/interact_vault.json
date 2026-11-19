@@ -3,18 +3,16 @@
     "interact_vault": {
       "trigger": "minecraft:item_used_on_block",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": [
-                  "minecraft:vault"
-                ]
-              }
+        "location": {
+          "predicate": {
+            "block": {
+              "blocks": [
+                "minecraft:vault"
+              ]
             }
-          }
-        ]
+          },
+          "type": "minecraft:location_check"
+        }
       }
     }
   },

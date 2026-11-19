@@ -103,26 +103,19 @@ const analysis = await service.project.analyzeProject()
 // entries (do not raise `max`) once the pinned Spyglass versions catch up.
 const SUPPRESSED = [
 	{
-		id: 'quoted-component-nbt-path',
-		file: 'data/vortex/function/api/input/private/sign_capture_from_components.mcfunction',
-		message: 'Expected nothing',
+		id: 'return-int-form',
+		message: 'Expected “fail” or “run”',
 		severity: 'error',
-		max: 8,
-		reason: 'Spyglass parser cannot continue an NBT path after a quoted component key (components."minecraft:sign_text_front"...); the syntax is valid vanilla.',
+		max: 133,
+		reason: 'Spyglass\'s bundled 26.4-snapshot-4 command data has no numeric `return <int>` form; the syntax is valid vanilla and the whole pack parses with 0 errors on a real 26.4-snapshot-10 server. Remove once Spyglass\'s 26.4 data catches up.',
 	},
 	{
-		id: 'unknown-key-plain',
-		message: 'Unknown key “plain”',
+		id: 'unknown-key-loot-entry-functions',
+		file: 'data/vortex/loot_table/player/head.json',
+		message: 'Unknown key “functions”',
 		severity: 'warning',
-		max: 35,
-		reason: 'Text components with "plain" are emitted by the list/menu helpers; the 1.21.8 mcdoc schema does not know the key yet.',
-	},
-	{
-		id: 'unknown-key-clock',
-		message: 'Unknown key “clock”',
-		severity: 'warning',
-		max: 2,
-		reason: 'minecraft:time_check "clock" field (is_daytime/is_night predicates); the 1.21.8 mcdoc schema does not know the key yet.',
+		max: 1,
+		reason: 'Loot-entry "functions" list; Spyglass\'s 26.4-snapshot-4 loot-table schema does not know the key yet. Valid on a real 26.4-snapshot-10 server.',
 	},
 	{
 		id: 'unknown-key-comment',
@@ -130,13 +123,6 @@ const SUPPRESSED = [
 		severity: 'warning',
 		max: 2,
 		reason: 'Documentation-only "_comment" keys in item_modifier JSON files; ignored by the game.',
-	},
-	{
-		id: 'unknown-key-nbt-schema',
-		message: /^Unknown key “(text|Invisible|entity_type)”$/,
-		severity: 'warning',
-		max: 3,
-		reason: 'Entity/advancement NBT keys used by the input-capture helpers and hook advancements; the 1.21.8 mcdoc schema does not know them yet.',
 	},
 ]
 const suppressedCount = new Map(SUPPRESSED.map((r) => [r.id, 0]))

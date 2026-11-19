@@ -3,18 +3,16 @@
     "interact_jukebox": {
       "trigger": "minecraft:default_block_use",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": [
-                  "minecraft:jukebox"
-                ]
-              }
+        "location": {
+          "predicate": {
+            "block": {
+              "blocks": [
+                "minecraft:jukebox"
+              ]
             }
-          }
-        ]
+          },
+          "type": "minecraft:location_check"
+        }
       }
     }
   },

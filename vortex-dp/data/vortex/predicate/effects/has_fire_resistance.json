@@ -5,5 +5,5 @@
       "minecraft:fire_resistance": {}
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

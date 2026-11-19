@@ -3,18 +3,16 @@
     "interact_chest": {
       "trigger": "minecraft:default_block_use",
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": [
-                  "minecraft:chest"
-                ]
-              }
+        "location": {
+          "predicate": {
+            "block": {
+              "blocks": [
+                "minecraft:chest"
+              ]
             }
-          }
-        ]
+          },
+          "type": "minecraft:location_check"
+        }
       }
     }
   },

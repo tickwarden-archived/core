@@ -5,5 +5,5 @@
       "minecraft:instant_damage": {}
     }
   },
-  "condition": "minecraft:entity_properties"
+  "type": "minecraft:entity_properties"
 }

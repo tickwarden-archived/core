@@ -3,15 +3,13 @@
     "attack_click_entity": {
       "trigger": "minecraft:player_hurt_entity",
       "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "nbt": "{Tags:[\"vortex.player_action.click_entity\"]}"
-            }
-          }
-        ]
+        "entity": {
+          "entity": "this",
+          "predicate": {
+            "nbt": "{Tags:[\"vortex.player_action.click_entity\"]}"
+          },
+          "type": "minecraft:entity_properties"
+        }
       }
     }
   },

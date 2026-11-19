@@ -1,4 +1,4 @@
 {
   "levels": 5,
-  "function": "minecraft:enchant_with_levels"
+  "type": "minecraft:enchant_with_levels"
 }

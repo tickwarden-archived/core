@@ -8,5 +8,5 @@
     }
   ],
   "mode": "append",
-  "function": "minecraft:set_lore"
+  "type": "minecraft:set_lore"
 }
