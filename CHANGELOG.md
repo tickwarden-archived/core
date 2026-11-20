@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Added
-- Project rule (`AGENTS.md`, restated in `COMPATIBILITY.md`): server-based testing is prohibited — no Minecraft client, server, or player bot may be started to validate this pack, in any environment. Validation is static only (Spyglass, namespace check, JSON parse, diff review against documented version changes).
+- Project rule (`AGENTS.md`, restated in `COMPATIBILITY.md`): validation is static by default (Spyglass, namespace check, JSON parse, diff review against documented version changes). A local server/bot test run is allowed only as a locked-down exception — `server-ip=127.0.0.1`, `white-list=true` + `enforce-whitelist=true` with only the designated test bot whitelisted, port forwarding private/off. Publicly reachable test servers are prohibited (phishing/blocklist risk from fake players).
 
 ## 0.5.0
 
