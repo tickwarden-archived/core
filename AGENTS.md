@@ -46,3 +46,21 @@ a server reported or blocklisted — an ethical and legal problem, not
 just a technical one. A loopback-only, whitelist-locked server that
 nobody else can reach or even see carries none of that risk, which is
 the only reason it is allowed.
+
+## ⚠️ Warning for players: never join unknown "test" servers
+
+Connecting to **any** Minecraft server hands its operator your real
+**IP address and connection port, your username and your UUID** — the
+server sees and can log all of it the moment you connect
+(`logs/`, `usercache.json`, ban/whitelist files). A malicious operator
+can store, process and misuse that data: an IP:port pair can be abused
+like a VPN/proxy exit to make traffic look like it came from you, your
+IP can be targeted (DDoS, scanning), and IP + username together can be
+used to track or profile you across servers.
+
+So: do not join a server just because it calls itself a "test server",
+looks crowded, or was linked in a comment — crowded can be faked with
+bots (see above). Only ever connect to servers whose operator you
+actually trust. This project will never invite real players to a test
+server; validation here is static or loopback-only with an offline bot,
+so no player's IP or username is ever needed or collected.

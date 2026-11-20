@@ -4,6 +4,7 @@
 
 ### Added
 - Project rule (`AGENTS.md`, restated in `COMPATIBILITY.md`): validation is static by default (Spyglass, namespace check, JSON parse, diff review against documented version changes). A local server/bot test run is allowed only as a locked-down exception — `server-ip=127.0.0.1`, `white-list=true` + `enforce-whitelist=true` with only the designated test bot whitelisted, port forwarding private/off. Publicly reachable test servers are prohibited (phishing/blocklist risk from fake players).
+- Player warning (`AGENTS.md`, `COMPATIBILITY.md`): never join an unknown "test" server — connecting exposes your IP address/port, username and UUID to the operator, who can log, process and misuse them (an IP:port pair can be abused like a VPN/proxy exit; IP + username enables targeting/tracking).
 
 ## 0.5.0
 
