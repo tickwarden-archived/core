@@ -43,7 +43,18 @@ jobs:
             "@spyglassmc/java-edition@$SPYGLASS_JAVA_EDITION_VERSION" \
             "@spyglassmc/mcdoc@$SPYGLASS_MCDOC_VERSION"
 
-      - name: Run Spyglass
+      # Each pack is checked in its own run (own Project/projectRoots), not as
+      # one combined project: @spyglassmc/java-edition resolves the target
+      # Minecraft release per run from that run's own pack.mcmeta
+      # (resolveConfiguredVersion, "auto" by default), so this is what makes
+      # vortex-dp-1.21.8 (pack_format 81) get checked against 1.21.8 and
+      # vortex-dp (pack_format for the current line) get checked against
+      # 26.4-snapshot, automatically. Combining both roots into one run would
+      # make it pick a single release for everything.
+      - name: Run Spyglass (vortex-dp-1.21.8)
+        run: node "$RUNNER_TEMP/spyglass/spyglass-check.mjs" "$GITHUB_WORKSPACE/vortex-dp-1.21.8"
+
+      - name: Run Spyglass (vortex-dp)
         run: node "$RUNNER_TEMP/spyglass/spyglass-check.mjs" "$GITHUB_WORKSPACE/vortex-dp"
 
   namespace:
@@ -51,19 +62,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - name: Check vortex prefix discipline
+
+      - name: Check vortex prefix discipline (vortex-dp-1.21.8)
+        run: node scripts/check-namespace.mjs vortex-dp-1.21.8
+
+      - name: Check vortex prefix discipline (vortex-dp)
         run: node scripts/check-namespace.mjs vortex-dp
 
   package:
-    name: Package datapack
+    name: Package datapacks
     needs: [validate, namespace]
     runs-on: ubuntu-latest
-    outputs:
-      zip: ${{ steps.pack.outputs.zip }}
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build zip
+      - name: Build zips
         id: pack
         run: |
           set -euo pipefail
@@ -73,26 +86,41 @@ jobs:
           else
             version="dev-${GITHUB_SHA::7}"
           fi
-          zip_name="${name}-${version}.zip"
 
-          # The datapack lives in vortex-dp/; its contents (pack.mcmeta,
-          # data/) must sit at the zip root for Minecraft to load it.
-          mkdir stage
-          cp -r vortex-dp/. stage/
-          for optional in pack.png LICENSE README.md CHANGELOG.md API.md COMPATIBILITY.md; do
-            [ -e "$optional" ] && cp "$optional" stage/
+          mkdir -p out
+
+          # root:label pairs. The -1.21.8 suffixed folder is the pack
+          # compatible with vanilla Minecraft 1.21.8 (pack_format 81); the
+          # unsuffixed folder is the pack compatible with 26.4-snapshot. Both
+          # ship in every release.
+          for pair in "vortex-dp-1.21.8:1.21.8" "vortex-dp:26.4-snapshot"; do
+            root="${pair%%:*}"
+            label="${pair##*:}"
+            zip_name="${name}-${label}-${version}.zip"
+
+            # The datapack lives in $root/; its contents (pack.mcmeta,
+            # data/) must sit at the zip root for Minecraft to load it.
+            rm -rf stage
+            mkdir stage
+            cp -r "$root"/. stage/
+            # pack.png only: LICENSE/README.md/version.json/dependencies.json
+            # are excluded per the standing ZIP packaging rule unless the pack
+            # itself reads them at runtime, which none of these do.
+            for optional in pack.png CHANGELOG.md API.md COMPATIBILITY.md; do
+              [ -e "$optional" ] && cp "$optional" stage/
+            done
+            (cd stage && zip -r -X "../out/$zip_name" .)
+
+            # Sanity check: the zip must contain pack.mcmeta at its root.
+            unzip -l "out/$zip_name" | grep -qE ' pack\.mcmeta$'
           done
-          (cd stage && zip -r -X "../$zip_name" .)
 
-          # Sanity check: the zip must contain pack.mcmeta at its root.
-          unzip -l "$zip_name" | grep -qE ' pack\.mcmeta$'
-
-          echo "zip=$zip_name" >> "$GITHUB_OUTPUT"
+          rm -rf stage
 
       - uses: actions/upload-artifact@v7
         with:
-          name: ${{ steps.pack.outputs.zip }}
-          path: ${{ steps.pack.outputs.zip }}
+          name: vortex-packs
+          path: out/*.zip
           if-no-files-found: error
 
   release:
@@ -105,9 +133,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v8
         with:
-          name: ${{ needs.package.outputs.zip }}
+          name: vortex-packs
 
       - uses: softprops/action-gh-release@v3
         with:
-          files: ${{ needs.package.outputs.zip }}
+          files: "*.zip"
           generate_release_notes: true

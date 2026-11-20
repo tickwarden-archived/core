@@ -1,0 +1,9 @@
+{
+  "entity": "this",
+  "predicate": {
+    "effects": {
+      "minecraft:regeneration": {}
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}

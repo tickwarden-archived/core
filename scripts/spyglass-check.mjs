@@ -101,30 +101,55 @@ const analysis = await service.project.analyzeProject()
 // the run) instead of being hidden — so this list can never silently absorb
 // new findings. Every entry names the Spyglass limitation behind it. Remove
 // entries (do not raise `max`) once the pinned Spyglass versions catch up.
-const SUPPRESSED = [
-	{
-		id: 'return-int-form',
-		message: 'Expected “fail” or “run”',
-		severity: 'error',
-		max: 133,
-		reason: 'Spyglass\'s bundled 26.4-snapshot-4 command data has no numeric `return <int>` form; the syntax is valid vanilla and the whole pack parses with 0 errors on a real 26.4-snapshot-10 server. Remove once Spyglass\'s 26.4 data catches up.',
-	},
-	{
-		id: 'unknown-key-loot-entry-functions',
-		file: 'data/vortex/loot_table/player/head.json',
-		message: 'Unknown key “functions”',
-		severity: 'warning',
-		max: 1,
-		reason: 'Loot-entry "functions" list; Spyglass\'s 26.4-snapshot-4 loot-table schema does not know the key yet. Valid on a real 26.4-snapshot-10 server.',
-	},
-	{
-		id: 'unknown-key-comment',
-		message: 'Unknown key “_comment”',
-		severity: 'warning',
-		max: 2,
-		reason: 'Documentation-only "_comment" keys in item_modifier JSON files; ignored by the game.',
-	},
-]
+//
+// Spyglass's vanilla-mcdoc (JSON schema) is a single, unversioned fetch
+// (@spyglassmc/java-edition's getVanillaMcdoc takes no version argument) that
+// uses pack_format-conditional attributes internally, and the command tree /
+// mcmeta summary used for .mcfunction checking IS resolved per pack from its
+// own pack.mcmeta (auto-detected release, see resolveConfiguredVersion in
+// @spyglassmc/java-edition). So each pack root gets correctly version-aware
+// checking automatically — but that also means the false positives below are
+// specific to whichever Spyglass data version served THIS pack's resolved
+// release at the time they were recorded. They are keyed by pack root and
+// never shared across roots: an entry proven true for the 26.4-snapshot pack
+// says nothing about the 1.21.8 pack's resolved (older) release, and vice
+// versa. Don't copy an entry to a new root until it's actually been observed
+// there — copying unseen is exactly the kind of invented fix this project
+// avoids.
+const SUPPRESSION_PROFILES = {
+	'vortex-dp': [
+		{
+			id: 'return-int-form',
+			message: 'Expected “fail” or “run”',
+			severity: 'error',
+			max: 133,
+			reason: 'Spyglass\'s resolved 26.4-snapshot-4 command data has no numeric `return <int>` form; the syntax is valid vanilla and the whole pack parses with 0 errors on a real 26.4-snapshot-10 server. Remove once Spyglass\'s 26.4 data catches up.',
+		},
+		{
+			id: 'unknown-key-loot-entry-functions',
+			file: 'data/vortex/loot_table/player/head.json',
+			message: 'Unknown key “functions”',
+			severity: 'warning',
+			max: 1,
+			reason: 'Loot-entry "functions" list; Spyglass\'s 26.4-snapshot-4 loot-table schema does not know the key yet. Valid on a real 26.4-snapshot-10 server.',
+		},
+		{
+			id: 'unknown-key-comment',
+			message: 'Unknown key “_comment”',
+			severity: 'warning',
+			max: 2,
+			reason: 'Documentation-only "_comment" keys in item_modifier JSON files; ignored by the game.',
+		},
+	],
+	// No observed false positives yet for the 1.21.8 pack. Add entries here
+	// only once a real CI run (or a local run with network access) shows one
+	// — never speculatively.
+	'vortex-dp-1.21.8': [],
+}
+const SUPPRESSED = SUPPRESSION_PROFILES[root.split('/').pop()] ?? []
+if (SUPPRESSED.length === 0 && !(root.split('/').pop() in SUPPRESSION_PROFILES)) {
+	console.log(`note: no suppression profile for pack root "${root.split('/').pop()}"; add one to SUPPRESSION_PROFILES if Spyglass reports a known-good false positive here`)
+}
 const suppressedCount = new Map(SUPPRESSED.map((r) => [r.id, 0]))
 const matchSuppression = (file, level, message) => {
 	for (const rule of SUPPRESSED) {
