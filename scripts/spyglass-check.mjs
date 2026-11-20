@@ -141,10 +141,46 @@ const SUPPRESSION_PROFILES = {
 			reason: 'Documentation-only "_comment" keys in item_modifier JSON files; ignored by the game.',
 		},
 	],
-	// No observed false positives yet for the 1.21.8 pack. Add entries here
-	// only once a real CI run (or a local run with network access) shows one
-	// — never speculatively.
-	'vortex-dp-1.21.8': [],
+	// Observed on CI and reproduced locally against this root, then verified
+	// one by one on a real (loopback-only, whitelist-locked) 1.21.8 server:
+	// every entry below is a Spyglass schema/grammar lag, not a pack bug.
+	// Real 1.21.8 bugs found by the same sweep (never suppress those):
+	// `api/cmd/time_of` could never instantiate (mixed-grammar macro) and the
+	// dead 26.x keys `clock` (time_check predicates) / `Invisible`
+	// (chest_minecart summon) — all fixed in the pack instead.
+	'vortex-dp-1.21.8': [
+		{
+			id: 'sign-components-path-expected-nothing',
+			file: 'data/vortex/function/api/input/private/sign_capture_from_components.mcfunction',
+			message: 'Expected nothing',
+			severity: 'error',
+			max: 8,
+			reason: 'Spyglass\'s resolved 1.21.8 sign block-entity NBT model rejects the quoted `components."minecraft:sign_text_front"` path. On a real 1.21.8 server the function executes with no error; the path silently no-ops where a sign block entity has no `components` compound, which is exactly the intended fallback (front_text is tried first in sign_capture). Verified on a local 1.21.8 server.',
+		},
+		{
+			id: 'unknown-key-plain-1218',
+			message: 'Unknown key “plain”',
+			severity: 'warning',
+			max: 35,
+			reason: 'Text-component `plain` key (26.x) in tellraw/storage components shared with the 26.4 pack. 1.21.8 accepts and ignores it, and the storage/nbt component renders as plain text either way — verified with a text_display on a real 1.21.8 server. Remove once the pack drops the 26.x `plain` keys or Spyglass\'s 1.21.8 schemas learn them.',
+		},
+		{
+			id: 'unknown-key-entity-type-1218',
+			file: 'data/vortex/advancement/systems/hook/killed_by_arrow.json',
+			message: 'Unknown key “entity_type”',
+			severity: 'warning',
+			max: 1,
+			reason: 'Spyglass\'s resolved 1.21.8 entity-predicate schema only knows the old `type` key, but a real 1.21.8 server accepts `entity_type` and discriminates correctly (arrow matches, zombie does not). Kept identical to the 26.4 pack, where `entity_type` is the required key.',
+		},
+		{
+			id: 'unknown-key-text-lectern-fallback',
+			file: 'data/vortex/function/api/input/private/lectern_capture.mcfunction',
+			message: 'Unknown key “text”',
+			severity: 'warning',
+			max: 1,
+			reason: '`pages[0].text` fallback for 26.x-style book pages; 1.21.8 pages are read via `pages[0].raw` first (verified on a real 1.21.8 server: lectern capture returns the raw page text), and the fallback path silently no-ops when absent.',
+		},
+	],
 }
 const SUPPRESSED = SUPPRESSION_PROFILES[root.split('/').pop()] ?? []
 if (SUPPRESSED.length === 0 && !(root.split('/').pop() in SUPPRESSION_PROFILES)) {

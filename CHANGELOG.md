@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Fixed
+- `vortex-dp-1.21.8`: `api/cmd/time_of` could never instantiate — the single macro held `time set`/`time add`/`time query $(value)` lines, and the substituted value is parsed against every line's grammar, so all actions (even `pause`/`resume`) failed with "Failed to instantiate function". set/add/query now live in their own `core/internal/api/cmd/time_of/` macro helpers (same split as the 26.4 pack), with the argument quoted in SNBT. Verified end to end on a local 1.21.8 server (pause/resume flip `doDaylightCycle`, set/add/query return the right daytime).
+- `vortex-dp-1.21.8`: removed dead 26.x keys Spyglass flagged and a real 1.21.8 server silently ignores — `clock` in the `is_daytime`/`is_night` time_check predicates (predicates re-verified at day/night boundaries) and `Invisible` on the anvil scratch `chest_minecart` summon (1.21.8 does not store it on minecarts).
+
+### Changed
+- `scripts/spyglass-check.mjs`: the 1.21.8 suppression profile is no longer empty. It now caps only diagnostics that were observed in CI, reproduced locally, and proven false positives on a real 1.21.8 server: the quoted `components."minecraft:sign_text_front"` NBT path (executes without error; silent fallback), the 26.x text-component `plain` key (accepted; renders as plain text), `entity_type` in the `killed_by_arrow` entity predicate (accepted and discriminates correctly), and the lectern `pages[0].text` fallback (1.21.8 reads `pages[0].raw` first). Result for the 1.21.8 root: 0 errors / 0 warnings in 1753 files, 45 known false positives suppressed.
+
 ### Added
 - Project rule (`AGENTS.md`, restated in `COMPATIBILITY.md`): validation is static by default (Spyglass, namespace check, JSON parse, diff review against documented version changes). A local server/bot test run is allowed only as a locked-down exception — `server-ip=127.0.0.1`, `white-list=true` + `enforce-whitelist=true` with only the designated test bot whitelisted, port forwarding private/off. Publicly reachable test servers are prohibited (phishing/blocklist risk from fake players).
 - Player warning (`AGENTS.md`, `COMPATIBILITY.md`): never join an unknown "test" server — connecting exposes your IP address/port, username and UUID to the operator, who can log, process and misuse them (an IP:port pair can be abused like a VPN/proxy exit; IP + username enables targeting/tracking).
