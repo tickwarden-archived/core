@@ -37,7 +37,7 @@
 data modify storage vortex:input anvil.player set from entity @s UUID
 
 # --- Copy cursor item into a throwaway container entity, right on top of the player ---
-summon minecraft:chest_minecart ~ ~ ~ {Invisible:1b,Tags:["vortex.anvil_scratch"]}
+summon minecraft:chest_minecart ~ ~ ~ {Tags:["vortex.anvil_scratch"]}
 item replace entity @e[tag=vortex.anvil_scratch,limit=1,sort=nearest] container.0 from entity @s player.cursor
 
 # --- old name (pre-rename item_name) ---
