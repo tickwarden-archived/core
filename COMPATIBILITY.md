@@ -114,11 +114,16 @@ Vortex does not assume:
 
 ## Validation policy
 
-Server tests are prohibited (see `AGENTS.md`): nobody may start a
-Minecraft client, server, or player bot to validate this pack — not
-locally, not in a sandbox, not in CI. Validation is static only:
-Spyglass (`scripts/spyglass-check.mjs`), the namespace check
+Validation is static by default (see `AGENTS.md`): Spyglass
+(`scripts/spyglass-check.mjs`), the namespace check
 (`scripts/check-namespace.mjs`) and JSON parsing must all pass, and the
 diff must be reviewed against the target version's documented changes.
-(The 0.5.0 port to 26.4-snapshot-10 predates this rule; it is the last
-change that was validated on a live server.)
+
+A local server/bot test run is allowed only as an exception, under the
+mandatory lockdown in `AGENTS.md`: `server-ip=127.0.0.1`,
+`white-list=true` + `enforce-whitelist=true` with only the designated
+test bot whitelisted, and port forwarding kept private/off (no tunnels,
+listings or invites). A publicly reachable test server is prohibited —
+fake players on a reachable server can mislead real players and create
+phishing/blocklist risk. The 0.5.0 port to 26.4-snapshot-10 was
+validated on a local 26.4-snapshot-10 server under this policy.
