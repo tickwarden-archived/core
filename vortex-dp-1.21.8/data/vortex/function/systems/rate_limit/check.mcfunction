@@ -1,0 +1,43 @@
+# vortex:systems/rate_limit/check — Sliding window check + consume [MACRO]
+#
+# The core API call. Checks whether the key is under its configured limit
+# for the current sliding window, then records this hit.
+#
+# Output → vortex:output result
+# 1b = ALLOWED (hit was recorded, call may proceed)
+# 0b = DENIED (limit reached, hit NOT recorded)
+# The result is also 0b (never a leftover value from an earlier call) when the pack is closed,
+# the player has not consented or the rate_limit module is off.
+#
+# Usage:
+# function vortex:systems/rate_limit/check {key:"global:my_event"}
+# execute if data storage vortex:output {result:1b} run function my_ns:do_thing
+#
+# For per-player (build key in caller):
+#   $function vortex:systems/rate_limit/check {key:"player:shop:$(player)"}
+#
+# Rule must be pre-registered via vortex:systems/rate_limit/config.
+# If no rule exists for the key → ALLOWED (fail-open; log warning).
+
+data modify storage vortex:output result set value 0b
+execute if data storage vortex:engine modules{rate_limit:0b} run return 0
+data modify storage vortex:output result set value 1b
+
+# Guard: rule must exist — try auto-create from player template first
+# Key format "player:<tpl>:<name>" → tpl is the second segment
+# We attempt player_check unconditionally; it exits early if not a player key or no template
+$data modify storage vortex:rate_limit ensure_key set value "$(key)"
+function vortex:core/internal/systems/rate_limit/player_check with storage vortex:rate_limit
+
+$execute unless data storage vortex:engine rate_limit.rules.$(key) run function vortex:core/internal/systems/rate_limit/no_rule
+$execute unless data storage vortex:engine rate_limit.rules.$(key) run schedule function vortex:core/internal/systems/rate_limit/clear_work 3t replace
+$execute unless data storage vortex:engine rate_limit.rules.$(key) run return 0
+
+# Copy rule into work storage with key context
+$data modify storage vortex:rate_limit rule set from storage vortex:engine rate_limit.rules.$(key)
+$data modify storage vortex:rate_limit rule.key set value "$(key)"
+
+# Run the sliding window evaluation
+function vortex:core/internal/systems/rate_limit/evaluate with storage vortex:rate_limit rule
+
+schedule function vortex:core/internal/systems/rate_limit/clear_work 3t replace

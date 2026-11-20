@@ -1,0 +1,9 @@
+{
+  "entity": "this",
+  "predicate": {
+    "vehicle": {
+      "type": "minecraft:llama"
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}

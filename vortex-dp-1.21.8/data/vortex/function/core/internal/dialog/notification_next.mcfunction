@@ -1,0 +1,5 @@
+# vortex:core/internal/dialog/notification_next [MACRO]
+$execute unless data storage vortex:dialog_db players.p$(id).frame{notification:1b} run return 0
+$data remove storage vortex:dialog_db players.p$(id).notifications[0]
+$execute if data storage vortex:dialog_db players.p$(id).notifications[0] run return run function vortex:core/internal/dialog/notifications_show with storage vortex:dialog_ctx
+function vortex:core/internal/dialog/notification_finish with storage vortex:dialog_ctx
