@@ -127,3 +127,10 @@ listings or invites). A publicly reachable test server is prohibited —
 fake players on a reachable server can mislead real players and create
 phishing/blocklist risk. The 0.5.0 port to 26.4-snapshot-10 was
 validated on a local 26.4-snapshot-10 server under this policy.
+
+> ⚠️ **Warning for players:** never join an unknown "test" server.
+> Connecting hands the operator your IP address and port, username and
+> UUID, which the server can log and process — a malicious operator
+> can abuse an IP:port pair like a VPN/proxy exit or use IP + username
+> to target or track you. This project never invites real players to
+> test servers; see `AGENTS.md`.
