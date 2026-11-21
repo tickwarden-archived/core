@@ -79,11 +79,11 @@ on:
       include_git:
         description: "Also include bare repositories and wikis (full git history)"
         type: boolean
-        default: false
+        default: true
       include_source:
         description: "Also include plain (non-bare) source checkouts (implies include_git)"
         type: boolean
-        default: false
+        default: true
   # schedule:
   #   - cron: "0 4 * * 1" # Weekly, Monday 04:00 UTC
 
