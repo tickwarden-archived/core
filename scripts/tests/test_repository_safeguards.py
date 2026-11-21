@@ -482,12 +482,33 @@ class BackupSafety(unittest.TestCase):
         self.assertNotIn("--break-system-packages", self.script)
 
     def test_unencrypted_archive_cannot_be_uploaded(self):
+        """Plaintext may only leave the machine through an explicit opt-in.
+
+        2026-11-21: the workflow gained an `encrypt: none` choice on purpose
+        (script v4.0). The old assertion (no `none` option at all) is replaced
+        by the guards that make the choice deliberate: gpg is the default, the
+        plaintext flag is only set when `none` was picked in the dispatch form,
+        a private-repository check runs, and the bare `*.tar.gz` glob exists
+        only in the step gated on `ENCRYPT == 'none'`.
+        """
         self.assertIn("UPLOAD_ARCHIVE", self.script)
         self.assertIn("ENCRYPT=none refused", self.script)
         self.assertIn('UPLOAD_ARCHIVE: "1"', self.workflow)
-        self.assertNotIn("options: [gpg, 7z, none]", self.workflow)
-        upload = self.workflow.split("Upload archive", 1)[1]
-        self.assertNotIn("*.tar.gz\n", upload)
+        # Opt-in only: never unconditional, never derived from anything but the form.
+        self.assertNotRegex(self.workflow, r'ALLOW_PLAINTEXT_UPLOAD:\s*"?1"?\s*(\n|$)')
+        self.assertIn("inputs.encrypt == 'none'", self.workflow)
+        self.assertIn("ENCRYPT: ${{ inputs.encrypt || 'gpg' }}", self.workflow)
+        # Private-repository safeguard and the defensive re-check must stay.
+        self.assertIn("github.event.repository.private", self.workflow)
+        self.assertIn("Refusing to publish plaintext", self.workflow)
+        # The encrypted upload step must not be able to pick up plaintext.
+        encrypted = self.workflow.split("- name: Upload archive\n", 1)[1]
+        encrypted = encrypted.split("- name: Upload archive (UNENCRYPTED)", 1)[0]
+        self.assertIn("env.ENCRYPT != 'none'", encrypted)
+        self.assertNotIn("*.tar.gz\n", encrypted)
+        # The plaintext glob appears only in the gated step.
+        plain = self.workflow.split("- name: Upload archive (UNENCRYPTED)", 1)[1]
+        self.assertIn("if: env.ENCRYPT == 'none'", plain)
 
     def test_encryption_defaults_to_gpg(self):
         self.assertRegex(self.script, r'ENCRYPT="\$\{ENCRYPT:-gpg\}"')
