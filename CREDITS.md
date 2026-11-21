@@ -3,6 +3,14 @@
 This file records which parts of the repository were written or changed with AI assistance, so that
 AI involvement is visible in the repository itself and not only through commit authorship.
 
+## 2026-11-21 - test(backup): align test_unencrypted_archive_cannot_be_uploaded with the encrypt=none workflow
+
+**Tool:** Claude (Anthropic), at the maintainer's request. **Anti-Review:** no independent human review had been recorded when this entry was prepared.
+
+- `scripts/tests/test_repository_safeguards.py`: `BackupSafety.test_unencrypted_archive_cannot_be_uploaded` asserted that the workflow has no `encrypt: none` option, which contradicted the deliberate workflow change of 2026-11-21 (CI failed on that one test). It now asserts the guards instead: gpg default, `ALLOW_PLAINTEXT_UPLOAD` only when `none` is picked in the dispatch form, the private-repository check, the defensive refusal, and that the plaintext `*.tar.gz` glob exists only in the step gated on `ENCRYPT == 'none'`.
+- **Policy note:** this keeps the test honest about the new design; it does not re-certify that uploading a plaintext archive is safe. Under the 2026-11-05 audit rule no plaintext upload was possible at all.
+- **Not performed:** `./gradlew` and the CI workflow were not run; only `test_repository_safeguards.py` was run locally. No Minecraft server was started.
+
 ## 2026-11-09 - feat(mods): chat-guard, death-point, tpa, lag-report, home-manager
 
 **Tool:** Claude (Anthropic), at the maintainer's request. **Anti-Review:** no independent human review had been recorded when this entry was prepared.
