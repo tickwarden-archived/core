@@ -1,19 +1,34 @@
 #!/usr/bin/env bash
 # backup-org.sh
-# GitHub organization backup: git (bare) + wiki + issues/PRs/releases/labels
-# + Actions/Dependabot/security metadata + team membership/repo access
-# + repo topics/languages + optional plain source clones
-# + org metadata -> archive (.tar.gz by default, optional 7z/gpg encryption).
+# GitHub organization and/or personal-account backup: issues/PRs/releases/labels
+# + Actions/Dependabot/security metadata + (org only) team membership and repo
+# access + repo topics/languages + org/account metadata
+# -> archive (.tar.gz, or 7z/gpg encrypted).
+# Optional, OFF by default: git data (bare repos + wikis, i.e. the full history)
+# and plain source checkouts.
+#
+# AI disclosure: the v4.0 changes (account target, git/source off by default,
+# plaintext-upload opt-in) were written with AI assistance (Claude, Anthropic),
+# 2026-11-21. Earlier revisions carry their own FIX comments.
 #
 # Usage:
-#   bash scripts/backup-org.sh              # full backup
-#   bash scripts/backup-org.sh --dry-run    # show what would run; writes nothing at all
-#   bash scripts/backup-org.sh --verify-only ARCHIVE
-#                                           # verify an existing archive only
+#   bash scripts/ops/backup-org.sh                    # default org, metadata only
+#   bash scripts/ops/backup-org.sh --org myorg --account myuser
+#                                                     # both, one archive each
+#   bash scripts/ops/backup-org.sh --with-git         # + bare repos and wikis
+#   bash scripts/ops/backup-org.sh --with-source      # + plain checkouts (implies --with-git)
+#   bash scripts/ops/backup-org.sh --dry-run          # show what would run; writes nothing at all
+#   bash scripts/ops/backup-org.sh --verify-only ARCHIVE
+#                                                     # verify an existing archive only
+#
+# Targets: --org ORG backs up an organization, --account USER a personal
+# account. Give both and each is backed up in turn (own work dir, own archive);
+# a failure in one does not stop the other, but the exit status reports it. If
+# neither is given, the default organization (vortaforge) is used.
 #
 # Settings (override with environment variables):
-#   ORG=vortaforge  BACKUP_DIR=~/backup/ORG  OUT_DIR=~/backup-out
-#   ENCRYPT=none|7z|gpg  INCLUDE_SOURCE=1|0    WITH_HOOKS=0|1
+#   ORG=vortaforge  ACCOUNT=  BACKUP_DIR=~/backup/NAME  OUT_DIR=~/backup-out
+#   ENCRYPT=none|7z|gpg  INCLUDE_GIT=0|1  INCLUDE_SOURCE=0|1  WITH_HOOKS=0|1
 #   KEEP=7            PIP_BREAK_SYSTEM=0|1
 #   JOBS=4            # parallel `git clone` workers for plain source copies
 #   COPY_TO=          # optional rsync destination for the finished archive,
@@ -21,8 +36,17 @@
 #                     # working `rsync`/`ssh` locally - no cloud API involved)
 #
 # Token: uses VC_TOKEN or GH_TOKEN if set, otherwise prompts (interactive only).
+# ACCOUNT_TOKEN, if set, is used instead for the --account target. A
+# fine-grained token has exactly one resource owner (a user OR one org), so
+# backing up an org and an account in one run needs either a classic token or
+# one token per target.
 # ARCHIVE_PASSWORD: passphrase for ENCRYPT=7z/gpg when run unattended (CI, cron
 # with no tty); omit it to be prompted interactively as before.
+#
+# Unencrypted archives: ENCRYPT=none writes a plain .tar.gz. That is fine on a
+# machine you control. When UPLOAD_ARCHIVE=1 (the archive leaves the machine,
+# as in the workflow) the script refuses it unless ALLOW_PLAINTEXT_UPLOAD=1 is
+# also set, so a plaintext upload is always a deliberate, explicit choice.
 # Keep this script OUTSIDE any git repository folder if you are worried about
 # accidentally committing it.
 #
@@ -43,13 +67,13 @@
 # header plus the flag list. `--strict` makes any warning a non-zero exit, so
 # CI can tell a complete backup from a partial one.
 #
-# Verified with: shellcheck -S style scripts/backup-org.sh   (clean)
-#                bash scripts/backup-org.sh --dry-run        (no side effects)
+# Verified with: shellcheck -S style scripts/ops/backup-org.sh   (clean)
+#                bash scripts/ops/backup-org.sh --dry-run        (no side effects)
 
 set -Eeuo pipefail
 umask 077
 
-SCRIPT_VERSION="3.0"
+SCRIPT_VERSION="4.0"
 
 log()  { printf '[%s] %s\n' "$(date +%T)" "$*"; }
 # warn() counts what it prints. A backup tool that cannot tell "I got
@@ -80,14 +104,19 @@ usage() {
 
 Command-line flags (each overrides the environment variable of the same name):
   --org ORG            Organization to back up            [env ORG]
+  --account USER       Personal account to back up        [env ACCOUNT]
+                       (--user is an alias). With --org: back up both.
   --backup-dir DIR     Working directory for the backup   [env BACKUP_DIR]
   --out-dir DIR        Where the archive is written       [env OUT_DIR]
   --encrypt METHOD     none | 7z | gpg                    [env ENCRYPT]
   --keep N             Archives to keep when pruning      [env KEEP]
   --jobs N             Parallel source-clone workers      [env JOBS]
   --copy-to DEST       rsync the finished archive here    [env COPY_TO]
+  --with-git           Include bare repos + wikis (history) [env INCLUDE_GIT=1]
+  --no-git             Skip git data (default)            [env INCLUDE_GIT=0]
   --with-source        Include plain source checkouts     [env INCLUDE_SOURCE=1]
-  --no-source          Skip plain source checkouts        [env INCLUDE_SOURCE=0]
+                       (needs git data, so it implies --with-git)
+  --no-source          Skip plain source checkouts (default) [env INCLUDE_SOURCE=0]
   --with-hooks         Include webhook definitions        [env WITH_HOOKS=1]
   --strict             Exit non-zero if anything was warned about
   --dry-run            Show what would run, change nothing
@@ -109,7 +138,11 @@ STRICT=0
 # Environment defaults first, so a flag simply overwrites the variable it
 # stands for. BACKUP_DIR is deliberately NOT defaulted here: its default is
 # derived from ORG, and --org has to be parsed first for that to be right.
-ORG="${ORG:-vortaforge}"
+# ORG and ACCOUNT are both empty unless given. The vortaforge default is applied
+# after parsing, and only if NEITHER was given - otherwise `--account me` would
+# silently back up vortaforge as well.
+ORG="${ORG:-}"
+ACCOUNT="${ACCOUNT:-}"
 OUT_DIR="${OUT_DIR:-$HOME/backup-out}"
 ENCRYPT="${ENCRYPT:-gpg}"
 # Pinned github-backup release. There is no floating "latest": a backup tool
@@ -121,7 +154,11 @@ GHBK_VERSION="${GHBK_VERSION:-0.67.0}"
 # silently installing unverified code.
 GHBK_HASH="${GHBK_HASH:-dc112537678851d698037d07b4fbe3adc00cb3e8f1fc1f9a1c1ef8b3f1494086}"
 GHBK_VENV="${GHBK_VENV:-$HOME/.venvs/github-backup}"
-INCLUDE_SOURCE="${INCLUDE_SOURCE:-1}"
+# Both default to OFF: a default run produces a metadata-only archive (no git
+# history, no source code). Git data is the bulk of the size and the most
+# sensitive part, so it has to be asked for.
+INCLUDE_GIT="${INCLUDE_GIT:-0}"
+INCLUDE_SOURCE="${INCLUDE_SOURCE:-0}"
 WITH_HOOKS="${WITH_HOOKS:-0}"
 KEEP="${KEEP:-7}"
 PIP_BREAK_SYSTEM="${PIP_BREAK_SYSTEM:-0}"
@@ -136,11 +173,14 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run)      DRY_RUN=1; shift ;;
     --strict)       STRICT=1; shift ;;
+    --with-git)     INCLUDE_GIT=1; shift ;;
+    --no-git)       INCLUDE_GIT=0; shift ;;
     --with-source)  INCLUDE_SOURCE=1; shift ;;
     --no-source)    INCLUDE_SOURCE=0; shift ;;
     --with-hooks)   WITH_HOOKS=1; shift ;;
     --verify-only)  need_arg "$1" $#; VERIFY_ONLY="$2"; shift 2 ;;
     --org)          need_arg "$1" $#; ORG="$2"; shift 2 ;;
+    --account|--user) need_arg "$1" $#; ACCOUNT="$2"; shift 2 ;;
     --backup-dir)   need_arg "$1" $#; BACKUP_DIR="$2"; shift 2 ;;
     --out-dir)      need_arg "$1" $#; OUT_DIR="$2"; shift 2 ;;
     --encrypt)      need_arg "$1" $#; ENCRYPT="$2"; shift 2 ;;
@@ -155,11 +195,58 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-BACKUP_DIR="${BACKUP_DIR:-$HOME/backup/$ORG}"
+# Neither target given -> the default organization.
+if [ -z "$ORG" ] && [ -z "$ACCOUNT" ]; then ORG="vortaforge"; fi
+
+# A login ends up in API paths, file names and the default work directory, so
+# refuse anything that is not shaped like a GitHub login (no slashes, dots,
+# spaces or leading dash) instead of trusting it.
+valid_login() {
+  case "$1" in
+    ''|-*|*[!A-Za-z0-9_-]*) return 1 ;;
+  esac
+  return 0
+}
+if [ -n "$ORG" ]; then valid_login "$ORG" || die "--org is not a valid GitHub login: $ORG"; fi
+if [ -n "$ACCOUNT" ]; then valid_login "$ACCOUNT" || die "--account is not a valid GitHub login: $ACCOUNT"; fi
+
+# FIX: INCLUDE_SOURCE used to be unvalidated, which was harmless while it
+# defaulted to on. With the default now off, INCLUDE_SOURCE=true would silently
+# mean "no source". Accept only 0 or 1.
+case "$INCLUDE_GIT" in 0|1) ;; *) die "INCLUDE_GIT must be 0 or 1, got: $INCLUDE_GIT" ;; esac
+case "$INCLUDE_SOURCE" in 0|1) ;; *) die "INCLUDE_SOURCE must be 0 or 1, got: $INCLUDE_SOURCE" ;; esac
+# Plain source checkouts are cloned from the bare repositories, so they cannot
+# exist without git data.
+if [ "$INCLUDE_SOURCE" = 1 ] && [ "$INCLUDE_GIT" != 1 ]; then
+  INCLUDE_GIT=1
+  [ -n "$VERIFY_ONLY" ] || note "source checkouts are cloned from the bare repositories, so INCLUDE_SOURCE=1 also includes git data (INCLUDE_GIT=1)"
+fi
+
+# One target -> TARGET/TARGET_KIND drive everything below. Two targets -> this
+# process only dispatches (see "multiple targets"); each target is then run by a
+# child process with exactly one of them, so no per-target state can leak.
+MULTI=0
+TARGET=""
+TARGET_KIND=""
+if [ -n "$ORG" ] && [ -n "$ACCOUNT" ]; then
+  MULTI=1
+elif [ -n "$ORG" ]; then
+  TARGET="$ORG"; TARGET_KIND="org"
+else
+  TARGET="$ACCOUNT"; TARGET_KIND="user"
+fi
+
+if [ "$MULTI" = 1 ]; then
+  BACKUP_DIR="${BACKUP_DIR:-}"
+else
+  BACKUP_DIR="${BACKUP_DIR:-$HOME/backup/$TARGET}"
+fi
 DATE="$(date +%F)"
 RUN_STAMP="$(date +%Y%m%d-%H%M%S)"
 
-LOG_FILE="${LOG_FILE:-$OUT_DIR/backup-$RUN_STAMP.log}"
+# The target is part of the log name so two targets backed up in the same second
+# (and the workflow's `backup-*.log` glob) never share a file.
+LOG_FILE="${LOG_FILE:-$OUT_DIR/backup-${TARGET:-multi}-$RUN_STAMP.log}"
 
 # FIX: `set -e` alone reports no context. Report the failing line instead of
 # leaving the user with a bare non-zero exit.
@@ -170,11 +257,13 @@ on_err() {
 trap 'on_err $LINENO' ERR
 
 case "$ENCRYPT" in 7z|gpg|none) ;; *) die "ENCRYPT must be 7z, gpg, or none" ;; esac
-# An unencrypted archive is only defensible while it stays on this machine. The
-# workflow sets UPLOAD_ARCHIVE=1 because the artifact leaves the runner, so the
-# two states are mutually exclusive by construction rather than by convention.
-if [ "$ENCRYPT" = none ] && [ "${UPLOAD_ARCHIVE:-0}" = 1 ]; then
-  die "ENCRYPT=none refused: UPLOAD_ARCHIVE=1 means the archive leaves this machine. Use ENCRYPT=gpg (or 7z) with ARCHIVE_PASSWORD."
+# An unencrypted archive is only a default-safe choice while it stays on this
+# machine. The workflow sets UPLOAD_ARCHIVE=1 because the artifact leaves the
+# runner, so plaintext + upload is refused unless the caller ALSO says, in a
+# separate and explicit setting, that they want exactly that. A stray
+# ENCRYPT=none therefore still cannot publish plaintext by accident.
+if [ "$ENCRYPT" = none ] && [ "${UPLOAD_ARCHIVE:-0}" = 1 ] && [ "${ALLOW_PLAINTEXT_UPLOAD:-0}" != 1 ]; then
+  die "ENCRYPT=none refused: UPLOAD_ARCHIVE=1 means the archive leaves this machine. Use ENCRYPT=gpg (or 7z) with ARCHIVE_PASSWORD, or set ALLOW_PLAINTEXT_UPLOAD=1 if an unencrypted upload is really intended."
 fi
 
 case "$JOBS" in
@@ -203,6 +292,8 @@ hash_archive() {
     return 1
   fi
 }
+
+lc() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
 
 # `find -printf` is GNU-only. Sort by mtime portably via `stat`.
 mtime_of() {
@@ -252,8 +343,17 @@ if [ -n "$VERIFY_ONLY" ]; then
     *.gpg)
       command -v gpg >/dev/null || die "gpg not installed, cannot verify a .gpg archive"
       TMPV="$(mktemp -d)"; trap 'rm -rf "$TMPV"' EXIT
-      gpg --batch --yes -d -o "$TMPV/decrypted.tar.gz" "$VERIFY_ONLY" \
-        || die "gpg decryption failed (wrong passphrase or corrupt archive)"
+      # FIX: ARCHIVE_PASSWORD was honoured for .7z but not here, so an unattended
+      # --verify-only of a .gpg archive (no tty, no agent) always failed with
+      # "Bad session key" even with the right passphrase set.
+      if [ -n "${ARCHIVE_PASSWORD:-}" ]; then
+        gpg --batch --yes --passphrase-fd 0 -d -o "$TMPV/decrypted.tar.gz" "$VERIFY_ONLY" \
+          <<<"$ARCHIVE_PASSWORD" \
+          || die "gpg decryption failed (wrong passphrase or corrupt archive)"
+      else
+        gpg --batch --yes -d -o "$TMPV/decrypted.tar.gz" "$VERIFY_ONLY" \
+          || die "gpg decryption failed (wrong passphrase or corrupt archive)"
+      fi
       tar -tzf "$TMPV/decrypted.tar.gz" >/dev/null || die "archive verification failed"
       ;;
     *)
@@ -281,17 +381,33 @@ if [ -n "$VERIFY_ONLY" ]; then
 
   # Report what is inside, so a silently truncated backup is visible.
   [ -n "${TMPV:-}" ] || { TMPV="$(mktemp -d)"; trap 'rm -rf "$TMPV"' EXIT; }
+  # The manifest inside the archive says whether git data was meant to be there.
+  # A metadata-only backup (the default since 4.0) has no bare repositories, and
+  # must not be reported as a damaged one.
+  MANIFEST_JSON=""
   if [ "${VERIFY_ONLY##*.}" = "7z" ]; then
     # FIX: this listing ran WITHOUT the password, but archives are created with
     # `-mhe=on` (header encryption), so 7z could not read the file list and
     # every .7z verification silently reported "0 entries". PW1 is now kept
     # until after the listing instead of being unset right after `7z t`.
     7z l -ba -p"$PW1" "$VERIFY_ONLY" | awk '{print $NF}' > "$TMPV/list" 2>/dev/null || true
+    mf="$(grep -m1 'backup-manifest\.json$' "$TMPV/list" || true)"
+    if [ -n "$mf" ]; then
+      MANIFEST_JSON="$(7z e -so -bd -p"$PW1" "$VERIFY_ONLY" "$mf" 2>/dev/null || true)"
+    fi
     unset PW1
   elif [ "${VERIFY_ONLY##*.}" = "gpg" ]; then
     tar -tzf "$TMPV/decrypted.tar.gz" > "$TMPV/list"
+    mf="$(grep -m1 'backup-manifest\.json$' "$TMPV/list" || true)"
+    if [ -n "$mf" ]; then
+      MANIFEST_JSON="$(tar -xzOf "$TMPV/decrypted.tar.gz" "$mf" 2>/dev/null || true)"
+    fi
   else
     tar -tzf "$VERIFY_ONLY" > "$TMPV/list"
+    mf="$(grep -m1 'backup-manifest\.json$' "$TMPV/list" || true)"
+    if [ -n "$mf" ]; then
+      MANIFEST_JSON="$(tar -xzOf "$VERIFY_ONLY" "$mf" 2>/dev/null || true)"
+    fi
   fi
   # FIX: this was `grep -c ... || echo 0`. grep -c already prints "0" and then
   # exits 1, so `|| echo 0` appended a SECOND zero and nrepos became the
@@ -301,19 +417,99 @@ if [ -n "$VERIFY_ONLY" ]; then
   nrepos="$(grep -c '/repositories/[^/]*/repository/HEAD$' "$TMPV/list" 2>/dev/null)" || nrepos=0
   nfiles="$(wc -l < "$TMPV/list" | tr -d ' ')"
   log "Archive OK: ${nfiles:-0} entries, ${nrepos:-0} bare git repositories"
-  [ "${nrepos:-0}" -gt 0 ] || warn "no bare repositories found in the archive"
+  NOGIT=0
+  if [ -n "$MANIFEST_JSON" ]; then
+    NOGIT="$(printf '%s' "$MANIFEST_JSON" | python3 -c \
+      'import sys,json
+try: print(0 if json.load(sys.stdin).get("include_git", True) else 1)
+except Exception: print(0)' 2>/dev/null || echo 0)"
+  fi
+  if [ "$NOGIT" = 1 ]; then
+    log "Manifest says this is a metadata-only backup (include_git=false); no bare repositories expected"
+    [ "${nrepos:-0}" -eq 0 ] || warn "manifest says include_git=false but the archive holds $nrepos bare repositories"
+  else
+    [ "${nrepos:-0}" -gt 0 ] || warn "no bare repositories found in the archive"
+  fi
   if [ "$STRICT" = 1 ] && [ "$WARN_COUNT" -gt 0 ]; then
     die "$WARN_COUNT warning(s) during verification and --strict was given"
   fi
   exit 0
 fi
 
+# ------------------------------------------------------------ multiple targets
+# --org and --account together: run this script once per target. Separate
+# processes keep WARN_COUNT, the log/tee coprocess, the EXIT trap and the work
+# directory of one target from leaking into the other. A failure in one target
+# does not stop the next; the exit status reports it at the end.
+if [ "$MULTI" = 1 ] && [ "${BACKUP_CHILD:-0}" != 1 ]; then
+  # Interactive: ask once here instead of once per child. Both go to the
+  # children through the environment, never argv.
+  if [ "$DRY_RUN" != 1 ] && [ -t 0 ]; then
+    if [ -z "${VC_TOKEN:-${GH_TOKEN:-}}" ] && [ -z "${ACCOUNT_TOKEN:-}" ]; then
+      read -rsp "GitHub token (input is hidden): " VC_TOKEN; echo
+      export VC_TOKEN
+    fi
+    if [ "$ENCRYPT" != none ] && [ -z "${ARCHIVE_PASSWORD:-}" ]; then
+      log "Set an archive password for both archives (ASCII characters only)."
+      while :; do
+        read -rsp "Archive password: " PW1; echo
+        read -rsp "Password (again): " PW2; echo
+        if [ -n "$PW1" ] && [ "$PW1" = "$PW2" ]; then break; fi
+        log "Passwords are empty or do not match, try again."
+      done
+      ARCHIVE_PASSWORD="$PW1"; export ARCHIVE_PASSWORD
+      unset PW1 PW2
+    fi
+  fi
+
+  child_args=(--encrypt "$ENCRYPT" --keep "$KEEP" --jobs "$JOBS" --out-dir "$OUT_DIR")
+  if [ "$INCLUDE_GIT" = 1 ]; then child_args+=(--with-git); else child_args+=(--no-git); fi
+  if [ "$INCLUDE_SOURCE" = 1 ]; then child_args+=(--with-source); else child_args+=(--no-source); fi
+  if [ "$WITH_HOOKS" = 1 ]; then child_args+=(--with-hooks); fi
+  if [ -n "$COPY_TO" ]; then child_args+=(--copy-to "$COPY_TO"); fi
+  if [ "$DRY_RUN" = 1 ]; then child_args+=(--dry-run); fi
+  if [ "$STRICT" = 1 ]; then child_args+=(--strict); fi
+
+  failed=0
+  for spec in "org:$ORG" "account:$ACCOUNT"; do
+    kind="${spec%%:*}"
+    name="${spec#*:}"
+    env_args=()
+    # An explicit --backup-dir is a parent: each target gets its own subfolder,
+    # otherwise the two would write into (and archive) the same directory.
+    if [ -n "$BACKUP_DIR" ]; then
+      env_args+=(BACKUP_CHILD=1 ORG= ACCOUNT= "BACKUP_DIR=$BACKUP_DIR/$name")
+    else
+      env_args=(-u BACKUP_DIR BACKUP_CHILD=1 ORG= ACCOUNT=)
+    fi
+    if [ "$kind" = org ]; then target_flag="--org"; else target_flag="--account"; fi
+    log "===== $kind: $name ====="
+    rc=0
+    env "${env_args[@]}" bash "$0" "${child_args[@]}" "$target_flag" "$name" || rc=$?
+    if [ "$rc" -ne 0 ]; then
+      warn "$kind '$name' failed (exit $rc)"
+      failed=$((failed + 1))
+    fi
+  done
+  echo
+  if [ "$failed" -gt 0 ]; then
+    die "$failed of 2 targets failed - see the output above"
+  fi
+  log "Both targets finished."
+  exit 0
+fi
+
 # ---------------------------------------------------------------------- token
 TOKEN="${VC_TOKEN:-${GH_TOKEN:-}}"
+# A token meant for the personal account wins for that target: a fine-grained
+# token cannot span an org and a user, so the two targets may need different ones.
+if [ "$TARGET_KIND" = user ] && [ -n "${ACCOUNT_TOKEN:-}" ]; then
+  TOKEN="$ACCOUNT_TOKEN"
+fi
 TOKEN_FILE=""
 cleanup() {
   [ -n "$TOKEN_FILE" ] && rm -f -- "$TOKEN_FILE"
-  unset TOKEN VC_TOKEN GH_TOKEN PW1 PW2 ARCHIVE_PASSWORD 2>/dev/null || true
+  unset TOKEN VC_TOKEN GH_TOKEN ACCOUNT_TOKEN PW1 PW2 ARCHIVE_PASSWORD 2>/dev/null || true
 }
 trap cleanup EXIT
 
@@ -321,7 +517,7 @@ if [ -z "$TOKEN" ]; then
   # FIX: under `set -e`, `read -rsp` with no terminal returns non-zero and killed
   # the script with no explanation. Detect that case and say what to do.
   if [ ! -t 0 ]; then
-    die "no token available and stdin is not a terminal - set VC_TOKEN or GH_TOKEN"
+    die "no token available and stdin is not a terminal - set VC_TOKEN or GH_TOKEN (ACCOUNT_TOKEN for --account)"
   fi
   read -rsp "GitHub token (input is hidden): " TOKEN
   echo
@@ -342,19 +538,44 @@ command -v curl >/dev/null || die "curl not found - required for the GitHub API 
 # rather than the credential. One cheap API call up front turns that into an
 # immediate, accurate message. Skipped under --dry-run, which must not touch
 # the network at all.
+SELF_LOGIN=""
+if [ "$TARGET_KIND" = org ]; then
+  PROBE_PATH="/orgs/$TARGET"; TARGET_LABEL="organization"
+else
+  PROBE_PATH="/users/$TARGET"; TARGET_LABEL="account"
+fi
 if [ "$DRY_RUN" != 1 ]; then
   auth_status="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 \
     -H "Authorization: Bearer $TOKEN" \
     -H 'Accept: application/vnd.github+json' \
-    "https://api.github.com/orgs/$ORG" 2>/dev/null)" || auth_status="000"
+    "https://api.github.com$PROBE_PATH" 2>/dev/null)" || auth_status="000"
   case "$auth_status" in
-    200) log "Token accepted; organization '$ORG' is readable." ;;
+    200) log "Token accepted; $TARGET_LABEL '$TARGET' is readable." ;;
     401) die "GitHub rejected the token (HTTP 401): it is empty, expired or revoked." ;;
-    403) die "GitHub refused the request (HTTP 403): the token is valid but cannot see '$ORG', or is rate-limited / SSO-gated." ;;
-    404) die "Organization '$ORG' is not visible to this token (HTTP 404). Check --org and that the token has organization read access." ;;
+    403) die "GitHub refused the request (HTTP 403): the token is valid but cannot see '$TARGET', or is rate-limited / SSO-gated." ;;
+    404) die "$TARGET_LABEL '$TARGET' is not visible to this token (HTTP 404). Check --org / --account and that the token has access to it." ;;
     000) die "could not reach api.github.com - check the network or proxy settings." ;;
-    *)   die "unexpected response from api.github.com/orgs/$ORG (HTTP $auth_status)" ;;
+    *)   die "unexpected response from api.github.com$PROBE_PATH (HTTP $auth_status)" ;;
   esac
+  # GET /users/NAME answers 200 for any public account, so it says nothing about
+  # whether PRIVATE repositories will be included. That depends on the token
+  # belonging to the account itself.
+  if [ "$TARGET_KIND" = user ]; then
+    SELF_LOGIN="$(curl -sS --max-time 30 \
+      -H "Authorization: Bearer $TOKEN" \
+      -H 'Accept: application/vnd.github+json' \
+      "https://api.github.com/user" 2>/dev/null | python3 -c \
+      'import sys,json
+try: print(json.load(sys.stdin).get("login") or "")
+except Exception: pass' 2>/dev/null || true)"
+    if [ -z "$SELF_LOGIN" ]; then
+      note "could not tell who owns the token (GET /user failed); private repositories of '$TARGET' are only included if it is that account's own token"
+    elif [ "$(lc "$SELF_LOGIN")" = "$(lc "$TARGET")" ]; then
+      log "Token belongs to '$TARGET'; private repositories are included."
+    else
+      note "the token belongs to '$SELF_LOGIN', not '$TARGET': only PUBLIC repositories of '$TARGET' can be backed up"
+    fi
+  fi
 fi
 
 if ! command -v github-backup >/dev/null 2>&1; then
@@ -387,7 +608,7 @@ if ! command -v github-backup >/dev/null 2>&1; then
     # shellcheck disable=SC2064
     trap "rm -f -- '$reqs'" RETURN 2>/dev/null || true
     printf 'github-backup==%s --hash=sha256:%s\n' "$GHBK_VERSION" "$GHBK_HASH" > "$reqs"
-    if ! env -u GH_TOKEN -u VC_TOKEN -u GITHUB_TOKEN \
+    if ! env -u GH_TOKEN -u VC_TOKEN -u GITHUB_TOKEN -u ACCOUNT_TOKEN -u ARCHIVE_PASSWORD \
         "$GHBK_VENV/bin/pip" install --quiet --disable-pip-version-check \
         --require-hashes -r "$reqs" ; then
       rm -f -- "$reqs"
@@ -435,14 +656,30 @@ else
   exec > >(tee -a "$LOG_FILE") 2>&1
 fi
 
-log "Starting backup: $ORG -> $BACKUP_DIR  (dry-run=$DRY_RUN)"
+log "Starting backup: $TARGET_KIND $TARGET -> $BACKUP_DIR  (git=$INCLUDE_GIT source=$INCLUDE_SOURCE encrypt=$ENCRYPT dry-run=$DRY_RUN)"
+
+# A metadata-only run must not pick up git data an EARLIER run left in the same
+# work directory. BACKUP_DIR persists between local runs (that is what
+# --incremental relies on), and the default flipped from "with git" to "without",
+# so the very next default run on an existing machine would otherwise archive
+# the old bare repositories - full history - while the manifest and the log claim
+# there is none. Refuse, and say how to resolve it.
+if [ "$INCLUDE_GIT" != 1 ] && [ -d "$BACKUP_DIR/repositories" ]; then
+  leftover="$(find "$BACKUP_DIR/repositories" -mindepth 2 -maxdepth 2 -type d \( -name repository -o -name wiki \) -print 2>/dev/null | head -n 1 || true)"
+  if [ -n "$leftover" ]; then
+    die "$BACKUP_DIR already holds git data from an earlier run (e.g. $leftover) and this run is metadata-only (INCLUDE_GIT=0), so it would end up in the archive. Re-run with --with-git, or use a different --backup-dir."
+  fi
+fi
 
 # ------------------------------------------- pick supported CLI flags
 # Flag names can vary between versions; unsupported ones are skipped.
 HELP="$(github-backup --help 2>&1 || true)"
-WANT=(--repositories --wikis --issues --issue-comments --issue-events
+WANT=(--issues --issue-comments --issue-events
       --pulls --pull-comments --pull-commits --pull-details
       --labels --milestones --releases --assets)
+# Git data only on request. Wikis are git repositories with their own history,
+# so they follow the same switch.
+if [ "$INCLUDE_GIT" = 1 ]; then WANT=(--repositories --wikis "${WANT[@]}"); fi
 if [ "$WITH_HOOKS" = 1 ]; then WANT+=(--hooks); fi
 FLAGS=()
 for f in "${WANT[@]}"; do
@@ -482,8 +719,12 @@ else
   die "github-backup ${GHBK_VERSION} has no file:// token support; refusing to put the token in argv (visible in ps). Upgrade github-backup, or set GHBK_VENV to a build that supports it."
 fi
 
-run github-backup "$ORG" --organization -t "$TOKEN_ARG" -o "$BACKUP_DIR" \
-  --private --fork --bare --incremental "${FLAGS[@]}"
+GB_ARGS=("$TARGET")
+if [ "$TARGET_KIND" = org ]; then GB_ARGS+=(--organization); fi
+GB_ARGS+=(-t "$TOKEN_ARG" -o "$BACKUP_DIR" --private --fork --incremental)
+# --bare only matters (and is only meaningful) together with --repositories.
+if [ "$INCLUDE_GIT" = 1 ]; then GB_ARGS+=(--bare); fi
+run github-backup "${GB_ARGS[@]}" "${FLAGS[@]}"
 
 # ------------------------------------------------- API access
 # `gh` is preferred, but it is not installed everywhere. Fall back to curl so
@@ -569,12 +810,14 @@ PY
 # dry run really did call the API and write org-meta/*.json into BACKUP_DIR.
 # Both are now guarded, matching the save() helper further down, which already
 # honoured DRY_RUN.
-if [ "$DRY_RUN" = 1 ]; then
+if [ "$TARGET_KIND" != org ]; then
+  : # a personal account has no teams, members or organization rulesets
+elif [ "$DRY_RUN" = 1 ]; then
   log "[dry-run] would fetch org-meta/{teams,members,rulesets}.json"
 else
   [ "$DRY_RUN" = 1 ] || mkdir -p "$BACKUP_DIR/org-meta"
   for ep in teams members rulesets; do
-    if api_get "/orgs/$ORG/$ep" > "$BACKUP_DIR/org-meta/$ep.json.tmp" 2>/dev/null; then
+    if api_get "/orgs/$TARGET/$ep" > "$BACKUP_DIR/org-meta/$ep.json.tmp" 2>/dev/null; then
       mv "$BACKUP_DIR/org-meta/$ep.json.tmp" "$BACKUP_DIR/org-meta/$ep.json"
       log "saved org-meta/$ep.json"
     else
@@ -584,45 +827,8 @@ else
   done
 fi
 
-# FIX: the old check was
-#     gh api --jq '.public_repos + .total_private_repos'
-# `total_private_repos` is only populated when the token has the scope for it;
-# when it is null, jq errors, `|| true` swallowed that, and the whole
-# repository-count sanity check silently never ran. Read the fields separately
-# with a null default, and say loudly when the check cannot run.
-EXPECTED=""
-if [ "$DRY_RUN" = 1 ]; then
-  log "[dry-run] would verify the repository count against the org"
-else
-  EXPECTED="$(api_get "/orgs/$ORG" 2>/dev/null | python3 -c \
-  'import sys,json
-try:
-    d=json.load(sys.stdin)
-    print((d.get("public_repos") or 0) + (d.get("total_private_repos") or 0))
-except Exception:
-    pass' 2>/dev/null || true)"
-fi
-
-# FIX (pre-existing, verified against the pre-fix revision): on a first run
-# $BACKUP_DIR/repositories does not exist yet, so `find` exits 1, and under
-# `set -Eeuo pipefail` that status propagates out of the pipeline and aborts
-# the script. `2>/dev/null` hid the message but not the status. The effect was
-# that --dry-run - the mode you reach for precisely BEFORE a first real backup -
-# died here every single time, printing only "command failed (exit 1) at line
-# 346". Guard the path rather than leaning on the shell to swallow the status.
-ACTUAL=0
-if [ -d "$BACKUP_DIR/repositories" ]; then
-  ACTUAL="$(find "$BACKUP_DIR/repositories" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
-fi
-if [ "$DRY_RUN" = 1 ]; then
-  : # nothing to compare against; the run is a rehearsal
-elif [ -z "$EXPECTED" ]; then
-  warn "could not read the org repository count - skipping the completeness check"
-elif [ "$EXPECTED" != "$ACTUAL" ]; then
-  warn "the org reports $EXPECTED repositories but the backup has $ACTUAL folders. Check for missing ones."
-else
-  log "Repository count verified: $ACTUAL"
-fi
+# (The repository-count check lives below, after the repository listing: for an
+# account and for a metadata-only run the listing is part of what it compares.)
 
 # ------------------------------------------- extended metadata
 # Org-level: outside collaborators, webhooks, Actions variables / secret NAMES
@@ -633,7 +839,7 @@ fi
 # Actions workflows, recent run history and open security alerts.
 # Note: the Actions secrets endpoint never returns secret values, only names
 # and timestamps, so storing the raw response is safe.
-[ "$DRY_RUN" = 1 ] || mkdir -p "$BACKUP_DIR/repo-meta"
+[ "$DRY_RUN" = 1 ] || mkdir -p "$BACKUP_DIR/org-meta" "$BACKUP_DIR/repo-meta"
 save() { # save <outfile> <api path>; a missing permission is not fatal
   local out="$1" path="$2"
   if [ "$DRY_RUN" = 1 ]; then log "[dry-run] save $out <- $path"; return 0; fi
@@ -645,18 +851,25 @@ save() { # save <outfile> <api path>; a missing permission is not fatal
   fi
 }
 
-save "$BACKUP_DIR/org-meta/org.json"                    "/orgs/$ORG"
-save "$BACKUP_DIR/org-meta/outside-collaborators.json"  "/orgs/$ORG/outside_collaborators"
-save "$BACKUP_DIR/org-meta/hooks.json"                  "/orgs/$ORG/hooks"
-save "$BACKUP_DIR/org-meta/actions-variables.json"      "/orgs/$ORG/actions/variables"
-save "$BACKUP_DIR/org-meta/actions-secret-names.json"   "/orgs/$ORG/actions/secrets"
-save "$BACKUP_DIR/org-meta/actions-permissions.json"    "/orgs/$ORG/actions/permissions"
-save "$BACKUP_DIR/org-meta/installations.json"          "/orgs/$ORG/installations"
-save "$BACKUP_DIR/org-meta/invitations.json"            "/orgs/$ORG/invitations"
+# Organization-level endpoints do not exist for a personal account; save_org is
+# a no-op there. (The directory keeps its name "org-meta" for both kinds so the
+# archive layout and the sanitize step do not change.)
+save_org() { if [ "$TARGET_KIND" = org ]; then save "$@"; fi; }
+if [ "$TARGET_KIND" = user ]; then
+  save "$BACKUP_DIR/org-meta/account.json"              "/users/$TARGET"
+fi
+save_org "$BACKUP_DIR/org-meta/org.json"                    "/orgs/$TARGET"
+save_org "$BACKUP_DIR/org-meta/outside-collaborators.json"  "/orgs/$TARGET/outside_collaborators"
+save_org "$BACKUP_DIR/org-meta/hooks.json"                  "/orgs/$TARGET/hooks"
+save_org "$BACKUP_DIR/org-meta/actions-variables.json"      "/orgs/$TARGET/actions/variables"
+save_org "$BACKUP_DIR/org-meta/actions-secret-names.json"   "/orgs/$TARGET/actions/secrets"
+save_org "$BACKUP_DIR/org-meta/actions-permissions.json"    "/orgs/$TARGET/actions/permissions"
+save_org "$BACKUP_DIR/org-meta/installations.json"          "/orgs/$TARGET/installations"
+save_org "$BACKUP_DIR/org-meta/invitations.json"            "/orgs/$TARGET/invitations"
 # NEW: security posture, so a restore can reproduce it
-save "$BACKUP_DIR/org-meta/security-managers.json"      "/orgs/$ORG/security-managers"
-save "$BACKUP_DIR/org-meta/dependabot-alerts.json"      "/orgs/$ORG/dependabot/alerts"
-save "$BACKUP_DIR/org-meta/secret-scanning-alerts.json" "/orgs/$ORG/secret-scanning/alerts"
+save_org "$BACKUP_DIR/org-meta/security-managers.json"      "/orgs/$TARGET/security-managers"
+save_org "$BACKUP_DIR/org-meta/dependabot-alerts.json"      "/orgs/$TARGET/dependabot/alerts"
+save_org "$BACKUP_DIR/org-meta/secret-scanning-alerts.json" "/orgs/$TARGET/secret-scanning/alerts"
 
 # NEW: per-team membership and repository access, so who-can-access-what can
 # be restored, not just the bare team list. Team member objects only carry
@@ -678,27 +891,96 @@ if [ -n "$TEAM_SLUGS" ]; then
   [ "$DRY_RUN" = 1 ] || mkdir -p "$BACKUP_DIR/org-meta/teams"
   while IFS= read -r slug; do
     [ -n "$slug" ] || continue
-    save "$BACKUP_DIR/org-meta/teams/$slug-members.json" "/orgs/$ORG/teams/$slug/members"
-    save "$BACKUP_DIR/org-meta/teams/$slug-repos.json"   "/orgs/$ORG/teams/$slug/repos"
+    save "$BACKUP_DIR/org-meta/teams/$slug-members.json" "/orgs/$TARGET/teams/$slug/members"
+    save "$BACKUP_DIR/org-meta/teams/$slug-repos.json"   "/orgs/$TARGET/teams/$slug/repos"
   done <<< "$TEAM_SLUGS"
 fi
 
-REPO_LIST="$(api_get "/orgs/$ORG/repos" 2>/dev/null | python3 -c \
+if [ "$TARGET_KIND" = org ]; then
+  REPO_LIST_PATH="/orgs/$TARGET/repos"
+elif [ -n "$SELF_LOGIN" ] && [ "$(lc "$SELF_LOGIN")" = "$(lc "$TARGET")" ]; then
+  # /users/NAME/repos only ever lists public repositories, even with a token
+  # that could see more; the authenticated-user listing includes private ones.
+  REPO_LIST_PATH="/user/repos?affiliation=owner"
+else
+  REPO_LIST_PATH="/users/$TARGET/repos"
+fi
+REPO_LIST="$(api_get "$REPO_LIST_PATH" 2>/dev/null | python3 -c \
   'import sys,json
 try:
     for r in json.load(sys.stdin): print(r["name"])
 except Exception: pass' 2>/dev/null || true)"
+
+# ------------------------------------------------- repository count check
+# FIX (kept from the earlier check): `gh api --jq '.public_repos +
+# .total_private_repos'` silently never ran when total_private_repos was null.
+# Read the fields separately with a null default, and say loudly when the check
+# cannot run.
+#
+# Where the reference number comes from depends on the target:
+#   org      the organization's own public + private repository counts
+#   account  a profile has no private-repo count, so the repository listing
+#            itself is the reference
+# And what it is compared with depends on whether git data was requested:
+#   git      the number of repository folders in the backup
+#   no git   repositories/ then only holds repos that had issues/PRs/etc, so
+#            folders cannot be counted; an org's own number is checked against
+#            the listing instead (an account has nothing independent to check)
+REPO_LIST_N=0
+if [ -n "$REPO_LIST" ]; then
+  REPO_LIST_N="$(printf '%s\n' "$REPO_LIST" | sed '/^$/d' | wc -l | tr -d ' ')"
+fi
+EXPECTED=""
+if [ "$DRY_RUN" = 1 ]; then
+  log "[dry-run] would verify the repository count"
+elif [ "$TARGET_KIND" = org ]; then
+  EXPECTED="$(api_get "/orgs/$TARGET" 2>/dev/null | python3 -c \
+  'import sys,json
+try:
+    d=json.load(sys.stdin)
+    print((d.get("public_repos") or 0) + (d.get("total_private_repos") or 0))
+except Exception:
+    pass' 2>/dev/null || true)"
+elif [ "$REPO_LIST_N" -gt 0 ]; then
+  EXPECTED="$REPO_LIST_N"
+fi
+
+# FIX (pre-existing): on a first run $BACKUP_DIR/repositories does not exist yet,
+# so `find` exits 1 and, under `set -Eeuo pipefail`, aborts the script - which
+# killed --dry-run on every fresh machine. Guard the path.
+ACTUAL=0
+if [ -d "$BACKUP_DIR/repositories" ]; then
+  ACTUAL="$(find "$BACKUP_DIR/repositories" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
+fi
+if [ "$DRY_RUN" = 1 ]; then
+  : # nothing to compare against; the run is a rehearsal
+elif [ -z "$EXPECTED" ]; then
+  warn "could not read the repository count - skipping the completeness check"
+elif [ "$INCLUDE_GIT" != 1 ]; then
+  if [ "$TARGET_KIND" != org ]; then
+    log "Repository listing returned $REPO_LIST_N repositories (no git data requested; nothing independent to compare it with)"
+  elif [ "$EXPECTED" != "$REPO_LIST_N" ]; then
+    warn "the org reports $EXPECTED repositories but the listing returned $REPO_LIST_N. Check for missing ones."
+  else
+    log "Repository listing verified: $REPO_LIST_N"
+  fi
+elif [ "$EXPECTED" != "$ACTUAL" ]; then
+  warn "$TARGET_LABEL '$TARGET' reports $EXPECTED repositories but the backup has $ACTUAL folders. Check for missing ones."
+else
+  log "Repository count verified: $ACTUAL"
+fi
+
 if [ -z "$REPO_LIST" ]; then
   warn "could not list repositories for extended metadata"
 else
   while IFS= read -r repo; do
     [ -n "$repo" ] || continue
     d="$BACKUP_DIR/repo-meta/$repo"; [ "$DRY_RUN" = 1 ] || mkdir -p "$d"
-    save "$d/repo.json"                 "/repos/$ORG/$repo"
-    save "$d/collaborators.json"        "/repos/$ORG/$repo/collaborators"
-    save "$d/hooks.json"                "/repos/$ORG/$repo/hooks"
-    save "$d/deploy-keys.json"          "/repos/$ORG/$repo/keys"
-    save "$d/environments.json"         "/repos/$ORG/$repo/environments"
+    save "$d/repo.json"                 "/repos/$TARGET/$repo"
+    save "$d/collaborators.json"        "/repos/$TARGET/$repo/collaborators"
+    save "$d/hooks.json"                "/repos/$TARGET/$repo/hooks"
+    save "$d/deploy-keys.json"          "/repos/$TARGET/$repo/keys"
+    save "$d/environments.json"         "/repos/$TARGET/$repo/environments"
     # FIX: environments.json only names the protection rule types; the custom
     # deployment-branch policies (which refs may deploy) live in a sub-endpoint.
     if [ "$DRY_RUN" != 1 ] && [ -f "$d/environments.json" ]; then
@@ -712,14 +994,14 @@ except Exception: pass' < "$d/environments.json" 2>/dev/null || true)"
         while IFS= read -r en; do
           [ -n "$en" ] || continue
           save "$d/environments-detail/$en-branch-policies.json" \
-               "/repos/$ORG/$repo/environments/$en/deployment-branch-policies"
+               "/repos/$TARGET/$repo/environments/$en/deployment-branch-policies"
         done <<< "$ENV_NAMES"
       fi
     fi
-    save "$d/actions-variables.json"    "/repos/$ORG/$repo/actions/variables"
-    save "$d/actions-secret-names.json" "/repos/$ORG/$repo/actions/secrets"
-    save "$d/pages.json"                "/repos/$ORG/$repo/pages"
-    save "$d/rulesets.json"             "/repos/$ORG/$repo/rulesets"
+    save "$d/actions-variables.json"    "/repos/$TARGET/$repo/actions/variables"
+    save "$d/actions-secret-names.json" "/repos/$TARGET/$repo/actions/secrets"
+    save "$d/pages.json"                "/repos/$TARGET/$repo/pages"
+    save "$d/rulesets.json"             "/repos/$TARGET/$repo/rulesets"
     # FIX: the ruleset LIST only has id/name/enforcement; the rules, conditions
     # and bypass actors needed for a restore are in the per-ruleset endpoint.
     if [ "$DRY_RUN" != 1 ] && [ -f "$d/rulesets.json" ]; then
@@ -732,26 +1014,26 @@ except Exception: pass' < "$d/rulesets.json" 2>/dev/null || true)"
         [ "$DRY_RUN" = 1 ] || mkdir -p "$d/rulesets-detail"
         while IFS= read -r rid; do
           [ -n "$rid" ] || continue
-          save "$d/rulesets-detail/$rid.json" "/repos/$ORG/$repo/rulesets/$rid"
+          save "$d/rulesets-detail/$rid.json" "/repos/$TARGET/$repo/rulesets/$rid"
         done <<< "$RS_IDS"
       fi
     fi
     # NEW: Actions definitions and recent history (metadata only, no logs)
-    save "$d/actions-workflows.json"    "/repos/$ORG/$repo/actions/workflows"
-    save "$d/actions-runs-recent.json"  "/repos/$ORG/$repo/actions/runs?per_page=100"
+    save "$d/actions-workflows.json"    "/repos/$TARGET/$repo/actions/workflows"
+    save "$d/actions-runs-recent.json"  "/repos/$TARGET/$repo/actions/runs?per_page=100"
     # NEW: open security alerts, so they survive even if the repo is deleted
-    save "$d/dependabot-alerts.json"    "/repos/$ORG/$repo/dependabot/alerts?state=open"
-    save "$d/secret-scanning-alerts.json" "/repos/$ORG/$repo/secret-scanning/alerts?state=open"
+    save "$d/dependabot-alerts.json"    "/repos/$TARGET/$repo/dependabot/alerts?state=open"
+    save "$d/secret-scanning-alerts.json" "/repos/$TARGET/$repo/secret-scanning/alerts?state=open"
     # NEW: community health snapshot
-    save "$d/community-profile.json"    "/repos/$ORG/$repo/community/profile"
+    save "$d/community-profile.json"    "/repos/$TARGET/$repo/community/profile"
     # NEW: topics and language breakdown - plain repo metadata, no PII
-    save "$d/topics.json"               "/repos/$ORG/$repo/topics"
-    save "$d/languages.json"            "/repos/$ORG/$repo/languages"
-    branch="$(api_get "/repos/$ORG/$repo" 2>/dev/null | python3 -c \
+    save "$d/topics.json"               "/repos/$TARGET/$repo/topics"
+    save "$d/languages.json"            "/repos/$TARGET/$repo/languages"
+    branch="$(api_get "/repos/$TARGET/$repo" 2>/dev/null | python3 -c \
       'import sys,json
 try: print(json.load(sys.stdin).get("default_branch") or "")
 except Exception: pass' 2>/dev/null || true)"
-    [ -z "$branch" ] || save "$d/branch-protection.json" "/repos/$ORG/$repo/branches/$branch/protection"
+    [ -z "$branch" ] || save "$d/branch-protection.json" "/repos/$TARGET/$repo/branches/$branch/protection"
     rmdir "$d/rulesets-detail" "$d/environments-detail" 2>/dev/null || true
     rmdir "$d" 2>/dev/null || true
   done <<< "$REPO_LIST"
@@ -767,7 +1049,9 @@ process_repo() {
     git --git-dir="$r/repository" fsck --no-progress >/dev/null 2>&1 \
       || warn "git fsck failed: $r/repository"
   fi
-  rm -rf "$r/source" "$r/wiki-source"
+  # FIX: this ran under --dry-run too and deleted source/ folders left by an
+  # earlier real run, in a mode documented as changing nothing.
+  if [ "$DRY_RUN" != 1 ]; then rm -rf "$r/source" "$r/wiki-source"; fi
   if [ "$INCLUDE_SOURCE" = 1 ] && [ "$DRY_RUN" != 1 ]; then
     if [ -d "$r/repository" ]; then
       git clone --quiet "$r/repository" "$r/source" 2>/dev/null \
@@ -851,8 +1135,12 @@ if [ "$DRY_RUN" != 1 ]; then sanitize_dir; else log "[dry-run] sanitize_dir"; fi
 if [ "$DRY_RUN" != 1 ]; then
   MANIFEST="$BACKUP_DIR/backup-manifest.json"
   {
-    printf '{\n  "org": "%s",\n  "timestamp": "%s",\n  "hostname": "%s",\n' \
-      "$ORG" "$(date -u +%FT%TZ)" "$(hostname 2>/dev/null || echo unknown)"
+    printf '{\n  "kind": "%s",\n  "target": "%s",\n' "$TARGET_KIND" "$TARGET"
+    # "org" is kept for organization backups so existing readers of the manifest
+    # keep working; accounts only have "kind"/"target".
+    if [ "$TARGET_KIND" = org ]; then printf '  "org": "%s",\n' "$TARGET"; fi
+    printf '  "timestamp": "%s",\n  "hostname": "%s",\n' \
+      "$(date -u +%FT%TZ)" "$(hostname 2>/dev/null || echo unknown)"
     printf '  "repositories": ['
     first=1
     # FIX: a plain */ glob skips dot-directories, so the `.github` repository
@@ -868,8 +1156,9 @@ if [ "$DRY_RUN" != 1 ]; then
       first=0
     done
     shopt -u dotglob nullglob
-    printf '\n  ],\n  "encrypted": %s,\n  "include_source": %s\n}\n' \
+    printf '\n  ],\n  "encrypted": %s,\n  "include_git": %s,\n  "include_source": %s\n}\n' \
       "$([ "$ENCRYPT" = 7z ] || [ "$ENCRYPT" = gpg ] && echo true || echo false)" \
+      "$([ "$INCLUDE_GIT" = 1 ] && echo true || echo false)" \
       "$([ "$INCLUDE_SOURCE" = 1 ] && echo true || echo false)"
   } > "$MANIFEST"
   log "Wrote $MANIFEST"
@@ -895,7 +1184,7 @@ if [ "$ENCRYPT" = 7z ]; then
     command -v 7z >/dev/null 2>&1 \
       || die "7z is required for ENCRYPT=7z. Install it (apt: p7zip-full, dnf: p7zip-plugins, brew: p7zip) or use ENCRYPT=none."
   fi
-  ARCHIVE="$OUT_DIR/$ORG-$DATE.7z"
+  ARCHIVE="$OUT_DIR/$TARGET-$DATE.7z"
   rm -f "$ARCHIVE"
   # NEW: ARCHIVE_PASSWORD lets this run unattended (CI, a cron job with no
   # tty) instead of only ever prompting interactively.
@@ -926,7 +1215,7 @@ elif [ "$ENCRYPT" = gpg ]; then
   # package on most systems (gpg ships with git/ssh toolchains already).
   command -v gpg >/dev/null 2>&1 \
     || die "gpg is required for ENCRYPT=gpg. Install it (apt/dnf: gnupg, brew: gnupg) or use ENCRYPT=none/7z."
-  ARCHIVE="$OUT_DIR/$ORG-$DATE.tar.gz.gpg"
+  ARCHIVE="$OUT_DIR/$TARGET-$DATE.tar.gz.gpg"
   rm -f "$ARCHIVE"
   if [ "$DRY_RUN" = 1 ]; then
     log "[dry-run] tar -czf - $BASE | gpg --symmetric -o $ARCHIVE"
@@ -965,27 +1254,39 @@ elif [ "$ENCRYPT" = gpg ]; then
     log "Archive test passed"
   fi
 else
-  ARCHIVE="$OUT_DIR/$ORG-$DATE.tar.gz"
+  ARCHIVE="$OUT_DIR/$TARGET-$DATE.tar.gz"
   if [ "$DRY_RUN" = 1 ]; then
     log "[dry-run] tar -czf $ARCHIVE -C $PARENT $BASE"
     log "WARNING: the archive would NOT be encrypted."
   else
-    note "the archive is NOT encrypted (you asked for --encrypt none). It contains private code; encrypt it before uploading anywhere."
+    if [ "${UPLOAD_ARCHIVE:-0}" = 1 ]; then
+      note "the archive is NOT encrypted and will be uploaded as-is (ALLOW_PLAINTEXT_UPLOAD=1). Anyone who can download the upload can read it."
+    else
+      note "the archive is NOT encrypted (you asked for --encrypt none). It holds private organization/account data; encrypt it before sharing or uploading it anywhere."
+    fi
     tar -czf "$ARCHIVE" -C "$PARENT" "$BASE"
     tar -tzf "$ARCHIVE" >/dev/null || die "archive verification failed"
-    # FIX: `tar -tzf` only proves the archive is readable, not that it contains
-    # the repositories. Count them and compare against what was backed up.
-    # Same missing-directory guard as ACTUAL above: `find` on an absent path
-    # exits 1 and pipefail turns that into an abort.
-    want=0
-    if [ -d "$BACKUP_DIR/repositories" ]; then
-      want="$(find "$BACKUP_DIR/repositories" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
+    if [ "$INCLUDE_GIT" = 1 ]; then
+      # FIX: `tar -tzf` only proves the archive is readable, not that it contains
+      # the repositories. Count them and compare against what was backed up.
+      # Same missing-directory guard as ACTUAL above: `find` on an absent path
+      # exits 1 and pipefail turns that into an abort.
+      want=0
+      if [ -d "$BACKUP_DIR/repositories" ]; then
+        want="$(find "$BACKUP_DIR/repositories" -mindepth 1 -maxdepth 1 -type d | wc -l | tr -d ' ')"
+      fi
+      got="$(tar -tzf "$ARCHIVE" | grep -c "/repositories/[^/]*/repository/HEAD$" || true)"
+      if [ "${want:-0}" -gt 0 ] && [ "${got:-0}" != "${want:-0}" ]; then
+        die "archive contains $got bare repositories but $want were backed up - refusing to prune or finish"
+      fi
+      log "Archive content verified: $got bare repository(ies) present"
+    else
+      # No git data was requested, so there are no bare repositories to count.
+      # Check the opposite instead: none may have slipped in.
+      got="$(tar -tzf "$ARCHIVE" | grep -c "/repositories/[^/]*/repository/HEAD$" || true)"
+      [ "${got:-0}" = 0 ] || die "metadata-only archive unexpectedly contains $got bare repositories - refusing to finish"
+      log "Archive content verified: metadata only, no git data"
     fi
-    got="$(tar -tzf "$ARCHIVE" | grep -c "/repositories/[^/]*/repository/HEAD$" || true)"
-    if [ "${want:-0}" -gt 0 ] && [ "${got:-0}" != "${want:-0}" ]; then
-      die "archive contains $got bare repositories but $want were backed up - refusing to prune or finish"
-    fi
-    log "Archive content verified: $got bare repository(ies) present"
   fi
 fi
 
@@ -1016,7 +1317,13 @@ fi
 if [ "$DRY_RUN" != 1 ]; then
   pruned=0
   tmplist="$(mktemp)"
-  for f in "$OUT_DIR/$ORG"-*.7z "$OUT_DIR/$ORG"-*.tar.gz "$OUT_DIR/$ORG"-*.tar.gz.gpg; do
+  # FIX: `NAME-*` also matched another target's archives whose name merely starts
+  # with this one (org `forge` vs account `forge-bot`: forge-bot-2026-11-21.7z),
+  # so with --keep 1 one target's run deleted the other's archive. Archive names
+  # are always NAME-YYYY-MM-DD.ext; match the date shape, not a bare prefix.
+  for f in "$OUT_DIR/$TARGET"-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].7z \
+           "$OUT_DIR/$TARGET"-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].tar.gz \
+           "$OUT_DIR/$TARGET"-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].tar.gz.gpg; do
     [ -f "$f" ] || continue
     printf '%s %s\n' "$(mtime_of "$f")" "$f" >> "$tmplist"
   done
@@ -1049,8 +1356,12 @@ echo
 echo "Next steps:"
 echo "  1. Download the archive and verify it locally:"
 echo "       bash $0 --verify-only /path/to/$(basename "${ARCHIVE:-archive}")"
-echo "  2. Try restoring one repository from the bare clone:"
-echo "       git clone <archive>/repositories/<name>/repository restored-<name>"
+if [ "$INCLUDE_GIT" = 1 ]; then
+  echo "  2. Try restoring one repository from the bare clone:"
+  echo "       git clone <archive>/repositories/<name>/repository restored-<name>"
+else
+  echo "  2. This archive is metadata only (issues, PRs, releases, settings). Add --with-git for repositories and history."
+fi
 echo "  3. Revoke the token on GitHub (Settings > Developer settings)"
 echo "  4. Only then delete the machine this ran on"
 if [ "$DRY_RUN" != 1 ]; then
