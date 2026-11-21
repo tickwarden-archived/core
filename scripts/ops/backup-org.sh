@@ -1190,6 +1190,13 @@ if [ "$ENCRYPT" = 7z ]; then
   # tty) instead of only ever prompting interactively.
   if [ -n "${ARCHIVE_PASSWORD:-}" ]; then
     PW1="$ARCHIVE_PASSWORD"
+  elif [ "$DRY_RUN" = 1 ]; then
+    # FIX 2026-11-21: a dry run encrypts nothing, so it must not demand (or
+    # prompt for) a password. The CI rehearsal step deliberately runs without
+    # the archive secret and used to die here, failing both targets. Mirrors
+    # the gpg branch below, which only warns.
+    PW1=""
+    log "[dry-run] ARCHIVE_PASSWORD is not set; a real run with ENCRYPT=7z would need it (or an interactive terminal)."
   else
     log "Set an archive password (ASCII characters only)."
     if [ ! -t 0 ]; then die "ENCRYPT=7z needs ARCHIVE_PASSWORD set, or an interactive password prompt"; fi
