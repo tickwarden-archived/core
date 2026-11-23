@@ -13,7 +13,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/vf_macro/functions/_vc_origin.mcfunction",
     "data/vf_macro/functions/api/data/from_score.mcfunction",
     "data/vf_macro/functions/api/data/from_storage.mcfunction",
     "data/vf_macro/functions/api/data/set.mcfunction",
@@ -140,5 +139,8 @@
     "data/vf_macro/functions/string/sign_read.mcfunction": "55b433edef25368aced4664f0c1fcbcc74a75eb9fcfd360d3692f84cf4ddc605",
     "data/vf_macro/functions/string/sign_write.mcfunction": "9b0b2af78950fb6514d27888485a3ea7d8dd91d9bb539e376464314ffa6cb2df",
     "pack.mcmeta": "e92de53bd3de04d1f6c06ecd843584b562657d9bbdf1f94daca3caae13608b2a"
-  }
+  },
+  "comment_only_functions": [
+    "data/vf_macro/functions/_vc_origin.mcfunction"
+  ]
 }

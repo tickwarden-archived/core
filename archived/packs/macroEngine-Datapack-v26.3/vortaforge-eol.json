@@ -20,7 +20,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/macroengine/function/_vc_origin.mcfunction",
     "data/macroengine/function/api/block/hopper_in.mcfunction",
     "data/macroengine/function/api/block/hopper_out.mcfunction",
     "data/macroengine/function/api/block/insert.mcfunction",
@@ -2833,5 +2832,8 @@
     "pack.mcmeta": "0a889fd7acbc60176df981c5f2f55406f90f07dda8504f3f4453cdab75b46ac8",
     "pack.png": "279e0392e05547e601cdd97a9f63e82e2b178cf0db68357b8ebc1bb35fb952ba",
     "playeraction-rewrite-plan.md": "23b7196b7a0b439bd3fdd1ca511ad70c5b91f07ad1d9dfc948daddc0c0ca68fc"
-  }
+  },
+  "comment_only_functions": [
+    "data/macroengine/function/_vc_origin.mcfunction"
+  ]
 }

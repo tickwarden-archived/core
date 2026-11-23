@@ -27,7 +27,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/ts/functions/_vc_origin.mcfunction",
     "data/ts/functions/archive_warning.mcfunction",
     "data/ts/functions/batch/delete.mcfunction",
     "data/ts/functions/batch/list.mcfunction",
@@ -80,7 +79,6 @@
     "data/ts/functions/trust/grant.mcfunction",
     "data/ts/functions/trust/revoke.mcfunction",
     "data/ts/functions/version.mcfunction",
-    "data/ts_util/functions/_vc_origin.mcfunction",
     "data/ts_util/functions/archive_warning.mcfunction",
     "data/ts_util/functions/data/copy.mcfunction",
     "data/ts_util/functions/data/list_length.mcfunction",
@@ -94,7 +92,6 @@
     "data/ts_util/functions/text/join.mcfunction",
     "data/ts_util/functions/time/daytime.mcfunction",
     "data/ts_util/functions/time/gametime.mcfunction",
-    "data/tunnelscript_core/functions/_vc_origin.mcfunction",
     "data/tunnelscript_core/functions/archive_warning.mcfunction",
     "data/tunnelscript_core/functions/internal/command_list_start.mcfunction",
     "data/tunnelscript_core/functions/internal/do_run.mcfunction",
@@ -255,5 +252,10 @@
     "pack.png": "a96dcfc6660ac4a9a4a5fe5f8d0e323671ab3fd93afb4f1e9a85d7e6018010e4",
     "tools/build_versions.py": "a49135c1a53dbfb6fe8b2879e5d0d679db8abefe2126829f72be79026ed4968e",
     "tools/setup_custom_properties.sh": "9d6342938f73a3f9a3e171c32a89cff205092aaf59cc64593bdedcf2dc6cfc2f"
-  }
+  },
+  "comment_only_functions": [
+    "data/ts/functions/_vc_origin.mcfunction",
+    "data/ts_util/functions/_vc_origin.mcfunction",
+    "data/tunnelscript_core/functions/_vc_origin.mcfunction"
+  ]
 }

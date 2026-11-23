@@ -20,7 +20,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/dailybonus/function/_vc_origin.mcfunction",
     "data/dailybonus/function/archive_warning.mcfunction",
     "data/dailybonus/function/grant.mcfunction",
     "data/dailybonus/function/load.mcfunction",
@@ -49,5 +48,8 @@
     "data/minecraft/tags/function/load.json": "32e4be03fc69981d28b9532eb142b46c52b7b6856e39ee56aee7123d6d4f8463",
     "data/minecraft/tags/function/tick.json": "ef04b61cfad79f53bfe79e7d0a88eae0a70615e3aa592dbdd58c57bfc8cbe87e",
     "pack.mcmeta": "d987bfe87e9ede8e84a8a5610856d405d7de3ac5ad3625a66b800b7542da3565"
-  }
+  },
+  "comment_only_functions": [
+    "data/dailybonus/function/_vc_origin.mcfunction"
+  ]
 }

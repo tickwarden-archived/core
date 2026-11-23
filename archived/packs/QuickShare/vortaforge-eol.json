@@ -20,7 +20,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/quickshare/function/_vc_origin.mcfunction",
     "data/quickshare/function/archive_warning.mcfunction",
     "data/quickshare/function/drop_mainhand_copy.mcfunction",
     "data/quickshare/function/load.mcfunction",
@@ -49,5 +48,8 @@
     "data/quickshare/function/share.mcfunction": "89af72e139fa5e08ab65314333ae1865b2ff6c1c032c3abf51e46e35f942b068",
     "data/quickshare/function/tick.mcfunction": "e28b2b79297566bbf49bbc81f819e0c54369199f2c54265ec763b17b4acf21c0",
     "pack.mcmeta": "e8686c293bd99d07ef1ce5354d0e711ae48bfa06dd32975c61e8223b93ae6a5c"
-  }
+  },
+  "comment_only_functions": [
+    "data/quickshare/function/_vc_origin.mcfunction"
+  ]
 }

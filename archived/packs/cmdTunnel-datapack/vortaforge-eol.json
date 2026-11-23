@@ -22,15 +22,13 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/cmd_tunnel_sys/functions/_vc_origin.mcfunction",
     "data/cmd_tunnel_sys/functions/archive_warning.mcfunction",
     "data/cmd_tunnel_sys/functions/dynamic_off.mcfunction",
     "data/cmd_tunnel_sys/functions/dynamic_on.mcfunction",
     "data/cmd_tunnel_sys/functions/init.mcfunction",
     "data/cmd_tunnel_sys/functions/reset.mcfunction",
     "data/cmd_tunnel_sys/functions/run.mcfunction",
-    "data/cmd_tunnel_sys/functions/run_exec.mcfunction",
-    "data/minecraft/function/_vc_origin.mcfunction"
+    "data/cmd_tunnel_sys/functions/run_exec.mcfunction"
   ],
   "readonly_functions": [],
   "literal_internal_scheduled_targets_for_manual_ownership_review": [
@@ -61,5 +59,9 @@
     "data/minecraft/function/_vc_origin.mcfunction": "ee099fa0e90695c1cc722971d7380b79782bd1565acc01f46c94602a53448103",
     "data/minecraft/tags/functions/load.json": "7a24940368831544070e1e198c645e520eebbf503261e9f97aefb6b1977c949a",
     "pack.mcmeta": "117471ddc60077dcb5829b1a782534778068bc0dac04db1089e12e40a873568f"
-  }
+  },
+  "comment_only_functions": [
+    "data/cmd_tunnel_sys/functions/_vc_origin.mcfunction",
+    "data/minecraft/function/_vc_origin.mcfunction"
+  ]
 }

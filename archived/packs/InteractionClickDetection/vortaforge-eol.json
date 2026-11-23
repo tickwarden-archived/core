@@ -13,9 +13,9 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/click_detection/functions/_vc_origin.mcfunction",
     "data/click_detection/functions/on_lc.mcfunction",
-    "data/click_detection/functions/on_rc.mcfunction"
+    "data/click_detection/functions/on_rc.mcfunction",
+    "data/click_detection/functions/archive_warning.mcfunction"
   ],
   "readonly_functions": [],
   "literal_internal_scheduled_targets_for_manual_ownership_review": [],
@@ -41,5 +41,11 @@
     "data/click_detection/tags/functions/on_lc.json": "489711deb6d620e83d3dd373268130b27115d3d1be943672f2eab8f656bfae80",
     "data/click_detection/tags/functions/on_rc.json": "489711deb6d620e83d3dd373268130b27115d3d1be943672f2eab8f656bfae80",
     "pack.mcmeta": "60ca0da598b2d6ff8092aebc9eeac252d2ac26d9c079ba1dd640f908df84fb52"
-  }
+  },
+  "comment_only_functions": [
+    "data/click_detection/functions/_vc_origin.mcfunction"
+  ],
+  "generated_warning_functions": [
+    "data/click_detection/functions/archive_warning.mcfunction"
+  ]
 }

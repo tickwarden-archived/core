@@ -21,7 +21,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/rtwrapper/function/_vc_origin.mcfunction",
     "data/rtwrapper/function/api/autotick/off.mcfunction",
     "data/rtwrapper/function/api/autotick/on.mcfunction",
     "data/rtwrapper/function/api/clear_queue.mcfunction",
@@ -1399,5 +1398,8 @@
     "data/rtwrapper/function/uninstall.mcfunction": "d3956c88128290d33338d347d2b17508c294a3989acf190b65e52a2571890c23",
     "pack.mcmeta": "93e92de028394fe11a051d114e801c23057749c2b8a1d17cd753a1f47ada6403",
     "pack.png": "05427afd888538382ab8207d55199a2408df7cbcaa2092194496505e4006cba4"
-  }
+  },
+  "comment_only_functions": [
+    "data/rtwrapper/function/_vc_origin.mcfunction"
+  ]
 }

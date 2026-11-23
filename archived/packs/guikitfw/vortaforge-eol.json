@@ -19,7 +19,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/guikit/function/_vc_origin.mcfunction",
     "data/guikit/function/act/_commands.mcfunction",
     "data/guikit/function/act/_commands_one.mcfunction",
     "data/guikit/function/act/_counter_add.mcfunction",
@@ -433,5 +432,8 @@
     "data/minecraft/tags/function/load.json": "71317cf5b1a479927f2a1568b20d6f1809f2f01830e9fe22e03f59a1687e4ae8",
     "data/minecraft/tags/function/tick.json": "1e6b8efb7f6d7af4e710766456de308aac3da3e0798e371ab90e971a81227bd9",
     "pack.mcmeta": "8d82a237874d2c678208ed28fbca1e3ccc1bfeebf3776f3c26c48fe8e795d83d"
-  }
+  },
+  "comment_only_functions": [
+    "data/guikit/function/_vc_origin.mcfunction"
+  ]
 }

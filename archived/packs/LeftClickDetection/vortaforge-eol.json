@@ -17,7 +17,6 @@
   "read_only_at_ticks": 5184000,
   "locked_at_ticks": 12096000,
   "guarded_functions": [
-    "data/left_click_detection/functions/_vc_origin.mcfunction",
     "data/left_click_detection/functions/api/disable.mcfunction",
     "data/left_click_detection/functions/api/enable.mcfunction",
     "data/left_click_detection/functions/archive_warning.mcfunction",
@@ -27,8 +26,7 @@
     "data/left_click_detection/functions/core/handler.mcfunction",
     "data/left_click_detection/functions/core/load.mcfunction",
     "data/left_click_detection/functions/core/tick/_.mcfunction",
-    "data/left_click_detection/functions/core/tick/update.mcfunction",
-    "data/minecraft/function/_vc_origin.mcfunction"
+    "data/left_click_detection/functions/core/tick/update.mcfunction"
   ],
   "readonly_functions": [],
   "literal_internal_scheduled_targets_for_manual_ownership_review": [],
@@ -62,5 +60,9 @@
     "data/minecraft/tags/functions/load.json": "6c0584e742ee0ab8b6bccbf99cec3b2bdd2a1c960b9cf82cf216fcbc612e7351",
     "data/minecraft/tags/functions/tick.json": "9d2e579bca1c8a6208832ee873a44c1a72c1b984928c13499470804e4f5ce5ca",
     "pack.mcmeta": "bee6d29d3dce813e7ced8b1e3ddd1721cd4566c9953004a7053d7cab2c99685c"
-  }
+  },
+  "comment_only_functions": [
+    "data/left_click_detection/functions/_vc_origin.mcfunction",
+    "data/minecraft/function/_vc_origin.mcfunction"
+  ]
 }
