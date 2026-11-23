@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / '.github/actions/verify-sha256/verify.py'
+SCRIPT = ROOT / 'actions/verify-sha256/verify.py'
 spec = importlib.util.spec_from_file_location('verify_public_sha256', SCRIPT)
 verify = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verify)
@@ -75,13 +75,26 @@ class VerifyManifest(unittest.TestCase):
         self.assertIn('must be true or false', result.stderr)
 
 class ActionWiring(unittest.TestCase):
+    def test_root_dispatcher_and_standalone_actions_are_present(self):
+        root = (ROOT / 'action.yml').read_text(encoding='utf-8')
+        self.assertIn('using: composite', root)
+        for name, helper in [('download','download.py'), ('execute','execute.py'), ('vf_script','vf_script.py'), ('verify-sha256','verify.py')]:
+            self.assertTrue((ROOT / 'actions' / name / 'action.yml').is_file(), name)
+            self.assertIn(f'$GITHUB_ACTION_PATH/actions/{name}/{helper}', root)
+        for name in ('setup-toolchain', 'verify-sha256', 'download', 'execute', 'vf_script'):
+            self.assertIn(name, root)
+        toolchain = (ROOT / 'actions/setup-toolchain/action.yml').read_text(encoding='utf-8')
+        for pin in ('b843ebf9b913146b38da2eaa7aeddf76074ae1ad', '6d4fd22b20465ccc0f7354476588e8df7c9ca0e0', '949feb2413d6458794dcd2491c4babbbce0c15c1', '3f5f9adaf7d9fecd50b5935e54106014257a94e6'):
+            self.assertIn(pin, root)
+            self.assertIn(pin, toolchain)
+
     def test_reuses_local_actions_after_checkout(self):
         for name in ('quality.yml', 'backup-org.yml', 'macroengine-modules.yml'):
             text = (ROOT / '.github/workflows' / name).read_text(encoding='utf-8')
-            self.assertIn('uses: ./.github/actions/setup-toolchain', text, name)
-            self.assertLess(text.index('actions/checkout@'), text.index('uses: ./.github/actions/setup-toolchain'), name)
+            self.assertIn('uses: ./actions/setup-toolchain', text, name)
+            self.assertLess(text.index('actions/checkout@'), text.index('uses: ./actions/setup-toolchain'), name)
         quality = (ROOT / '.github/workflows/quality.yml').read_text(encoding='utf-8')
-        self.assertIn('uses: ./.github/actions/verify-sha256', quality)
+        self.assertIn('uses: ./actions/verify-sha256', quality)
         self.assertIn('reject-extra: "true"', quality)
 
 if __name__ == '__main__':

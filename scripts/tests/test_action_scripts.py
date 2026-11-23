@@ -17,9 +17,9 @@ def load(name, path):
     spec.loader.exec_module(mod)
     return mod
 
-dl = load('vf_dl_test', ROOT / '.github/actions/download/download.py')
-execute = load('vf_exec_test', ROOT / '.github/actions/execute/execute.py')
-vf = load('vf_python_test', ROOT / '.github/actions/vf_script/vf_script.py')
+dl = load('vf_dl_test', ROOT / 'actions/download/download.py')
+execute = load('vf_exec_test', ROOT / 'actions/execute/execute.py')
+vf = load('vf_python_test', ROOT / 'actions/vf_script/vf_script.py')
 
 class PythonAction(unittest.TestCase):
     def setUp(self):

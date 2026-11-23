@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Python 3.12
-        uses: ./.github/actions/setup-toolchain
+        uses: ./actions/setup-toolchain
         with:
           python-version: "3.12"
 
@@ -183,7 +183,7 @@ jobs:
       # Node 24 is required for the website behaviour test. The composite action
       # configures only the explicitly requested runtimes and preserves pip cache.
       - name: Set up CI toolchain
-        uses: ./.github/actions/setup-toolchain
+        uses: ./actions/setup-toolchain
         with:
           java-version: "25"
           python-version: "3.12"
@@ -248,7 +248,7 @@ jobs:
           ( cd release-assets && sha256sum -- *.jar > SHA256SUMS )
 
       - name: Verify release checksums
-        uses: ./.github/actions/verify-sha256
+        uses: ./actions/verify-sha256
         with:
           directory: release-assets
           reject-extra: "true"

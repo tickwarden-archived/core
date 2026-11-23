@@ -2,7 +2,23 @@
 
 These composite actions live in the public `vortaforge/core` repository. Any GitHub account or organization, including personal accounts, can reference them from a workflow after the containing commit is published. A consumer's organization Actions policy must allow public third-party actions. Marketplace registration is not required and has not been enabled.
 
-For reproducible and safer consumption, pin the reference to the full 40-character commit SHA you have reviewed. `@main` in the examples follows new changes and should be used only if that is acceptable. Until this pull request is merged, `@main` does **not** contain these actions; a published PR commit SHA can be used for testing. No repository-specific secret, VortaForge membership or personal access token is required for these actions. Actions do not change access settings of the consumer repository. Use a read-only `GITHUB_TOKEN` unless your own workflow needs more.
+For reproducible and safer consumption, pin the reference to the full 40-character commit SHA you have reviewed. `@main` in the examples follows new changes and should be used only if that is acceptable. Until this change is merged, `@main` does **not** contain the new root paths; a published PR commit SHA can be used for testing. No repository-specific secret, VortaForge membership or personal access token is required for these actions. Actions do not change access settings of the consumer repository. Use a read-only `GITHUB_TOKEN` unless your own workflow needs more.
+
+## Root dispatcher
+
+Use `vortaforge/core@<reviewed-commit-SHA>` to call the root `action.yml`; set `action` to `setup-toolchain`, `verify-sha256`, `download`, `execute` or `vf_script`. Inputs and outputs are the same as the corresponding standalone action below. The root action loads its bundled helpers from its own action directory, not the caller's checkout.
+
+```yaml
+      - uses: vortaforge/core@main
+        id: python
+        with:
+          action: vf_script
+          code: |
+            import json
+            print(json.dumps({'hello': 'world'}))
+```
+
+**Path migration:** standalone actions are now under `vortaforge/core/actions/<name>@<ref>`, not `.github/actions/<name>`. Once this change is merged, callers using the old path with `@main` must update their workflows. Callers pinned to an older commit keep the old paths at that commit. Update references deliberately; a tag or `main` does not update anyone's workflows automatically.
 
 ## Setup toolchain
 
@@ -18,7 +34,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-      - uses: vortaforge/core/.github/actions/setup-toolchain@main
+      - uses: vortaforge/core/actions/setup-toolchain@main
         id: toolchain
         with:
           python-version: '3.12'
@@ -37,7 +53,7 @@ Optional outputs: `python-version`, `node-version` and `java-version`; skipped t
 Generate a GNU-style `SHA256SUMS` (`sha256sum -- file1 file2 > SHA256SUMS`), then:
 
 ```yaml
-      - uses: vortaforge/core/.github/actions/verify-sha256@main
+      - uses: vortaforge/core/actions/verify-sha256@main
         id: checksum
         with:
           directory: release-assets
@@ -59,7 +75,7 @@ Requires Python 3.9+ and Bash on the runner. Supports relative nested paths, rej
 ## Download a public VortaForge repository
 
 ```yaml
-      - uses: vortaforge/core/.github/actions/download@main
+      - uses: vortaforge/core/actions/download@main
         id: source
         with:
           repository: docs                 # or vortaforge/docs
@@ -75,7 +91,7 @@ Only public repositories owned by `vortaforge` are accepted; the action does not
 ## Execute a script from a public VortaForge repository
 
 ```yaml
-      - uses: vortaforge/core/.github/actions/execute@main
+      - uses: vortaforge/core/actions/execute@main
         with:
           repository: core
           ref: main
@@ -91,7 +107,7 @@ The script must be inside the downloaded repository; arguments are a JSON string
 ## Run Python code: `vf_script`
 
 ```yaml
-      - uses: vortaforge/core/.github/actions/vf_script@main
+      - uses: vortaforge/core/actions/vf_script@main
         with:
           code: |
             import requests
