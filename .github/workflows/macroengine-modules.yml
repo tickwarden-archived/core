@@ -5,11 +5,13 @@ on:
     paths:
       - 'components/macroengine-modules/**'
       - 'archived/packs/macroEngine-Datapack-v26.3/**'
+      - '.github/actions/setup-toolchain/**'
       - '.github/workflows/macroengine-modules.yml'
   pull_request:
     paths:
       - 'components/macroengine-modules/**'
       - 'archived/packs/macroEngine-Datapack-v26.3/**'
+      - '.github/actions/setup-toolchain/**'
       - '.github/workflows/macroengine-modules.yml'
   workflow_dispatch:
 
@@ -26,13 +28,11 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0 # Required for the pinned pre-EOL mod input tree.
-      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+      - name: Set up Fabric build toolchain
+        uses: ./.github/actions/setup-toolchain
         with:
-          distribution: temurin
           java-version: '25'
-      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6
-        with:
-          validate-wrappers: true
+          gradle: 'true'
       - name: Generate and validate modules without a Minecraft server
         shell: bash
         run: |

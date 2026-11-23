@@ -1,0 +1,93 @@
+name: Setup project toolchain
+description: Configure selected Python, Node, Java and Gradle tools with pinned setup actions.
+inputs:
+  python-version:
+    description: Python version; leave empty to skip Python.
+    required: false
+    default: ''
+  python-cache:
+    description: Enable setup-python pip caching (true or false; requires dependency files).
+    required: false
+    default: 'false'
+  python-cache-dependency-path:
+    description: Optional dependency file or glob for the pip cache key.
+    required: false
+    default: ''
+  node-version:
+    description: Node.js version; leave empty to skip Node.
+    required: false
+    default: ''
+  java-version:
+    description: Java version; leave empty to skip Java.
+    required: false
+    default: ''
+  java-distribution:
+    description: Distribution accepted by actions/setup-java.
+    required: false
+    default: temurin
+  gradle:
+    description: Configure Gradle using gradle/actions/setup-gradle (true or false).
+    required: false
+    default: 'false'
+  validate-gradle-wrappers:
+    description: Validate Gradle wrapper JARs (true or false).
+    required: false
+    default: 'true'
+outputs:
+  python-version:
+    description: Resolved Python version, when requested.
+    value: ${{ steps.python.outputs.python-version }}
+  node-version:
+    description: Resolved Node version, when requested.
+    value: ${{ steps.node.outputs.node-version }}
+  java-version:
+    description: Resolved Java version, when requested.
+    value: ${{ steps.java.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - name: Validate toolchain inputs
+      shell: bash
+      env:
+        PYTHON_VERSION: ${{ inputs.python-version }}
+        PYTHON_CACHE: ${{ inputs.python-cache }}
+        JAVA_VERSION: ${{ inputs.java-version }}
+        GRADLE: ${{ inputs.gradle }}
+        VALIDATE_WRAPPERS: ${{ inputs.validate-gradle-wrappers }}
+      run: |
+        set -euo pipefail
+        case "$PYTHON_CACHE" in true|false) ;; *) echo '::error::python-cache must be true or false'; exit 1;; esac
+        case "$GRADLE" in true|false) ;; *) echo '::error::gradle must be true or false'; exit 1;; esac
+        case "$VALIDATE_WRAPPERS" in true|false) ;; *) echo '::error::validate-gradle-wrappers must be true or false'; exit 1;; esac
+        if [[ "$PYTHON_CACHE" == true && -z "$PYTHON_VERSION" ]]; then
+          echo '::error::python-cache requires python-version'; exit 1
+        fi
+        if [[ "$GRADLE" == true && -z "$JAVA_VERSION" ]]; then
+          echo '::error::gradle requires java-version'; exit 1
+        fi
+    - name: Set up Java
+      id: java
+      if: ${{ inputs.java-version != '' }}
+      uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+      with:
+        distribution: ${{ inputs.java-distribution }}
+        java-version: ${{ inputs.java-version }}
+    - name: Set up Python
+      id: python
+      if: ${{ inputs.python-version != '' }}
+      uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: ${{ inputs.python-cache == 'true' && 'pip' || '' }}
+        cache-dependency-path: ${{ inputs.python-cache-dependency-path }}
+    - name: Set up Node
+      id: node
+      if: ${{ inputs.node-version != '' }}
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: ${{ inputs.node-version }}
+    - name: Set up Gradle
+      if: ${{ inputs.gradle == 'true' }}
+      uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+      with:
+        validate-wrappers: ${{ inputs.validate-gradle-wrappers }}

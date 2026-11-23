@@ -1,0 +1,43 @@
+name: Verify SHA-256 manifest
+description: Verify nonempty files against a SHA256SUMS manifest without network access.
+inputs:
+  directory:
+    description: Directory containing the manifest and files.
+    required: false
+    default: '.'
+  manifest:
+    description: Manifest filename relative to directory.
+    required: false
+    default: SHA256SUMS
+  reject-extra:
+    description: Fail if unlisted files are present (true or false).
+    required: false
+    default: 'false'
+  allow-empty:
+    description: Allow zero-byte files (true or false).
+    required: false
+    default: 'false'
+  summary:
+    description: Write verified counts to the job summary (true or false).
+    required: false
+    default: 'true'
+outputs:
+  files:
+    description: Number of verified files.
+    value: ${{ steps.verify.outputs.files }}
+  bytes:
+    description: Number of verified bytes.
+    value: ${{ steps.verify.outputs.bytes }}
+runs:
+  using: composite
+  steps:
+    - name: Verify SHA-256 checksums
+      id: verify
+      shell: bash
+      env:
+        CHECK_DIRECTORY: ${{ inputs.directory }}
+        CHECK_MANIFEST: ${{ inputs.manifest }}
+        CHECK_REJECT_EXTRA: ${{ inputs.reject-extra }}
+        CHECK_ALLOW_EMPTY: ${{ inputs.allow-empty }}
+        CHECK_SUMMARY: ${{ inputs.summary }}
+      run: python3 "$GITHUB_ACTION_PATH/verify.py"
