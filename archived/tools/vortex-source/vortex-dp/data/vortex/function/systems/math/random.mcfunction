@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────────────────────────
+# vortex:systems/math/random [MACRO]
+# Uniform integer in [min, max] inclusive.
+#
+# INPUT:  $(min), $(max) — supplied by the caller's own `with storage`
+# OUTPUT: vortex:output result
+#
+# Thin wrapper kept for compatibility: callers still pass min/max through
+# whatever storage compound they already use. The generator itself now
+# lives in systems/rng, so seeding and state capture are shared instead
+# of duplicated:
+#
+#   function vortex:systems/rng/seed {seed:12345}
+#
+# Before this, the generator held its own undocumented `_rng_state` key
+# with no way to seed it, so no randomised behaviour in the pack could be
+# reproduced.
+#
+# Usage:  function vortex:systems/math/random {min:1,max:6}
+# ─────────────────────────────────────────────────────────────────
+
+execute if data storage vortex:engine modules{math:0b} run return 0
+$function vortex:systems/rng/int {min:$(min),max:$(max)}

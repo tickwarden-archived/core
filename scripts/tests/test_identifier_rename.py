@@ -137,7 +137,8 @@ class ScoreMigration(unittest.TestCase):
             if p.suffix != ".mcfunction":
                 continue
             rel = _rel(p)
-            if rel in allowed:
+            if rel in allowed or rel.startswith("archived/tools/vortex-source/"):
+                # Vortex is a frozen upstream source snapshot, not live code.
                 continue
             t = p.read_text(encoding="utf-8", errors="replace")
             if "#vortacraftmc." in t:

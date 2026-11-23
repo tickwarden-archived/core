@@ -77,6 +77,12 @@ for (const list of [[], [{name: 'DailyBonus', zip: 'DailyBonus.zip', downloadUrl
 
 // Retired notice must be present in the markup for no-JS readers too.
 assert.match(html, /datapack programme is retired/i);
+assert.match(html, /core\/tree\/main\/components\/macroengine-modules/);
+assert.match(html, /core\/tree\/main\/archived\/tools\/vortex-source/);
+assert.match(html, /generated artifacts are not automatically published/i);
+assert.ok(!html.includes('github.com/vortaforge/vortex'), 'no link to retired standalone Vortex repo');
+assert.ok(!html.includes('github.com/vortaforge/macroengine-modules'), 'no link to standalone modules repo');
+
 
 const mods = s.modsFromContents(['afk-manager', 'TEMPLATE-MOD', 'datapack-fixer', 'rtwrapper-mod']
   .map(name => ({name, type: 'dir'})));

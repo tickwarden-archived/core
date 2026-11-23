@@ -1,0 +1,9 @@
+{
+  "entity": "this",
+  "predicate": {
+    "vehicle": {
+      "type": "minecraft:horse"
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}

@@ -1,0 +1,6 @@
+# vortex:core/internal/text/lower
+# INPUT  vortex:text: s    OUTPUT vortex:text: out   (or err)   RETURN 1 on success, 0 on failure
+# Case mapping for ASCII letters only.
+# s must not contain a quote or backslash.
+data modify storage vortex:text tbl set value "lower"
+return run function vortex:core/internal/text/case

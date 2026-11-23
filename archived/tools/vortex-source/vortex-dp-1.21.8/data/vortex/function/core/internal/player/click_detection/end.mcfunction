@@ -1,0 +1,12 @@
+# copy uuid
+scoreboard players operation #uuid.0 vortex.player_action.data = @s vortex.player_action.uuid.0
+scoreboard players operation #uuid.1 vortex.player_action.data = @s vortex.player_action.uuid.1
+scoreboard players operation #uuid.2 vortex.player_action.data = @s vortex.player_action.uuid.2
+scoreboard players operation #uuid.3 vortex.player_action.data = @s vortex.player_action.uuid.3
+
+# destroy entities
+execute as @e[type=minecraft:interaction,tag=vortex.player_action.click_entity,predicate=vortex:core/internal/player/equals_uuid] run tp @s ~ -300 ~
+execute as @e[type=minecraft:interaction,tag=vortex.player_action.click_entity,predicate=vortex:core/internal/player/equals_uuid] run kill @s
+
+# remove tag
+tag @s remove vortex.player_action.click_detection
