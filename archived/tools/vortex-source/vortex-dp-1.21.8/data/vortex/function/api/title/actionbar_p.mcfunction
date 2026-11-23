@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/title/actionbar_p
 # Action bar with %tokens% for @s. The text is rendered with api/store/render into a plain
 # string (vortex:store out.string); the component only exists while the command runs.

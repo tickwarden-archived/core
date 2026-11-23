@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/toggle/perm/enforce_off
 # Turn permission enforcement OFF: every api/perm/require and api/perm/check passes for everybody.
 # systems/cmd_gate (stored-string commands) is strict and keeps enforcing cmd.dynamic.

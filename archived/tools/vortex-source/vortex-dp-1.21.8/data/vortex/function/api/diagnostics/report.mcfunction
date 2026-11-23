@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/diagnostics/report
 # Prints a human-readable health report to @s. Collects first (systems/diagnostics/collect), so the
 # data is also left in vortex:output diagnostics. Read-only: it never changes engine state.

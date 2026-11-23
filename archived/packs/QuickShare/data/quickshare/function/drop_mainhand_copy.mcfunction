@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_67654ba1d3:lifecycle {phase:1} run return 0
 # Called by quickshare:share with execution at the player (only when the
 # player's main hand is not empty).
 # Summons a scratch item entity, overwrites its Item with the player's mainhand

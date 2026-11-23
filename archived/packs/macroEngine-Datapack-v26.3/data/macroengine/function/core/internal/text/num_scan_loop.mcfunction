@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/num_scan_loop [INTERNAL] every character except the decimal point must be a digit
 execute unless score #tx_i macroengine.tmp < #tx_len macroengine.tmp run return 1
 execute if score #tx_i macroengine.tmp = #tx_dotpos macroengine.tmp run scoreboard players add #tx_i macroengine.tmp 1

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/safe
 # RETURN 1 when macroengine:text s contains neither a double quote nor a backslash, else 0.
 # Anything that is rebuilt into a macro string literal must pass this first.

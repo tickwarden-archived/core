@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/audit/clear
 # Empties the audit trail. ADMIN ONLY. Leaves one tombstone entry so the clear is itself
 # recorded (who cleared it, and when).

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:player/internal/init_from_name [MACRO]
 # Relay: storage macroengine:names temp {NAME:"<player>"} → macroengine:player/init
 # Called by on_player_join after macroengine:player/get/name populates macroengine:names temp.

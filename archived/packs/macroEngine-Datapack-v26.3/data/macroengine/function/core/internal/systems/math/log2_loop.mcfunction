@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/systems/math/log2_loop
 execute if score $lg2_v macroengine.tmp matches ..1 run return 0
 

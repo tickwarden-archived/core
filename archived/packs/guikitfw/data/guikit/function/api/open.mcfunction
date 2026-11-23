@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # guikit :: api/open
 # Input: storage guikit:in {menu:"id", page:0, timer:N}
 # Block menus: lib menus.<id>.container is chest|barrel|… and pos:[x,y,z]

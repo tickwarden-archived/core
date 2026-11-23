@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/dialog/theme_register [MACRO]
 $data modify storage vortex:dialog_theme candidate set value {key:"$(key)",theme:$(theme)}
 data modify storage vortex:dialog_theme checked set value {title:{},body:{},button:{},button_width:150,body_width:300,columns:2}

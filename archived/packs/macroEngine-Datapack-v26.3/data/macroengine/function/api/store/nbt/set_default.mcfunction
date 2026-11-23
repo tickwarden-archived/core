@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/nbt/set_default [MACRO]
 # Writes macroengine:store nbt.value to storage/path ONLY when the path does not exist yet
 # (first-run initialisation that never overwrites live data).

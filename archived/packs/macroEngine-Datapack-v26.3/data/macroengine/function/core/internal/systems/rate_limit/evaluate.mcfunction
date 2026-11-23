@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/rate_limit/internal/evaluate — Sliding window core [MACRO]
 # Input: $(key), $(limit), $(window), $(hits) (array, not used directly here)
 #

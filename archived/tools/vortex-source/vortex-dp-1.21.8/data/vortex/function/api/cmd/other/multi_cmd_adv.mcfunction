@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/cmd/other/multi_cmd_adv [MACRO]
 # Advanced multi-command execution with options.
 # INPUT (macro args): $(list) — command list; $(options) — options compound

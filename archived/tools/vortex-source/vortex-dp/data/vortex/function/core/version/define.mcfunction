@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/version/define
 # Single source of the pack's own version. Nothing else in this pack writes
 # global.version or vortex.meta #vortaforge.packs.vortex.version directly -

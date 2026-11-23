@@ -1,0 +1,17 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
+# vortex:core/internal/systems/geo/region_watch/player_scan
+# @s = the player to check
+# Reads coordinates to storage, then iterates all regions.
+
+data modify storage vortex:engine _rw_iter set from storage vortex:engine region_watches
+
+# Write player coordinates to _rw_player (int truncation, consistent with geo module)
+execute store result storage vortex:engine _rw_player.x int 1 run data get entity @s Pos[0]
+execute store result storage vortex:engine _rw_player.y int 1 run data get entity @s Pos[1]
+execute store result storage vortex:engine _rw_player.z int 1 run data get entity @s Pos[2]
+
+function vortex:core/internal/systems/geo/region_watch/region_loop
+
+data remove storage vortex:engine _rw_iter
+data remove storage vortex:engine _rw_player

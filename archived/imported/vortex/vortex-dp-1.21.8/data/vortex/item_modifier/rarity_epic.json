@@ -1,0 +1,6 @@
+{
+  "components": {
+    "minecraft:rarity": "epic"
+  },
+  "function": "minecraft:set_components"
+}

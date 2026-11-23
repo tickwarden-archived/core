@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/convert
 # Turns the string produced by api/store/render (or any string you put in
 # macroengine:store out.string) into forms other functions can use. Everything written

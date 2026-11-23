@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/block/_validate_stage [INTERNAL]
 # validate handler when registered, otherwise: the block must be a container. RETURN 1 allowed, 0 denied.
 data modify storage vortex:block tmp.m.h set value "validate"

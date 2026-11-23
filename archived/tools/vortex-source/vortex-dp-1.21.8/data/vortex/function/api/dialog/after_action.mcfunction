@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/after_action [MACRO]
 $data modify storage vortex:dialog_layout after set value "$(value)"
 scoreboard players set #after_ok vortex.dialog_tmp 0

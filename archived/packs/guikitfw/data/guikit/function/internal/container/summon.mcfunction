@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Summon per-player entity container (guigen minecart / chest boat)
 data modify storage guikit:work ctype set from storage guikit:cfg container
 data modify storage guikit:work id set from storage guikit:in menu

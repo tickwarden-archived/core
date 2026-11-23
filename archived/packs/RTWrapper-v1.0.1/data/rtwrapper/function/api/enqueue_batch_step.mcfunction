@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Helper for api/enqueue_batch. Consumes rtwrapper:api batch[0] the same way
 # handler/dequeue consumes runtime queue[0], tags it with the shared batch_id, appends it
 # to the normal runtime queue, and repeats until the batch array is empty.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/math/sqrt_step
 scoreboard players operation $sqrt_mid vortex.tmp = $sqrt_lo vortex.tmp
 scoreboard players operation $sqrt_mid vortex.tmp += $sqrt_hi vortex.tmp

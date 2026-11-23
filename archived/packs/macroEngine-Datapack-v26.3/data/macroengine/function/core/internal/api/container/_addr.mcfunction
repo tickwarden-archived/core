@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/container/_addr [INTERNAL]
 # Builds macroengine:container tmp.k {x,y,z[,slot][,slot2][,tx,ty,tz]} from macroengine:input.
 # Every value is checked as a NUMBER first (see _num). RETURN 1 valid, 0 invalid.

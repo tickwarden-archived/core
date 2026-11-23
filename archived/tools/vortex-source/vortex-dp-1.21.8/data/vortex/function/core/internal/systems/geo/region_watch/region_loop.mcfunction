@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/geo/region_watch/region_loop
 # @s = the player being checked
 # Consumes _rw_iter list, calls check_region for each region.

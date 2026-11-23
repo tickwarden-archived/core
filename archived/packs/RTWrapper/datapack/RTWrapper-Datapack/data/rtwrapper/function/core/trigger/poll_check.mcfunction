@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Macro: called with storage rtwrapper:runtime trigger_cur (a single registry entry:
 # objective, enabled, reset_mode, action). Executor context (@s) is the polled player.
 # Only proceeds if enabled and the executing player HAS a score on that trigger AND it is

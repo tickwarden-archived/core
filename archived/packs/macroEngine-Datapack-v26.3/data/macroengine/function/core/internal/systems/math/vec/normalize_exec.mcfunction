@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/math/vec/internal/normalize_exec [MACRO]
 # INPUT: $(x), $(y), $(z)
 # Compute length via math/distance3d, then ×1000 / length

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "entry_guard_mode": "early-return",
+  "pack_id": "core-25d5fd9ab8f9",
+  "source_format": {
+    "description": "LeftClickDetection 1.0.1",
+    "pack_format": 41,
+    "supported_formats": {
+      "min_inclusive": 26,
+      "max_inclusive": 101
+    }
+  },
+  "namespace": "vf_eol_402f6da28f",
+  "objective": "vfE402f6da28f",
+  "clock": "online-ticks-not-wall-clock",
+  "expected_tps": 20,
+  "read_only_at_ticks": 5184000,
+  "locked_at_ticks": 12096000,
+  "guarded_functions": [
+    "data/left_click_detection/functions/api/disable.mcfunction",
+    "data/left_click_detection/functions/api/enable.mcfunction",
+    "data/left_click_detection/functions/archive_warning.mcfunction",
+    "data/left_click_detection/functions/core/declare.mcfunction",
+    "data/left_click_detection/functions/core/detail/disable.mcfunction",
+    "data/left_click_detection/functions/core/detail/enable.mcfunction",
+    "data/left_click_detection/functions/core/handler.mcfunction",
+    "data/left_click_detection/functions/core/load.mcfunction",
+    "data/left_click_detection/functions/core/tick/_.mcfunction",
+    "data/left_click_detection/functions/core/tick/update.mcfunction"
+  ],
+  "readonly_functions": [],
+  "literal_internal_scheduled_targets_for_manual_ownership_review": [],
+  "automatic_schedule_clear": false,
+  "dynamic_schedules_detected": false,
+  "schedule_detection_complete": false,
+  "persistent_data_deleted": false,
+  "deep_cleanup_enabled": false,
+  "runtime_validated": false,
+  "status_function": "vf_eol_402f6da28f:status",
+  "control_plane_exception": "Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.",
+  "source_manifest": {
+    "LICENSE": "930bf24ab4ee2d2afe2d1bdff27320f3e84f90ae0a2fd2f0c53ac0a594c9b9ec",
+    "NOTICE": "e837ba7d10d700cb43db1d070ba9dfa6b39c43da6f04815a58b2cbf029ba2f2e",
+    "README.md": "bd2a051e6222680676fa777ea73181034edbdb2b96768a222c9d678c02755986",
+    "data/left_click_detection/advancements/handler.json": "af0831865b6e11d068d32c9a909306c490b42710fe5effb23364a011a46ee323",
+    "data/left_click_detection/functions/_vc_origin.mcfunction": "5f6c6c0a14ebd16c2b9e9e95330e035d8af3529623e840a65180b3a7b36833ea",
+    "data/left_click_detection/functions/api/disable.mcfunction": "d0ee6f5ba45a5c19b40fc21328628422527fdf90c3f203ee5444599077438630",
+    "data/left_click_detection/functions/api/enable.mcfunction": "f1ed011b07803097636077ae4943c3b9f23163f64382c2cfcb35a89889b30c74",
+    "data/left_click_detection/functions/archive_warning.mcfunction": "e7489c85721cd846e280d80a10cb2bea02095ab07c0ff3045d07a06646311c36",
+    "data/left_click_detection/functions/core/declare.mcfunction": "26f6434983429423d7774dc171e9abc72f70d1348ab831e527253cabc3e2c180",
+    "data/left_click_detection/functions/core/detail/disable.mcfunction": "8b74ac709987424bcf992f942c0959e28c94df45afa558478b8cb1861d9322b4",
+    "data/left_click_detection/functions/core/detail/enable.mcfunction": "9667d83baf2e52ae1f28e493113681c8acf1ae04dc2f1698404f7359c2ab3cd1",
+    "data/left_click_detection/functions/core/handler.mcfunction": "e483aa764050013d2083293f8504cf03e9e9a65019325e2a94d2ed48980285c1",
+    "data/left_click_detection/functions/core/load.mcfunction": "1fccbad8c8b26eeec6018c386878eed742807825919014a480ee8a29eb857cb1",
+    "data/left_click_detection/functions/core/tick/_.mcfunction": "90d7c3001b7b034796248f6786a78e2ece0612484e3224e043147732327e5ec2",
+    "data/left_click_detection/functions/core/tick/update.mcfunction": "485d55a564f7a9622537e6bc07885007c9d322275b785c7060d6d6d85f2364c9",
+    "data/left_click_detection/tags/blocks/air.json": "3cf6d6e2f2254d36a9768db8d4692bda1ef5b297f663e2f0c7a2b83eb839d16c",
+    "data/left_click_detection/tags/functions/callback.json": "27262f7a0b7b1be21caa5c577206d830833a55034b001071d54bdcc3eac259a1",
+    "data/minecraft/function/_vc_origin.mcfunction": "5e1e20331c838e2d6cce1e3f9cc85119d6c9ebd474950146804b148b4ce5eb89",
+    "data/minecraft/tags/functions/load.json": "6c0584e742ee0ab8b6bccbf99cec3b2bdd2a1c960b9cf82cf216fcbc612e7351",
+    "data/minecraft/tags/functions/tick.json": "9d2e579bca1c8a6208832ee873a44c1a72c1b984928c13499470804e4f5ce5ca",
+    "pack.mcmeta": "bee6d29d3dce813e7ced8b1e3ddd1721cd4566c9953004a7053d7cab2c99685c"
+  },
+  "comment_only_functions": [
+    "data/left_click_detection/functions/_vc_origin.mcfunction",
+    "data/minecraft/function/_vc_origin.mcfunction"
+  ]
+}

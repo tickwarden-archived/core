@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/systems/hook/check_level_up
 execute store result score $hlvl_cur macroengine.tmp run data get entity @s XpLevel
 execute if score @s macroengine.hook_lvl < $hlvl_cur macroengine.tmp run scoreboard players operation @s macroengine.hook_lvl_new = $hlvl_cur macroengine.tmp

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Multi-action entry point. Mirrors api/run.mcfunction, but for a batch of actions instead
 # of one: set rtwrapper:api batch to an array of {cmd:...,params:{...}} objects, then
 # /function rtwrapper:api/run_batch. Every action in the array is enqueued (in order, tagged

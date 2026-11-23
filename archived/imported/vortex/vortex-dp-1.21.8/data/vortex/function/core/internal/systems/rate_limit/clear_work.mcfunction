@@ -1,0 +1,23 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
+# vortex:core/internal/systems/rate_limit/clear_work
+# Internal — do not call directly.
+#
+# Scheduled 3 ticks after systems/rate_limit/check writes to the shared
+# vortex:rate_limit scratch storage (ensure_key, rule, prune_before,
+# new_hit), so it doesn't sit populated between calls. 'replace' collapses
+# repeated check calls within the same 3-tick window onto a single
+# pending clear — safe because every write into rl_work is a 'set value'
+# / 'set from', never an append, so nothing here is ever read back across
+# calls; a stale key can only be unclaimed scratch data.
+#
+# NOTE: "data remove storage <id>" with no path is not valid — /data
+# remove can only delete a key under a storage, never the storage root
+# itself (see https://minecraft.wiki/w/Commands/data). Every top-level
+# key ever written to rl_work across check/evaluate/prune must be listed
+# here explicitly: ensure_key, rule, prune_before, rule_key, new_hit.
+data remove storage vortex:rate_limit ensure_key
+data remove storage vortex:rate_limit rule
+data remove storage vortex:rate_limit prune_before
+data remove storage vortex:rate_limit rule_key
+data remove storage vortex:rate_limit new_hit

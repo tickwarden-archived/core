@@ -1,0 +1,31 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
+# ─────────────────────────────────────────────
+# vortex:api/macro/with_score [MACRO]
+#
+# Reads a player's scoreboard value and injects it as a named
+# macro variable into the target function.
+#
+# Usage:
+#   function vortex:api/macro/with_score \
+#     {func:"ns:path", player:"Name", objective:"myObj", var:"myVar"}
+#
+# Parameters:
+#   func      — function to call (ns:path)
+#   player    — target player name
+#   objective — scoreboard objective
+#   var       — macro variable name to inject into the target function
+#
+# Output: $(myVar) → scoreboard value (int)
+# ─────────────────────────────────────────────
+
+# Write score into pipe under the requested variable name
+execute if data storage vortex:engine modules{macro:0b} run return 0
+$execute store result storage vortex:engine _macro_pipe.$(var) int 1 run scoreboard players get $(player) $(objective)
+
+# Call target function with pipe as macro source
+execute if data storage vortex:engine modules{macro_function:0b} run return run function vortex:core/internal/callback/blocked/function {site:"api/macro/with_score"}
+$function $(func) with storage vortex:engine _macro_pipe
+
+# Clear pipe
+data remove storage vortex:engine _macro_pipe

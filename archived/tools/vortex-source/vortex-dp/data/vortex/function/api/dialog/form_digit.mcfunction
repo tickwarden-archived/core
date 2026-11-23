@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/dialog/form_digit [MACRO]
 # Integer input named value, validated in 0..9. Ticket+digit transported atomically.
 $data modify storage vortex:dialog_work route set value {label:$(label),callback:$(callback),payload:$(payload),min:$(min),max:$(max),factor:10}

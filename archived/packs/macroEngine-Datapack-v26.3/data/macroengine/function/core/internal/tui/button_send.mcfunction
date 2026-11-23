@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/tui/button_send [INTERNAL, MACRO]
 # Sends one clickable button to @s. The ONLY macro argument is $(fn), which tui/button has already
 # checked with systems/validate/function_id while it was still data. Label and hover text come from

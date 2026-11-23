@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/config/reset
 # Restores every runtime config value to its default and applies it.
 data remove storage macroengine:engine config

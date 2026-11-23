@@ -1,0 +1,9 @@
+{
+  "tag": {
+    "vortex": {
+      "input": true,
+      "inputItem": "writable_book"
+    }
+  },
+  "type": "minecraft:set_custom_data"
+}

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_resolve [INTERNAL]
 # tmp.segs[0] is a name between two '%'. Appends exactly one entry to tmp.frags.
 data modify storage macroengine:store tmp.nm set from storage macroengine:store tmp.segs[0]

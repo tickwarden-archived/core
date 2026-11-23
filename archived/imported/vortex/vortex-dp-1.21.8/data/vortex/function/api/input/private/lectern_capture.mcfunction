@@ -1,0 +1,20 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
+# ======================================================================================
+# vortex:api/input/private/lectern_capture  [INTERNAL]
+# ======================================================================================
+
+data modify storage vortex:input lectern.raw set value ""
+
+data modify storage vortex:input lectern.raw set from block ~ ~ ~ Book.components."minecraft:writable_book_content".pages[0].raw
+execute if data storage vortex:input {lectern:{raw:""}} run data modify storage vortex:input lectern.raw set from block ~ ~ ~ Book.components."minecraft:writable_book_content".pages[0].text
+execute if data storage vortex:input {lectern:{raw:""}} run data modify storage vortex:input lectern.raw set from block ~ ~ ~ Book.components."minecraft:writable_book_content".pages[0]
+
+execute if data storage vortex:input {lectern:{raw:""}} run data modify storage vortex:input lectern.raw set from block ~ ~ ~ Book.components."minecraft:written_book_content".pages[0].raw
+execute if data storage vortex:input {lectern:{raw:""}} run data modify storage vortex:input lectern.raw set from block ~ ~ ~ Book.components."minecraft:written_book_content".pages[0].text
+execute if data storage vortex:input {lectern:{raw:""}} run data modify storage vortex:input lectern.raw set from block ~ ~ ~ Book.components."minecraft:written_book_content".pages[0]
+
+data modify storage vortex:input lectern.player set from entity @s UUID
+data modify storage vortex:input lectern.pos set from entity @s Pos
+data modify storage vortex:input lectern.executed set value 0b
+execute if data storage vortex:input lectern{executed:0b} run function #vortex:input/lectern

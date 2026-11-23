@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/toggle/cb/false
 data modify storage macroengine:engine config.module_cb set value 0b
 function macroengine:core/config/apply

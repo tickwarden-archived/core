@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/diagnostics/checks/modules
 # Internal: called by systems/diagnostics/collect. Verifies the apply contract for every module:
 # macroengine:engine modules.<name> must exist, be a byte 0b/1b, and equal config.module_<name>.

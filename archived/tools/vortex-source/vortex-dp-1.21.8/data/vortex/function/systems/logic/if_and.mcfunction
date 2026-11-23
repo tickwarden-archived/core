@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/logic/if_and [MACRO]
 # Dispatches func only if BOTH a and b are non-zero (logical AND).
 # Composes with the other logic/if_* functions and any score-producing

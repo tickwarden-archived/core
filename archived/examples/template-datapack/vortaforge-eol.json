@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "entry_guard_mode": "early-return",
+  "pack_id": "core-62c96bf76d3b",
+  "source_format": {
+    "pack_format": 107,
+    "max_format": [
+      107,
+      1
+    ],
+    "min_format": [
+      107,
+      1
+    ],
+    "description": "Template by VortaForge (based on Runtoolkit)"
+  },
+  "namespace": "vf_eol_46942fd13a",
+  "objective": "vfE46942fd13a",
+  "clock": "online-ticks-not-wall-clock",
+  "expected_tps": 20,
+  "read_only_at_ticks": 5184000,
+  "locked_at_ticks": 12096000,
+  "guarded_functions": [
+    "data/template/function/template/load.mcfunction",
+    "data/template/function/template/tick.mcfunction"
+  ],
+  "readonly_functions": [],
+  "literal_internal_scheduled_targets_for_manual_ownership_review": [],
+  "automatic_schedule_clear": false,
+  "dynamic_schedules_detected": false,
+  "schedule_detection_complete": false,
+  "persistent_data_deleted": false,
+  "deep_cleanup_enabled": false,
+  "runtime_validated": false,
+  "status_function": "vf_eol_46942fd13a:status",
+  "control_plane_exception": "Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.",
+  "source_manifest": {
+    ".gitignore": "ba8edf8e347b9d6eb720ea0b67a5a14056f9af2a96a6f61a41d8cb46345fff10",
+    "LICENSE": "6b0382b16279f26ff69014300541967a356a666eb0b91b422f6862f6b7dad17e",
+    "README.md": "04ee2172076a759ced4e5c045365ba3fdd5c444b5005419d9da7e102ba1ab26e",
+    "data/minecraft/tags/function/load.json": "b0799a29f11e0f75f59f7d9efe474875486407ad2185bf3a75bf76c7163cf150",
+    "data/minecraft/tags/function/tick.json": "e47c8beb9ca238685bc8bdc5579365991efa6396d60c5e59b63a944d5101c849",
+    "data/template/function/template/load.mcfunction": "3570d136c3aed06893d6401b7503aeca445019a4461c1e78ea991d616880d870",
+    "data/template/function/template/tick.mcfunction": "2f13fd6754e12403b0d8dd7d5bfb929e99976cc077317c99c024886b4cd337a4",
+    "data/template/tags/function/template/load.json": "e18993265172646d3f3e8fb84ed8ca81014c9d39de895de9def0b05df6ac1c11",
+    "data/template/tags/function/template/tick.json": "0cbd42f6a9be911b968944be9ebc797cabf911859c1eb515ea592bdc195f9c59",
+    "pack.mcmeta": "10bd4210279b56833048a3a13317708b2452d5a1c81f3f0619f0b90996e860e2"
+  }
+}

@@ -1,0 +1,7 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
+# vortex:core/internal/api/wand/fire [MACRO]
+# Run the bind based on func or cmd field.
+
+execute if data storage vortex:engine _wand_current.func run function vortex:core/internal/api/wand/call_func with storage vortex:engine _wand_current
+execute if data storage vortex:engine _wand_current.cmd run function vortex:core/internal/api/wand/call_cmd with storage vortex:engine _wand_current

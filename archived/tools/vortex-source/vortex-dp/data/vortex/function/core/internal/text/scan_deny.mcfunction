@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/scan_deny
 # INPUT  vortex:text: s, tbl (name of a table in vortex:text_map)
 # RETURN 1 if any character of s is a key of that table, else 0.

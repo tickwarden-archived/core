@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/hook/internal/tick_scan
 # Her tick'te hook event'lerini tespit eder.
 # Runs only if hook_binds is non-empty.

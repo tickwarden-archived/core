@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Register a new custom /trigger command backed by RTWrapper.
 # Required storage keys: trigger.objective (string), trigger.action (compound - RTWrapper
 #   request shape, e.g. {cmd:"say", params:{message:"hi"}}).

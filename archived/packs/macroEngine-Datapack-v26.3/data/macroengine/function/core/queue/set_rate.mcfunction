@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/queue/set_rate
 # Sets how many work_queue items are processed per tick.
 # Default: 1. Raise for faster throughput; lower to reduce tick cost.

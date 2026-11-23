@@ -54,6 +54,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -128,6 +129,30 @@ def namespace_dirs(pack: Path) -> list[Path]:
             if d.is_dir():
                 out.append(d)
     return out
+
+
+def eol_control_namespace(pack: Path) -> str | None:
+    """Recognize only the generated lifecycle namespace, not a pack namespace.
+
+    Fail closed on malformed metadata or unexpected files: such a directory is
+    treated like any other namespace and still requires its own warning.
+    """
+    try:
+        policy = json.loads((pack / "vortaforge-eol.json").read_text(encoding="utf-8"))
+        ident = policy["pack_id"]
+        namespace = policy["namespace"]
+        if not isinstance(ident, str) or namespace != "vf_eol_" + hashlib.sha256(ident.encode("utf-8")).hexdigest()[:10]:
+            return None
+        base = pack / "data" / namespace
+        expected = {"load.mcfunction", "tick.mcfunction", "refresh.mcfunction", "notice.mcfunction", "cleanup.mcfunction", "status.mcfunction"}
+        styles = [base / name for name in ("function", "functions") if (base / name).is_dir()]
+        if not styles or set(p.name for p in base.iterdir()) != {p.name for p in styles}:
+            return None
+        if any({p.name for p in d.iterdir()} != expected or any(not p.is_file() for p in d.iterdir()) for d in styles):
+            return None
+        return namespace
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
 
 
 def has_real_gate(pack: Path) -> bool:
@@ -254,7 +279,10 @@ def main(argv: list[str]) -> int:
             if fmt == 0:
                 break
             label = pack.name if root == pack else f"{pack.name}/{root.name}"
-            dirs = namespace_dirs(root)
+            # Lifecycle functions are internal control plane, not an extra pack
+            # namespace that should receive an additional archive warning.
+            control = eol_control_namespace(root)
+            dirs = [d for d in namespace_dirs(root) if d.parent.name != control]
             entry = {
                 "pack": label,
                 "format": fmt,

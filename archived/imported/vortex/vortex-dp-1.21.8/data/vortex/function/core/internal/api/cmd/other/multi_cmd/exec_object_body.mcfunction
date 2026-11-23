@@ -1,0 +1,28 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
+# ─────────────────────────────────────────────────────────────────
+# vortex:core/internal/api/cmd/other/multi_cmd/exec_object_body
+# The execution half of exec_object, reached only when the entry's
+# condition passed (or it had none). Split out so the check in
+# exec_object can be a plain positive `execute if` with no `return`.
+# ─────────────────────────────────────────────────────────────────
+
+# Run pre-hook (if present)
+execute if data storage vortex:engine _mcmd_current.pre_hook run function vortex:core/internal/api/cmd/other/multi_cmd/run_pre_hook
+
+# Start profiling (if present)
+execute if data storage vortex:engine _mcmd_options{profile:1b} run execute store result score $mcmd_exec_start vortex.tmp run time query gametime
+
+# A group entry is expanded rather than run, so `commands` wins when both
+# it and cmd/func are present.
+execute if data storage vortex:engine _mcmd_current.commands run function vortex:core/internal/api/cmd/other/multi_cmd/exec_group
+execute unless data storage vortex:engine _mcmd_current.commands if data storage vortex:engine _mcmd_current.cmd run function vortex:core/internal/api/cmd/other/multi_cmd/exec_macro with storage vortex:engine _mcmd_current
+execute unless data storage vortex:engine _mcmd_current.commands if data storage vortex:engine _mcmd_current.func run function vortex:core/internal/api/cmd/other/multi_cmd/exec_func_macro with storage vortex:engine _mcmd_current
+
+# End profiling (if present)
+execute if data storage vortex:engine _mcmd_options{profile:1b} run function vortex:core/internal/api/cmd/other/multi_cmd/record_exec_time
+
+# Run post-hook (if present)
+execute if data storage vortex:engine _mcmd_current.post_hook run function vortex:core/internal/api/cmd/other/multi_cmd/run_post_hook
+
+execute if data storage vortex:engine _mcmd_options{profile:1b} run scoreboard players add $mcmd_success vortex.tmp 1

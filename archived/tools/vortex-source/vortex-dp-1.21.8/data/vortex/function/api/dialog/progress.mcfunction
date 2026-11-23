@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/progress [MACRO]
 # value is clamped to 0..max; max is limited to avoid signed score overflow.
 $data modify storage vortex:dialog_progress input set value {label:$(label),value:$(value),max:$(max)}

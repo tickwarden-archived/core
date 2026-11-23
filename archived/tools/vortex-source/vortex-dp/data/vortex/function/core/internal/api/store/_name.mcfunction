@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_name [INTERNAL]
 # Validates vortex:store in.name and, when valid, copies it to tmp.k.name (the macro argument
 # compound used by every _g_* / _p_* function). RETURN 1 valid, 0 invalid.

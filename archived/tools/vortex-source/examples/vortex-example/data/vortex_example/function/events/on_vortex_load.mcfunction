@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:events/on_vortex_load
 # Registered in #vortex:events/on_load (this pack's own
 # data/vortex/tags/function/events/on_load.json): Vortex fires that tag

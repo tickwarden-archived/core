@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/title/actionbar — Raw JSON actionbar display [MACRO]
 # Displays a full JSON component string in the actionbar of a named player.
 # Unlike cmd/actionbar (text + color only), this accepts any serialized component

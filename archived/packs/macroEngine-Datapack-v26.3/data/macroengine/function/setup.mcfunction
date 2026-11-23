@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:setup — ordered load sequence (the old fake percentage output was removed:
 # it printed 20+ console lines per load and reported nothing real).
 

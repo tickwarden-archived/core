@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/batch/flush_loop
 # Consumes _bfl_items. For each item:
 # delay = floor($bfl_idx * $bfl_spread / $bfl_total)

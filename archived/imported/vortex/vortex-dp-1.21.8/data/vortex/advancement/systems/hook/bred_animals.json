@@ -1,0 +1,11 @@
+{
+  "criteria": {
+    "bred_animals": {
+      "trigger": "minecraft:bred_animals"
+    }
+  },
+  "rewards": {
+    "function": "vortex:core/internal/systems/hook/on_bred_animals"
+  },
+  "parent": "vortex:hidden/root"
+}

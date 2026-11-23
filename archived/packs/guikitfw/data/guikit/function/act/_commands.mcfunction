@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 execute unless data storage guikit:act w.commands[0] run return 0
 data modify storage guikit:work cmd set from storage guikit:act w.commands[0]
 function guikit:act/_commands_one with storage guikit:work

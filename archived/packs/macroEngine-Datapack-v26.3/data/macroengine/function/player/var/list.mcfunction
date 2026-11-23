@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:player/var/list [MACRO]
 $tellraw @a[tag=macroengine.admin] ["",{"text":"[MACROENGINE] ","color":"#00AAAA","bold":true},{"text":"━━━ Player: ","color":"aqua"},{"text":"$(player)","color":"white","bold":true},{"text":" ━━━━━━━━━━━━━━","color":"#555555"}]
 $execute if data storage macroengine:engine players.$(player) run tellraw @a[tag=macroengine.admin] ["",{"text":" vars ","color":"#555555"},{"plain":true ,"storage":"macroengine:engine","nbt":"players.$(player)","interpret":false,"color":"yellow"}]

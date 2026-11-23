@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/toggle/perm/default_off
 # Make "enforcement off" the DEFAULT. Takes effect when perm_enforce is created or reset (core/config/reset); it does not change the current state.
 

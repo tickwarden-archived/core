@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/block/_run [INTERNAL]
 # validate stage, then op stage. Sets vortex:output block {ok, denied}.
 data modify storage vortex:output block set value {ok:0b,denied:0b}

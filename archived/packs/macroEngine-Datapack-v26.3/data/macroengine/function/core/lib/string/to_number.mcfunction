@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/lib/string/to_number
 # Input:  macroengine:input string — numeric string (e.g. "42" or "3.14")
 # Output: macroengine:output string.result — numeric NBT value

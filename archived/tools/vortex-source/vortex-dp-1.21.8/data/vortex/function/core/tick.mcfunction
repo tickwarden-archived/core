@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # DL Tick Engine — Simplified Entry Point
 # Driven by #minecraft:tick function tag (guaranteed 1/game-tick, no drift).
 #

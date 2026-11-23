@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/lib/string/to_lowercase_full
 # Full variant — covers full Unicode uppercase mapping (slower)
 # Input:  macroengine:input string — string to convert

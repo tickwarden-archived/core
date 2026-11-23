@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/perm/group/assign [MACRO]  INPUT: $(player) $(group)
 # Puts an online player into a group: adds the group.<group> tag and one
 # perm.<name> tag per permission in the group, which is exactly what

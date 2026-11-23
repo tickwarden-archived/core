@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroEngine player module — zero every event counter after dispatch so
 # each statistic fires at most once per tick.
 

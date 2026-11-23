@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Kiosk: distance + block presence (guigen block path)
 execute unless score @s guikit.timer matches 1.. run return 0
 function guikit:internal/container/load_pos

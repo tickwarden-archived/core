@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/color/resolve [MACRO]
 # Looks up a named palette entry or returns the value as-is if not found.
 # Use this to map short alias keys (e.g. "brand", "danger", "info") to hex.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:systems/dbg/show
 # Prints dbg.out and dbg.err to @s on request (this is the only place they reach chat).
 # Caller: vortex.admin tag required.

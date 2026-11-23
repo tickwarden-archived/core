@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Normalise request shape, then prepare dispatch.
 # Supported request shapes:
 #   {cmd:"tp", params:{target:"@s", x:"0", y:"80", z:"0"}}

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/input/validate/_rule_lower_s (internal)
 # Lower-cases vortex:input_validate _r.s for ignore_case; sets _r.fail 1b when the text has a quote or backslash
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.

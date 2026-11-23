@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/nbt/pop [MACRO]
 # Removes the LAST element of the list at storage/path and puts it in macroengine:store nbt.result.
 # Input (macro args): storage, path.  RETURN 1 when an element was popped, 0 for an empty/missing list.

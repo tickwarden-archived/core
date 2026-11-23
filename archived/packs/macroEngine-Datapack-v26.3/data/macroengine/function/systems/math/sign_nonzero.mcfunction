@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # macroengine:systems/math/sign_nonzero
 # Returns -1 for negative, +1 for zero-or-positive.

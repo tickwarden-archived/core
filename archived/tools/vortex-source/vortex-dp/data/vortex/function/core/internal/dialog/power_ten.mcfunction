@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/power_ten
 execute unless score #digits vortex.dialog_tmp matches 1.. run return 0
 scoreboard players operation #factor vortex.dialog_tmp *= #ten vortex.dialog_sys

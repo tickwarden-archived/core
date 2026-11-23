@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_player_name [INTERNAL]
 # Executor name as a plain string in tmp.val; tmp.val stays unset when the executor is not a player.
 # Minecraft only exposes a player's name through text component resolution, so a short-lived

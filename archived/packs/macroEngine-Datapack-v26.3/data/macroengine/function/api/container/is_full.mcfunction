@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/container/is_full
 # Condition: is every slot of the container occupied?
 # INPUT  macroengine:input x, y, z, size (int 1..256, optional: needed for modded or unknown blocks;

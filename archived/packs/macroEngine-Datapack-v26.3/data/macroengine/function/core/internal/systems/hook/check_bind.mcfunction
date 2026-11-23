@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/hook/internal/check_bind [MACRO]
 # INPUT: $(event) - event field of the bind in _hook_ctx
 # If it matches _hook_fire_event, run func or cmd.

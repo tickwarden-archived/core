@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/item/_slot_map [MACRO]
 # Internal - resolves an `item modify` style slot name (hotbar.0, inventory.14,
 # weapon.mainhand, weapon.offhand, armor.head, ...) into a numeric NBT Slot,

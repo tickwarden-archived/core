@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Run menu.on_open[] as functions if present
 data modify storage guikit:work id set from storage guikit:ctx menu
 function guikit:internal/draw/load_menu with storage guikit:work

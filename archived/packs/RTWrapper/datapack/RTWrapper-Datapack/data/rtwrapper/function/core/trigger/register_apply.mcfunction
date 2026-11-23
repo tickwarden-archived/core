@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Macro: called with storage rtwrapper:api trigger (fields: objective, action, reset_mode).
 # Creates the trigger-type scoreboard objective and appends the registration entry.
 $scoreboard objectives add $(objective) trigger

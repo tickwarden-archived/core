@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # vortex:core/internal/api/cmd/freeze/tick  [INTERNAL — runs via #vortex:loop]
 # Hooked into #vortex:loop (listed in tags/function/loop.json; core/tick runs that tag as every online player each tick).

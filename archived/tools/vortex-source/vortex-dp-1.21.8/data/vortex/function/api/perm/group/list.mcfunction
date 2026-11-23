@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/perm/group/list
 # Prints every group and its permission list to @s (storage, not per-player
 # tags - use api/perm/list {player:...} for one player's direct grants).

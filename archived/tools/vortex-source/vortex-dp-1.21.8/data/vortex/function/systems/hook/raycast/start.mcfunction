@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # Raycast start
 # Reset distance counter (max 50 steps = 5 blocks)
 execute if data storage vortex:engine modules{hook:0b} run return 0

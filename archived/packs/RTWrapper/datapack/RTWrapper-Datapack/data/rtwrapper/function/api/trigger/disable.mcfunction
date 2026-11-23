@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Disable a registered RTWrapper trigger (score changes are ignored by poll until
 # re-enabled). No-op if unregistered.
 # Required storage keys: trigger.objective (string).

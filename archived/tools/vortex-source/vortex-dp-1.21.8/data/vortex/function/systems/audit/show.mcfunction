@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/audit/show
 # Prints the latest 10 audit entries to the caller. ADMIN ONLY (tag vortex.admin).
 # A server/console executor (no entity) is treated as trusted, same as api/perm/grant.

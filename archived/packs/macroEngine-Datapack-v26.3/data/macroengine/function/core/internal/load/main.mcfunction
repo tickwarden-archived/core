@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/load/main — load entry
 # Initial load runs unblocked — must not stall server startup. Reload
 # data-loss is only a soft warning here; force-reload

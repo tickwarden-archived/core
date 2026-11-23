@@ -1,0 +1,8 @@
+{
+  "values": [
+    "vf_eol_63b504a29e:tick",
+    "vortex:core/tick",
+    "vortex:core/internal/dialog/tick",
+    "vortex:core/internal/notice/tick"
+  ]
+}

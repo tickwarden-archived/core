@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/perm/trigger/tick_step_loop
 execute unless data storage vortex:engine _pt_names_tmp[0] run return 0
 

@@ -662,7 +662,20 @@ class Split:
         self.files: list[tuple[Path, str, str]] = []
         self.macros: list[str] = []
 
+    def _reject_eol_source(self) -> None:
+        """A retired standalone pack must never become the input for open mods."""
+        if (self.source / "vortaforge-eol.json").exists():
+            raise SystemExit("EOL-guarded source is not valid for Fabric modules; use the separate unretired source")
+        data = self.source / "data"
+        if data.is_dir():
+            for path in data.rglob("*"):
+                if path.is_file() and path.suffix in (".mcfunction", ".json"):
+                    text = path.read_text(encoding="utf-8")
+                    if "# EOL entry guard" in text or re.search(r"\bvf_eol_[0-9a-f]{10}\b", text):
+                        raise SystemExit(f"EOL lifecycle content in Fabric module source: {path}")
+
     def collect(self) -> None:
+        self._reject_eol_source()
         data = self.source / "data" / OLD_NAMESPACE
         if not data.is_dir():
             raise SystemExit(f"no data/{OLD_NAMESPACE} under {self.source}")
@@ -791,6 +804,8 @@ class Split:
         shutil.rmtree(resolved)
 
     def write(self) -> None:
+        # Check before removing any output, including direct API callers.
+        self._reject_eol_source()
         if self.in_place:
             # Project-root mode: the packs and manifests live *inside* a checkout
             # alongside build.gradle and tools/, so clearing the whole root would

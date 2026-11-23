@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/config/_set_int [MACRO, INTERNAL]  $(key) is a schema key; value is clamped to min..max
 execute store result score #cfg_in macroengine.tmp run data get storage macroengine:engine config_in.value
 execute store result score #cfg_min macroengine.tmp run data get storage macroengine:engine config_sc.min

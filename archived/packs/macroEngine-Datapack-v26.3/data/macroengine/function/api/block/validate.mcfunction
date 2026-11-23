@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/block/validate
 # Asks whether an operation would be allowed, without doing it.
 # INPUT  macroengine:input id, x, y, z, slot (optional), item (optional), op ("insert" default,

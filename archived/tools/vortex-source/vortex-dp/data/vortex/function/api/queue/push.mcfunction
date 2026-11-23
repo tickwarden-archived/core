@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/queue/push
 # Appends a function call to the rate-limited work queue.
 # The engine will execute it at up to work_queue_rate calls/tick.

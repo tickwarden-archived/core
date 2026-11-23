@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/replace
 # INPUT  macroengine:text: s, needle, rep (strings), n (int, optional: 0 all, +n first n, -n last n)
 # OUTPUT macroengine:text: out (string)   on failure: err, out unset

@@ -1,0 +1,31 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
+# ======================================================================================
+# vortex:api/store/nbt/move [MACRO]
+# Moves the value at <from> to <to> inside one storage, then removes <from>.
+# Same contract as the other api/store/nbt/* helpers: raw macro arguments, so the caller
+# must be trusted. Never pass chat/sign/book text into these arguments.
+#
+# INPUT (macro args): storage, from, to
+#       The two paths must not overlap (do not move "a" into "a.b").
+# RETURN 1 when the value was moved.
+#        0 when <from> does not exist, or when <from> and <to> are the same path.
+#
+# Usage:
+#   function vortex:api/store/nbt/move {storage:"mypack:data",from:"draft",to:"final"}
+# ======================================================================================
+
+execute if data storage vortex:engine modules{store:0b} run return 0
+$execute unless data storage $(storage) $(from) run return 0
+
+# Same-path guard: 'set from' reports failure when the value would not change.
+data modify storage vortex:engine _ext_mv set value {}
+$data modify storage vortex:engine _ext_mv.a set value "$(from)"
+$data modify storage vortex:engine _ext_mv.b set value "$(to)"
+execute store success score #ext_mv_diff vortex.tmp run data modify storage vortex:engine _ext_mv.a set from storage vortex:engine _ext_mv.b
+data remove storage vortex:engine _ext_mv
+execute if score #ext_mv_diff vortex.tmp matches 0 run return 0
+
+$data modify storage $(storage) $(to) set from storage $(storage) $(from)
+$data remove storage $(storage) $(from)
+return 1

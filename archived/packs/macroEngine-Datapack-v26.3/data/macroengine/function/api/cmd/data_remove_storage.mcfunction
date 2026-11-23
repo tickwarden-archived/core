@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # Storage removal: applies immediately — no permission check. This command
 # can destroy arbitrary storage data (including macroengine's own engine
 # state) — callers should be careful with $(path).

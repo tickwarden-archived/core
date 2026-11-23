@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/config/reset
 # Restores every runtime config value to its default and applies it.
 data remove storage vortex:engine config

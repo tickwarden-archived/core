@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Fill guikit:work queue with interactive widgets on current page from lib
 data modify storage guikit:work queue set value []
 execute unless data storage guikit:ctx menu run return 0

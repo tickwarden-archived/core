@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/color/internal/resolve_exec [MACRO]
 # Called with storage macroengine:engine color {} — reads palette.$(color).
 # If the key exists in palette, copies it to macroengine:output result.

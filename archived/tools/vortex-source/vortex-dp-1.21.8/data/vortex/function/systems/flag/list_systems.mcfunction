@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/flag/list_systems — List all tick systems with their current on/off state
 tellraw @s [{"text":"[DL] Tick Systems","color":"gold","bold":true}]
 tellraw @s [{"text":"time: ","color":"gray"},{"score":{"name":"#sys_time","objective":"vortex.tick_flags"},"color":"yellow"}]

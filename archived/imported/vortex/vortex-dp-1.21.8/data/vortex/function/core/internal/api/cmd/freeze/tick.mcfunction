@@ -1,0 +1,19 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
+# ─────────────────────────────────────────────────────────────────
+# vortex:core/internal/api/cmd/freeze/tick  [INTERNAL — runs via #vortex:loop]
+# Hooked into #vortex:loop (listed in tags/function/loop.json; core/tick runs that tag as every online player each tick).
+#
+# Early-exit if no frozen players exist — zero cost when the
+# freeze system is idle.
+#
+# For each anchor stand: switch execution position to the stand,
+# then hand off to anchor_tp which identifies and teleports the
+# matching frozen player back to that position.
+# ─────────────────────────────────────────────────────────────────
+
+# Fast exit — no frozen players, nothing to do
+execute unless entity @a[tag=vortex.frozen] run return 0
+
+# Iterate anchor stands and teleport their linked players back
+execute as @e[tag=vortex.freeze_anchor] at @s run function vortex:core/internal/api/cmd/freeze/anchor_tp

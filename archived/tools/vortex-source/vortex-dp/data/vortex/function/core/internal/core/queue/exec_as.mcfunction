@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/queue/exec_as
 # Runs a queued function as the named player (if online).
 # If the player is offline the item is silently dropped — no retry.

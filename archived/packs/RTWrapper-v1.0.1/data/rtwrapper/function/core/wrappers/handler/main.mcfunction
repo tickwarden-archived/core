@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Entry point for wrapper processing.
 # Priority: queued requests first; if queue is empty, consume rtwrapper:api request.
 execute if data storage rtwrapper:runtime queue[0] run function rtwrapper:core/wrappers/handler/dequeue

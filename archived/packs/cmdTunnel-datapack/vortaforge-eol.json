@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "entry_guard_mode": "legacy-per-command",
+  "pack_id": "core-e43c0c672bcb",
+  "source_format": {
+    "description": {
+      "text": "Command Tunnel System",
+      "color": "green",
+      "font": "minecraft:default",
+      "bold": false,
+      "italic": true,
+      "underlined": false,
+      "strikethrough": false,
+      "obfuscated": false
+    },
+    "pack_format": 12
+  },
+  "namespace": "vf_eol_f11a08b8a7",
+  "objective": "vfEf11a08b8a7",
+  "clock": "online-ticks-not-wall-clock",
+  "expected_tps": 20,
+  "read_only_at_ticks": 5184000,
+  "locked_at_ticks": 12096000,
+  "guarded_functions": [
+    "data/cmd_tunnel_sys/functions/archive_warning.mcfunction",
+    "data/cmd_tunnel_sys/functions/dynamic_off.mcfunction",
+    "data/cmd_tunnel_sys/functions/dynamic_on.mcfunction",
+    "data/cmd_tunnel_sys/functions/init.mcfunction",
+    "data/cmd_tunnel_sys/functions/reset.mcfunction",
+    "data/cmd_tunnel_sys/functions/run.mcfunction",
+    "data/cmd_tunnel_sys/functions/run_exec.mcfunction"
+  ],
+  "readonly_functions": [],
+  "literal_internal_scheduled_targets_for_manual_ownership_review": [
+    "cmd_tunnel_sys:reset"
+  ],
+  "automatic_schedule_clear": false,
+  "dynamic_schedules_detected": false,
+  "schedule_detection_complete": false,
+  "persistent_data_deleted": false,
+  "deep_cleanup_enabled": false,
+  "runtime_validated": false,
+  "status_function": "vf_eol_f11a08b8a7:status",
+  "control_plane_exception": "Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.",
+  "source_manifest": {
+    ".gitignore": "ba8edf8e347b9d6eb720ea0b67a5a14056f9af2a96a6f61a41d8cb46345fff10",
+    "LICENSE": "930bf24ab4ee2d2afe2d1bdff27320f3e84f90ae0a2fd2f0c53ac0a594c9b9ec",
+    "NOTICE": "a723ad2af764e75fce86127a8c86b4301abdee69c20f34f122c13f12d2aaa287",
+    "README.md": "ea9a6de93407a59bbfe35d57336572681c83fe160b7cdff2e1643d0522056549",
+    "data/cmd_tunnel_sys/functions/_vc_origin.mcfunction": "e55573151f3de5729129e1c56955c3297c2e1b198ec9ba534953da892199fdca",
+    "data/cmd_tunnel_sys/functions/archive_warning.mcfunction": "00cc9c2e40135850ee77dc58a40c6e50c9ab9c19e46cab5d06d3b28443504d15",
+    "data/cmd_tunnel_sys/functions/dynamic_off.mcfunction": "ba4c44d7d81a406b028290ee1b299e7ec8cd4de22797982bfdf3279cfac0c4f3",
+    "data/cmd_tunnel_sys/functions/dynamic_on.mcfunction": "af0f150baaddf75455b2503f4be1502eab9438b2bf72499903f98436d6f73a76",
+    "data/cmd_tunnel_sys/functions/init.mcfunction": "96d91f89e0d7774766b3f87a33d2c7077d6363fba4fcca3e3ece14e4b6604115",
+    "data/cmd_tunnel_sys/functions/reset.mcfunction": "a61dec16b5c755fe39b1853e4b4f0d63072153839edc4b1b3cce2c9225789961",
+    "data/cmd_tunnel_sys/functions/run.mcfunction": "50f762a03f5bf41bb8c0bd7411d52ce45a53d9824fc59b2a49900bb013678836",
+    "data/cmd_tunnel_sys/functions/run_exec.mcfunction": "9d37ee84e09ed67eb7351ef91d5f24d0f67d0550d85d3b49c8024d2fcf4800f8",
+    "data/cmd_tunnel_sys/tags/functions/dispatch.json": "0c615d27d6e7932dab70603593b0d4b2098f06e605c17c7e8549a677ec84ef94",
+    "data/minecraft/function/_vc_origin.mcfunction": "ee099fa0e90695c1cc722971d7380b79782bd1565acc01f46c94602a53448103",
+    "data/minecraft/tags/functions/load.json": "7a24940368831544070e1e198c645e520eebbf503261e9f97aefb6b1977c949a",
+    "pack.mcmeta": "117471ddc60077dcb5829b1a782534778068bc0dac04db1089e12e40a873568f"
+  },
+  "comment_only_functions": [
+    "data/cmd_tunnel_sys/functions/_vc_origin.mcfunction",
+    "data/minecraft/function/_vc_origin.mcfunction"
+  ]
+}

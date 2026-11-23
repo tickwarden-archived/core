@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/gamerule/normalize_run  [INTERNAL]
 # Called by normalize, which resets the text buffers afterwards.
 data modify storage macroengine:text s set from storage macroengine:input rule

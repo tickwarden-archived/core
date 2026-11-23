@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/log/add (internal)
 # Called by error/warn/info/debug — do not call directly.
 # Appends to the 30-entry ring buffer in vortex:engine log_display.

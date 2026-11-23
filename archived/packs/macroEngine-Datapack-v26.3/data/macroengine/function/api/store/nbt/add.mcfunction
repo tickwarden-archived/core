@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/nbt/add [MACRO]
 # Adds `by` (negative to subtract) to the integer at storage/path; a missing path counts as 0.
 # Input (macro args): storage, path, by.  RETURN the new value.

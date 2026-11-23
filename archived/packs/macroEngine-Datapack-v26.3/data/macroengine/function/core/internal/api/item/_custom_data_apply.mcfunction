@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/item/_custom_data_apply [MACRO]
 # Internal - called AFTER _slot_map. Reads the target item's id/count and hands
 # the write off to _custom_data_write (macro arguments are bound at call time,

@@ -1,0 +1,15 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
+# vortex:api/input/summon/command_block_minecart
+# Clear previous owner tag (multiplayer-safe)
+tag @a remove vortex.cbm_owner
+tag @s add vortex.cbm_owner
+
+# Store owner UUID for later lookup
+data modify storage vortex:input cbm.owner set from entity @s UUID
+
+# Position comes from @s, not from the command source: "execute as <player> run function ..." keeps the
+# position of whoever typed the command, so the minecart has to be placed "at @s".
+# Remove any nearby existing input minecart, then summon fresh
+execute at @s run kill @e[type=minecraft:command_block_minecart,tag=vortex.input,distance=..2]
+execute at @s run summon minecraft:command_block_minecart ~ ~ ~ {OnGround:1b,UpdateLastExecution:1b,Command:"",Tags:["vortex.input"],TrackOutput:1b}

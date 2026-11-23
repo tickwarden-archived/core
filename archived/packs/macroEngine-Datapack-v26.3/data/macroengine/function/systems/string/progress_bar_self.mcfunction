@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/string/progress_bar_self [MACRO]
 execute if data storage macroengine:engine modules{string:0b} run return 0
 $scoreboard players set $pbs_max macroengine.tmp $(pb_max)

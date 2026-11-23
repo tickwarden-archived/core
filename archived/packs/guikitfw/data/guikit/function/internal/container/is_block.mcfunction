@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Sets #block guikit.tmp = 1 if menu/cfg container is a block kiosk type
 scoreboard players set #block guikit.tmp 0
 data modify storage guikit:work ctype set from storage guikit:cfg container

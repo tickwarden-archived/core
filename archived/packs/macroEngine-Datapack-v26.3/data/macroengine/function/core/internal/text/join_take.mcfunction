@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/join_take [INTERNAL] joins the next 16 entries of pc into one entry of nl
 data modify storage macroengine:text jarg set value {p0:"",p1:"",p2:"",p3:"",p4:"",p5:"",p6:"",p7:"",p8:"",p9:"",p10:"",p11:"",p12:"",p13:"",p14:"",p15:""}
 execute if data storage macroengine:text pc[0] run data modify storage macroengine:text jarg.p0 set from storage macroengine:text pc[0]

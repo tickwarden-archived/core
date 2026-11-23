@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/split
 # INPUT  vortex:text: s, sep (strings; "" splits into characters),
 #          n (int, optional: 0 all, +n first n separators, -n last n separators),

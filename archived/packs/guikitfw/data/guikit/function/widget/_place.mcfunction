@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # action_id || id || kind_slot (guigen resolvedActionId)
 execute unless data storage guikit:draw w.id if data storage guikit:draw w.action_id run data modify storage guikit:draw w.id set from storage guikit:draw w.action_id
 execute unless data storage guikit:draw w.id run data modify storage guikit:draw w.id set from storage guikit:draw w.kind

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/container/_size [INTERNAL, MACRO: x, y, z]
 # Slot count of the vanilla container at the position. RETURN 0 when unknown.
 # Double chests report the size of one half (each half is its own block entity).

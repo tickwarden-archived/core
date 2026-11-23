@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/toggle/hook/true — Enable the hook module
 # Called by the module toggle menu when State = true.
 # Caller: vortex.admin tag required (enforced by the admin-tag guard in show.mcfunction)

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/container/is_empty
 # Condition: does the container hold no items at all?
 # INPUT  vortex:input x, y, z

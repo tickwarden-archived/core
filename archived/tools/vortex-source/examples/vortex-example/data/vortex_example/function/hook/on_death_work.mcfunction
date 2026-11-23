@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:hook/on_death_work
 # The processing bound to the player_death hook (see hook/register).
 # With macro_function ON it runs directly through core/dispatch/exec;

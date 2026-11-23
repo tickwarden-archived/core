@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/systems/audit/show_loop  [INTERNAL]
 # Prints entry #au_i, then recurses until #au_i reaches #au_n. Depth is at most 10.
 execute store result storage macroengine:audit idx.i int 1 run scoreboard players get #macroengine.au_i macroengine.tmp

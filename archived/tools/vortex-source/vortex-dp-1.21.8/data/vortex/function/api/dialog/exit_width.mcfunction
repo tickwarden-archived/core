@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/exit_width [MACRO]
 # Resize an existing multi-action exit button before show.
 $data modify storage vortex:dialog_width args set value {width:$(width)}

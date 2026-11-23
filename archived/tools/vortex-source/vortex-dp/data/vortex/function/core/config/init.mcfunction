@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/config/init
 # Single source of runtime configuration (replaces _rt_origin + scattered defaults).
 # Other packs may read vortex:engine config / vortex.meta scores; do not hardcode.

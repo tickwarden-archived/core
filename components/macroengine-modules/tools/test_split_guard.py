@@ -32,6 +32,58 @@ def _source(root: Path) -> Path:
     return src
 
 
+def test_eol_sources_are_rejected_before_output_is_deleted():
+    for kind in ('policy', 'guard', 'tag'):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            src = _source(root)
+            project = root / 'project'
+            (project / 'packs').mkdir(parents=True)
+            keep = project / 'packs' / 'keep.txt'
+            keep.write_text('keep', encoding='utf-8')
+            if kind == 'policy':
+                (src / 'vortaforge-eol.json').write_text('{}', encoding='utf-8')
+            elif kind == 'guard':
+                (src / 'data/macroengine/function/thing.mcfunction').write_text('# EOL entry guard\nsay hi\n', encoding='utf-8')
+            else:
+                tag = src / 'data/minecraft/tags/function/load.json'
+                tag.parent.mkdir(parents=True)
+                tag.write_text('{"values":["vf_eol_0123456789:load"]}', encoding='utf-8')
+            split = Split(src, project, in_place=True)
+            for operation in (split.collect, split.write):
+                try:
+                    operation()
+                except SystemExit as exc:
+                    assert 'EOL' in str(exc)
+                else:
+                    raise AssertionError(f'{kind} EOL source was accepted')
+            assert keep.read_text(encoding='utf-8') == 'keep'
+
+
+def test_output_eol_scanner_rejects_marker_in_resources_and_jars():
+    import zipfile
+    from check_no_eol import check
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp)
+        resource = root / 'load.json'
+        resource.write_text('{"values":["vf_eol_0123456789:load"]}', encoding='utf-8')
+        try:
+            check(root)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError('EOL resource was accepted')
+        resource.unlink()
+        with zipfile.ZipFile(root / 'test.jar', 'w') as jar:
+            jar.writestr('data/minecraft/tags/function/load.json', '{"values":["vf_eol_0123456789:load"]}')
+        try:
+            check(root)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError('EOL jar was accepted')
+
+
 def test_plain_output_directory_is_cleared():
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)

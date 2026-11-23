@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # macro $(x) $(y) $(z) $(ctype)
 $execute if data storage guikit:work {ctype:"chest"} run setblock $(x) $(y) $(z) minecraft:chest
 $execute if data storage guikit:work {ctype:"trapped_chest"} run setblock $(x) $(y) $(z) minecraft:trapped_chest

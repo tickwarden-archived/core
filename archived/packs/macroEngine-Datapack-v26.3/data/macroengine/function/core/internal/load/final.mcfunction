@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/load/final
 data modify storage macroengine:engine global.version set value "v26.3"
 scoreboard players set #vortaforge.packs.macroengine.version macroengine.meta 263

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/cb/internal/seq_push_entry
 # Pushes current sequence step as a cb_queue entry.
 # Reads: _cb_seq_cmd (string), _cb_delay (score), _cb_seq.{x,y,z}

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # AS thrower — fire handler for dropped widget id
 execute if score @s guikit.click matches 1.. run return 0
 data modify storage guikit:ctx click set value {}

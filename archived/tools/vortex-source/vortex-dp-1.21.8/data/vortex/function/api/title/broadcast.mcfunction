@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/title/broadcast — Broadcast title + subtitle + times to all players [MACRO]
 # Sends a complete title display (timing + title + subtitle) to every online player.
 # Unlike cmd/title_all which only sends a plain title to @a with no subtitle or

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:demo/callback
 # Fires the shared callback runner. The handler is registered in
 # data/vortex/tags/function/callback/dispatch.json and compares the ID itself.

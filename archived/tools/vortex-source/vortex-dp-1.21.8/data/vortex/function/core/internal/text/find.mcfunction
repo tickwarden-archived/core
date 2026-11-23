@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/find
 # Positions of non-overlapping occurrences of a needle in a string.
 # INPUT  vortex:text: s (string), needle (string), n (int, optional)

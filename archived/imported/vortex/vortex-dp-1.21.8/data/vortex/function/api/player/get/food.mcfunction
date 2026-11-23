@@ -1,0 +1,10 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
+# vortex:api/player/get/food [MACRO]
+data modify storage vortex:output found set value 0b
+
+$execute unless entity @a[name=$(player),limit=1] run return 0
+
+data modify storage vortex:output found set value 1b
+$execute as @a[name=$(player),limit=1] store result storage vortex:output food int 1 run data get entity @s FoodLevel
+$execute as @a[name=$(player),limit=1] store result storage vortex:output saturation int 1000 run data get entity @s FoodSaturationLevel

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ======================================================================================
 # vortex:world/entity/count_near
 # Counts entities of one type within a radius of the executor's position.

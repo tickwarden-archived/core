@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/systems/rng/_swap_bounds
 # min > max is a caller mistake, not an error: swap and carry on, so
 # {min:10,max:1} behaves like {min:1,max:10} instead of producing

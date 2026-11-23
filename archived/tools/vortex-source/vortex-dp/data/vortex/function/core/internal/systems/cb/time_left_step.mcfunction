@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/cb/time_left_step [INTERNAL]
 # Pops the first entry of _cb_twork (a read-only copy of cb_queue). When its id == #cb_cid,
 # counts it in #cb_tcount and keeps the smallest ticks_left in #cb_tmin (-1 = none yet).

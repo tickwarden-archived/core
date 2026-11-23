@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # click score: 0 idle, 1 detected (handler runs), 2 handled
 # NOTE: nothing in this pack calls this function. core/player_tick_entity and
 # core/player_tick_block run internal/click/shift and then internal/click/maybe_left,

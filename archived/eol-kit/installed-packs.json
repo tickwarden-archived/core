@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "status": "experimental-not-runtime-validated",
+  "originals": "Git parent c6846148d7a60add52945e402e8092e8e5fea3da for core; original Vortex Git bundle at archived/tools/vortex-source/recovery/vortex.bundle; also original candidate source manifests and remote recovery backups",
+  "packs": [
+    {
+      "path": "archived/examples/template-datapack",
+      "candidate": "core-62c96bf76d3b.zip",
+      "candidate_sha256": "74f4152db2c4900c35c4182e2c56dffe9e9d2b474efa14dee5f0ba2ff87f69dd",
+      "pack_id": "core-62c96bf76d3b",
+      "namespace": "vf_eol_46942fd13a",
+      "guard_mode": "early-return",
+      "function_count": 2,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/DailyBonus",
+      "candidate": "core-7dc59306347b.zip",
+      "candidate_sha256": "e1eea40c12ff190701284b0341eb02153d1da4a61e8f3314b4b3ff98f899514e",
+      "pack_id": "core-7dc59306347b",
+      "namespace": "vf_eol_f98a9615fe",
+      "guard_mode": "early-return",
+      "function_count": 4,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/dailybonus/function/_vc_origin.mcfunction": "e16282727f6ac320696024f338e2d686390ab94d16d7bd5cebc9cc7b92066fe1",
+        "vortaforge-eol.json": "5dcc068ba448983bff9352811d593e462e80e7103c553bcb027e75bf734612a5"
+      }
+    },
+    {
+      "path": "archived/packs/InteractionClickDetection",
+      "candidate": "core-160267d56371.zip",
+      "candidate_sha256": "f8bd6e596cf2528c1e35761d248e9499f06be7e7bc1cdb05023922dd58707416",
+      "pack_id": "core-160267d56371",
+      "namespace": "vf_eol_3b9a8e469f",
+      "guard_mode": "early-return",
+      "function_count": 3,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/click_detection/functions/archive_warning.mcfunction": "ae27c3914eccb8cc8b837d6001c9b4f830c432743114a62fabf804099873edba",
+        "data/minecraft/tags/functions/load.json": "d58f02b392af63e40eb9760f6d491db1e664506b7b43a58d833a97f5c81ade01",
+        "data/click_detection/functions/_vc_origin.mcfunction": "561fbaef14c29546b8b1845e0c5bf437634dfd82867d86e7809a335e9bf94d86",
+        "vortaforge-eol.json": "2c0aadd7475a635e3afdb4475106f70611cef167d00c6ea69a15e99eb32a1d27"
+      }
+    },
+    {
+      "path": "archived/packs/LeftClickDetection",
+      "candidate": "core-25d5fd9ab8f9.zip",
+      "candidate_sha256": "085a45331a94486342728c313b82aafed455655db84e952aae557612adcfbbb9",
+      "pack_id": "core-25d5fd9ab8f9",
+      "namespace": "vf_eol_402f6da28f",
+      "guard_mode": "early-return",
+      "function_count": 10,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/left_click_detection/functions/_vc_origin.mcfunction": "5f6c6c0a14ebd16c2b9e9e95330e035d8af3529623e840a65180b3a7b36833ea",
+        "data/minecraft/function/_vc_origin.mcfunction": "5e1e20331c838e2d6cce1e3f9cc85119d6c9ebd474950146804b148b4ce5eb89",
+        "vortaforge-eol.json": "3eb824d060f3b233f93d32f1e2f41b9c67b3990f79832f81d478b93a494afd9b"
+      },
+      "post_install_removed": [
+        "data/minecraft/tags/function/load.json",
+        "data/minecraft/tags/function/tick.json",
+        "data/vf_eol_402f6da28f/function/cleanup.mcfunction",
+        "data/vf_eol_402f6da28f/function/load.mcfunction",
+        "data/vf_eol_402f6da28f/function/notice.mcfunction",
+        "data/vf_eol_402f6da28f/function/refresh.mcfunction",
+        "data/vf_eol_402f6da28f/function/status.mcfunction",
+        "data/vf_eol_402f6da28f/function/tick.mcfunction"
+      ]
+    },
+    {
+      "path": "archived/packs/QuickShare",
+      "candidate": "core-124c741d56ce.zip",
+      "candidate_sha256": "51993ab186cd0e8c673a6859570d44e9f2d11027e4d4b8555f54892df7a1e0e2",
+      "pack_id": "core-124c741d56ce",
+      "namespace": "vf_eol_67654ba1d3",
+      "guard_mode": "early-return",
+      "function_count": 5,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/quickshare/function/_vc_origin.mcfunction": "0f954ae306ca6a7766c2d127df48ba873bf9235f465991b9538f7749d93f8beb",
+        "vortaforge-eol.json": "ee4bea6d45e451c404d24b6d06413d9e5c95c9b318b170e3a943ffc51dd88651"
+      }
+    },
+    {
+      "path": "archived/packs/RTWrapper-v1.0.1",
+      "candidate": "core-e370d484ecb0.zip",
+      "candidate_sha256": "48f87abe46b95f17da903cb708f860b170b7aa7c16b1602a05170f76118ef5bd",
+      "pack_id": "core-e370d484ecb0",
+      "namespace": "vf_eol_1f44a31786",
+      "guard_mode": "early-return",
+      "function_count": 681,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/rtwrapper/function/_vc_origin.mcfunction": "df5258505d58b64ad70c456ebf1b417a400c37a55428d1a4eca9563a45607eb6",
+        "vortaforge-eol.json": "9565e70f0237088018b3b504f231895904b56066fee1e1a675fb4fc9a82cf134"
+      }
+    },
+    {
+      "path": "archived/packs/RTWrapper/datapack/RTWrapper-Datapack",
+      "candidate": "core-fe13f9ed5b98.zip",
+      "candidate_sha256": "1424c30214dbe065618347e6a222914941592974398be07e57f94981d9c0c974",
+      "pack_id": "core-fe13f9ed5b98",
+      "namespace": "vf_eol_95ed379a2f",
+      "guard_mode": "early-return",
+      "function_count": 679,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/rtwrapper/function/_vc_origin.mcfunction": "09be5ce0b038c9dbef3c7b4cba7f04cff9bf6e4c13c35b4cc35e9f0691a395db",
+        "vortaforge-eol.json": "444438a85166d23e300e0746236a6b029a45e64b541d9f608e3861ae269b1d46"
+      }
+    },
+    {
+      "path": "archived/packs/TunnelScript",
+      "candidate": "core-d9600c15de4a.zip",
+      "candidate_sha256": "882ed3c9b90e4ddb1bd5da367b3f0b970d139b5bc8cb252d1cfd5ce7f6f8fd16",
+      "pack_id": "core-d9600c15de4a",
+      "namespace": "vf_eol_601484f105",
+      "guard_mode": "legacy-per-command",
+      "function_count": 97,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/ts/functions/_vc_origin.mcfunction": "d79a7ead65065d6dc97ee0721b2cebed0b4b53888b15d59eedd6e49c013b86e8",
+        "data/ts_util/functions/_vc_origin.mcfunction": "a6cbd7d2044bce79c90cfa838f7180e45434b9a970955a3c23e23db39aaa0183",
+        "data/tunnelscript_core/functions/_vc_origin.mcfunction": "d8a303a373f8bd1136f05fc8a1c1add2bafed87b126b62cbcc924e3a2033e930",
+        "vortaforge-eol.json": "8e23954ccea637eff46ef0896d0a87ba22ac84bd2db49156b7e0f4c517e2861d"
+      }
+    },
+    {
+      "path": "archived/packs/cmdTunnel-datapack",
+      "candidate": "core-e43c0c672bcb.zip",
+      "candidate_sha256": "61fe139b81e23430ce22dd185663f44f3a78bcf7ba35fc605692839283e1ccf7",
+      "pack_id": "core-e43c0c672bcb",
+      "namespace": "vf_eol_f11a08b8a7",
+      "guard_mode": "legacy-per-command",
+      "function_count": 7,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/cmd_tunnel_sys/functions/_vc_origin.mcfunction": "e55573151f3de5729129e1c56955c3297c2e1b198ec9ba534953da892199fdca",
+        "data/minecraft/function/_vc_origin.mcfunction": "ee099fa0e90695c1cc722971d7380b79782bd1565acc01f46c94602a53448103",
+        "vortaforge-eol.json": "dda3112be12f4b9f5493cc8501253f572ef74f33899892db4540234850920998"
+      },
+      "post_install_removed": [
+        "data/minecraft/tags/function/load.json",
+        "data/minecraft/tags/function/tick.json",
+        "data/vf_eol_f11a08b8a7/function/cleanup.mcfunction",
+        "data/vf_eol_f11a08b8a7/function/load.mcfunction",
+        "data/vf_eol_f11a08b8a7/function/notice.mcfunction",
+        "data/vf_eol_f11a08b8a7/function/refresh.mcfunction",
+        "data/vf_eol_f11a08b8a7/function/status.mcfunction",
+        "data/vf_eol_f11a08b8a7/function/tick.mcfunction"
+      ]
+    },
+    {
+      "path": "archived/packs/guikitfw",
+      "candidate": "core-054e268687fd.zip",
+      "candidate_sha256": "dad1cb210bae0f1d3d643e93bb25a3b1ee2aba1b435b7534be551735f1449113",
+      "pack_id": "core-054e268687fd",
+      "namespace": "vf_eol_c8645e117f",
+      "guard_mode": "early-return",
+      "function_count": 191,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/guikit/function/_vc_origin.mcfunction": "952eb8b5e78c7cacafec5302922c07735eba1922b4094f2460a547688de71b91",
+        "vortaforge-eol.json": "231bf7db9ac234d4309b9ff0835f62d7d35385d349aad5d5f90c0ed9a4cc130c"
+      }
+    },
+    {
+      "path": "archived/packs/macroEngine-Datapack-v26.3",
+      "candidate": "core-f45e29d3e141.zip",
+      "candidate_sha256": "7e9fbc0ca8b565b2cf8d215ec9836b330bf6b5a39dd15f4832d50992ca648014",
+      "pack_id": "core-f45e29d3e141",
+      "namespace": "vf_eol_cc1cb841d8",
+      "guard_mode": "early-return",
+      "function_count": 1243,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/macroengine/function/_vc_origin.mcfunction": "e237ad46687dc9ef958c69926c6a90f7966907ca08971e9a3a30a8a5adc1d1a3",
+        "vortaforge-eol.json": "20b6c74e113e127545ed80533f139e0b299267479a75c83daacba8f82ce95553"
+      }
+    },
+    {
+      "path": "archived/packs/vf_macro",
+      "candidate": "core-5b836e483e78.zip",
+      "candidate_sha256": "9a11b83e71e026369ad76cfa887075ade2cef4ca02e49425a891724a23968f03",
+      "pack_id": "core-5b836e483e78",
+      "namespace": "vf_eol_5f312cf5a6",
+      "guard_mode": "legacy-per-command",
+      "function_count": 50,
+      "runtime_validated": false,
+      "post_install_overrides": {
+        "data/vf_macro/functions/_vc_origin.mcfunction": "1db5bbcc3a2463af50049ebea00dba39975fcf200085e61ad1db64e3ffed0feb",
+        "vortaforge-eol.json": "e40410613df396d1a666d5a7337b1e4c452dbc56ed9c493ad1bf5c9e71b67c53"
+      }
+    },
+    {
+      "path": "archived/tools/vortex-source/examples/vortex-example",
+      "candidate": "vortex-92441e84db98.zip",
+      "candidate_sha256": "cf0f8a662e916b176a4fa681c5d8232771d007cefc7d7a6bdc4a4d3d7775e269",
+      "pack_id": "vortex-92441e84db98",
+      "namespace": "vf_eol_55b54ff038",
+      "guard_mode": "early-return",
+      "function_count": 22,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/examples/vortex-example",
+      "candidate": "vortex-92441e84db98.zip",
+      "candidate_sha256": "cf0f8a662e916b176a4fa681c5d8232771d007cefc7d7a6bdc4a4d3d7775e269",
+      "pack_id": "vortex-92441e84db98",
+      "namespace": "vf_eol_55b54ff038",
+      "guard_mode": "early-return",
+      "function_count": 22,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/tools/vortex-source/vortex-dp-1.21.8",
+      "candidate": "vortex-5154be20712d.zip",
+      "candidate_sha256": "1ceae258dae2e1aed448e517fff5abde957080159fb013b37f68727a6f893b8d",
+      "pack_id": "vortex-5154be20712d",
+      "namespace": "vf_eol_63b504a29e",
+      "guard_mode": "early-return",
+      "function_count": 1450,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/imported/vortex/vortex-dp-1.21.8",
+      "candidate": "vortex-5154be20712d.zip",
+      "candidate_sha256": "1ceae258dae2e1aed448e517fff5abde957080159fb013b37f68727a6f893b8d",
+      "pack_id": "vortex-5154be20712d",
+      "namespace": "vf_eol_63b504a29e",
+      "guard_mode": "early-return",
+      "function_count": 1450,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/tools/vortex-source/vortex-dp",
+      "candidate": "vortex-05d16a42219e.zip",
+      "candidate_sha256": "30595f6051219d5b9910b79bf116befa8467efbdd36d4a2ab168c783d4a341b8",
+      "pack_id": "vortex-05d16a42219e",
+      "namespace": "vf_eol_8ca60b8329",
+      "guard_mode": "early-return",
+      "function_count": 1451,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/imported/vortex/vortex-dp",
+      "candidate": "vortex-05d16a42219e.zip",
+      "candidate_sha256": "30595f6051219d5b9910b79bf116befa8467efbdd36d4a2ab168c783d4a341b8",
+      "pack_id": "vortex-05d16a42219e",
+      "namespace": "vf_eol_8ca60b8329",
+      "guard_mode": "early-return",
+      "function_count": 1451,
+      "runtime_validated": false
+    }
+  ]
+}

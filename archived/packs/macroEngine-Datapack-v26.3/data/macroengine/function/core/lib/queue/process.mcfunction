@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/lib/queue/process
 scoreboard players add $pq_depth macroengine.tmp 1
 execute if score $pq_depth macroengine.tmp > #queue_cap macroengine.tick run return 0

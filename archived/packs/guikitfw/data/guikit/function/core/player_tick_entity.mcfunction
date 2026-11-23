@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 function guikit:internal/bind/me
 
 execute if data storage guikit:cfg {follow:1b} as @e[type=#guikit:container,tag=guikit.me,limit=1] run tp @s ~ ~1.2 ~

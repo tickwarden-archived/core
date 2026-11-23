@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/geo/region_watch/internal/tick_scan
 # Called directly from core/tick/queue_systems.mcfunction.
 # If region_watches is non-empty, checks all regions for each player.

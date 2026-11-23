@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/math/vec/arccos_lookup
 # $vang_dot vortex.tmp = cos×1000 value ([-1000, 1000])
 # 10° resolution arccos lookup table.

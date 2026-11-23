@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_tok_ent [INTERNAL]  tokens %health% %food% %xp_level% %dimension%
 # Reads the executor's data directly and stores a plain string in tmp.val (unset for non-players).
 execute unless entity @s[type=player] run return 0

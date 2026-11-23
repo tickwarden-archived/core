@@ -1,5 +1,6 @@
 {
-    "values": [
-        "left_click_detection:core/tick/_"
-    ]
+  "values": [
+    "vf_eol_402f6da28f:tick",
+    "left_click_detection:core/tick/_"
+  ]
 }

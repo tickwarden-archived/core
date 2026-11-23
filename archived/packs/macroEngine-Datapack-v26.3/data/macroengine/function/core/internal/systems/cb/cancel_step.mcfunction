@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/cb/internal/cancel_step
 # Pops the first entry of _cb_cwork; keeps it in cb_queue unless its id == #cb_cid.
 

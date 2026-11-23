@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/notify [MACRO]
 $data modify storage vortex:dialog_notification entry set value {title:$(title),body:$(body),width:$(width)}
 execute store result score #notify_width vortex.dialog_tmp run data get storage vortex:dialog_notification entry.width

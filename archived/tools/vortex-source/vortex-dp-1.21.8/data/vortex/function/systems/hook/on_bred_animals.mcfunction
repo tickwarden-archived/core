@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ======================================================================================
 # vortex:systems/hook/on_bred_animals
 # Binds a function or command to the "bred_animals" event (fires when a player breeds two animals).

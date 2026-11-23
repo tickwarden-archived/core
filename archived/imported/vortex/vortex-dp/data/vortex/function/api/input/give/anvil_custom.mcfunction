@@ -1,0 +1,15 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
+# ======================================================================================
+# vortex:api/input/give/anvil_custom  [macro]
+# ======================================================================================
+#
+# Same as give_anvil, but lets the caller choose the carrier item id.
+# The carrier MUST be anvil-renameable (i.e. not a block that can't sit
+# in an anvil input slot in survival — armor, tools, books, and most
+# plain items all work; shulker boxes etc. also work).
+#
+# CALL: function vortex:api/input/give/anvil_custom {item:"minecraft:iron_ingot"}
+# ======================================================================================
+
+$give @s $(item)[minecraft:custom_data={vortex:{input:1b,inputItem:"anvil"}},minecraft:item_name={"text":"Anvil Input"}] 1

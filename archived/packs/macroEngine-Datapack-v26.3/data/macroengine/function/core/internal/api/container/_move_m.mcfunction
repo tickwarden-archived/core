@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/container/_move_m [INTERNAL, MACRO: x, y, z, slot, tx, ty, tz, dslot]
 # Copies the stack with the engine's own item command, and clears the source only if the copy worked.
 $execute unless data block $(x) $(y) $(z) Items[{Slot:$(slot)b}] run return 0

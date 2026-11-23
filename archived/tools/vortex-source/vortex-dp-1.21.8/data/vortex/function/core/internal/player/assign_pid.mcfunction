@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/player/assign_pid [MACRO]
 execute store result score $next_pid vortex.tmp run data get storage vortex:engine _pid_seq
 

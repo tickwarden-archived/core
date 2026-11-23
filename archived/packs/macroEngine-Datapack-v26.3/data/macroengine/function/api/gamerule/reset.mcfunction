@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/gamerule/reset [MACRO]
 # Removes a custom gamerule from engine storage entirely.
 # Does NOT touch vanilla /gamerule — this is for macroengine-tracked rules only.

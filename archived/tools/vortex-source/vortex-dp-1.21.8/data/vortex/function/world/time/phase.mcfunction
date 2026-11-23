@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:world/time/phase
 # not exist on 1.21.8. The ranges below (0..23999) need ticks-into-day, i.e.
 # the older `daytime` argument.

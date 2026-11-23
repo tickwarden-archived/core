@@ -1,0 +1,9 @@
+{
+  "entity": "this",
+  "predicate": {
+    "effects": {
+      "minecraft:hunger": {}
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}

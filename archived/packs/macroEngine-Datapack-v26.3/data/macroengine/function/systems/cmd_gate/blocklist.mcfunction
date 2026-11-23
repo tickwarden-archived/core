@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/cmd_gate/blocklist
 # Developer-controlled defaults for the dynamic-command blocklist. Change the
 # shipped defaults by editing THIS file in a pull request - there is no

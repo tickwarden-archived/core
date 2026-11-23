@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/render_all
 # Renders the same template once for every online player (each render runs as that player, so
 # %player%, %p:name% and %score:obj% resolve per recipient) and collects plain strings.

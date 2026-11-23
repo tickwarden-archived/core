@@ -1,0 +1,303 @@
+{
+  "schema": 1,
+  "release": "experimental-do-not-deploy",
+  "generated_candidates": [
+    {
+      "id": "core-62c96bf76d3b",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/examples/template-datapack",
+      "archive": "core-62c96bf76d3b.zip",
+      "sha256": "74f4152db2c4900c35c4182e2c56dffe9e9d2b474efa14dee5f0ba2ff87f69dd",
+      "function_count": 2,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-7dc59306347b",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/DailyBonus",
+      "archive": "core-7dc59306347b.zip",
+      "sha256": "e1eea40c12ff190701284b0341eb02153d1da4a61e8f3314b4b3ff98f899514e",
+      "function_count": 5,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-160267d56371",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/InteractionClickDetection",
+      "archive": "core-160267d56371.zip",
+      "sha256": "f8bd6e596cf2528c1e35761d248e9499f06be7e7bc1cdb05023922dd58707416",
+      "function_count": 3,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-25d5fd9ab8f9",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/LeftClickDetection",
+      "archive": "core-25d5fd9ab8f9.zip",
+      "sha256": "085a45331a94486342728c313b82aafed455655db84e952aae557612adcfbbb9",
+      "function_count": 12,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-124c741d56ce",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/QuickShare",
+      "archive": "core-124c741d56ce.zip",
+      "sha256": "51993ab186cd0e8c673a6859570d44e9f2d11027e4d4b8555f54892df7a1e0e2",
+      "function_count": 6,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-e370d484ecb0",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/RTWrapper-v1.0.1",
+      "archive": "core-e370d484ecb0.zip",
+      "sha256": "48f87abe46b95f17da903cb708f860b170b7aa7c16b1602a05170f76118ef5bd",
+      "function_count": 682,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-fe13f9ed5b98",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/RTWrapper/datapack/RTWrapper-Datapack",
+      "archive": "core-fe13f9ed5b98.zip",
+      "sha256": "1424c30214dbe065618347e6a222914941592974398be07e57f94981d9c0c974",
+      "function_count": 680,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-d9600c15de4a",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/TunnelScript",
+      "archive": "core-d9600c15de4a.zip",
+      "sha256": "882ed3c9b90e4ddb1bd5da367b3f0b970d139b5bc8cb252d1cfd5ce7f6f8fd16",
+      "function_count": 100,
+      "guard_mode": "legacy-per-command",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-e43c0c672bcb",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/cmdTunnel-datapack",
+      "archive": "core-e43c0c672bcb.zip",
+      "sha256": "61fe139b81e23430ce22dd185663f44f3a78bcf7ba35fc605692839283e1ccf7",
+      "function_count": 9,
+      "guard_mode": "legacy-per-command",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-054e268687fd",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/guikitfw",
+      "archive": "core-054e268687fd.zip",
+      "sha256": "dad1cb210bae0f1d3d643e93bb25a3b1ee2aba1b435b7534be551735f1449113",
+      "function_count": 192,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-f45e29d3e141",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/macroEngine-Datapack-v26.3",
+      "archive": "core-f45e29d3e141.zip",
+      "sha256": "7e9fbc0ca8b565b2cf8d215ec9836b330bf6b5a39dd15f4832d50992ca648014",
+      "function_count": 1244,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "core-5b836e483e78",
+      "repository": "core",
+      "source_commit": "c6846148d7a60add52945e402e8092e8e5fea3da",
+      "source_path": "archived/packs/vf_macro",
+      "archive": "core-5b836e483e78.zip",
+      "sha256": "9a11b83e71e026369ad76cfa887075ade2cef4ca02e49425a891724a23968f03",
+      "function_count": 51,
+      "guard_mode": "legacy-per-command",
+      "runtime_validated": false
+    },
+    {
+      "id": "vortex-92441e84db98",
+      "repository": "vortex",
+      "source_commit": "77b66efc8c43c2677683f14b732b11642e6fce94",
+      "source_path": "examples/vortex-example",
+      "archive": "vortex-92441e84db98.zip",
+      "sha256": "cf0f8a662e916b176a4fa681c5d8232771d007cefc7d7a6bdc4a4d3d7775e269",
+      "function_count": 22,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vortex-5154be20712d",
+      "repository": "vortex",
+      "source_commit": "77b66efc8c43c2677683f14b732b11642e6fce94",
+      "source_path": "vortex-dp-1.21.8",
+      "archive": "vortex-5154be20712d.zip",
+      "sha256": "1ceae258dae2e1aed448e517fff5abde957080159fb013b37f68727a6f893b8d",
+      "function_count": 1450,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vortex-05d16a42219e",
+      "repository": "vortex",
+      "source_commit": "77b66efc8c43c2677683f14b732b11642e6fce94",
+      "source_path": "vortex-dp",
+      "archive": "vortex-05d16a42219e.zip",
+      "sha256": "30595f6051219d5b9910b79bf116befa8467efbdd36d4a2ab168c783d4a341b8",
+      "function_count": 1451,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-6b1b3ffb7baa",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/examples/template-datapack",
+      "archive": "vorta-core-6b1b3ffb7baa.zip",
+      "sha256": "b458167c20b7d6327e0dfa29db85db5c72031cbd3bd5f90891bd91cc9311b744",
+      "function_count": 2,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-67ee40093fb2",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/DailyBonus",
+      "archive": "vorta-core-67ee40093fb2.zip",
+      "sha256": "215ab451241a17b0f5d1b4d6d87ee75e796e9300b80e544200b2a63fe75c476c",
+      "function_count": 5,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-d7453cb51716",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/InteractionClickDetection",
+      "archive": "vorta-core-d7453cb51716.zip",
+      "sha256": "7fc71c808ef4da06e9167dd562b91b92455104937ee0ef086385379fa1593d2d",
+      "function_count": 3,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-c08328b3f6e9",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/LeftClickDetection",
+      "archive": "vorta-core-c08328b3f6e9.zip",
+      "sha256": "df136405efd4bee39a61b3e5faad5a85b0b38aaa0bd96bf67db449e714068a9a",
+      "function_count": 12,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-d76b2d62e23f",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/QuickShare",
+      "archive": "vorta-core-d76b2d62e23f.zip",
+      "sha256": "1662184da648d7d54709b88c843073c71f02a168bf6c0142702dcf681dc1426d",
+      "function_count": 6,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-679645a274c2",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/RTWrapper-v1.0.1",
+      "archive": "vorta-core-679645a274c2.zip",
+      "sha256": "dbcee3d5b1198e3b95dede2dae9550727a3a9c6484b937b5c61fc2b17f08edba",
+      "function_count": 682,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-2e4726a30729",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/RTWrapper/datapack/RTWrapper-Datapack",
+      "archive": "vorta-core-2e4726a30729.zip",
+      "sha256": "d7a32dc3b318fc2726e80d855f32c49466860d664d4f9d4e7b37cd9d57408b96",
+      "function_count": 680,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-a09db81f61c1",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/TunnelScript",
+      "archive": "vorta-core-a09db81f61c1.zip",
+      "sha256": "724980f9b21d894fb5fdc3e33e6e9277199fd15d98c2c6e8d14a37e2cd196906",
+      "function_count": 100,
+      "guard_mode": "legacy-per-command",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-39c80a0a3926",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/cmdTunnel-datapack",
+      "archive": "vorta-core-39c80a0a3926.zip",
+      "sha256": "558d667d0b87ed16d089ceae6cc8101f7acbd42dfd1c80da00ab47e4ef81e5f8",
+      "function_count": 9,
+      "guard_mode": "legacy-per-command",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-e93c4d2685d8",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/guikitfw",
+      "archive": "vorta-core-e93c4d2685d8.zip",
+      "sha256": "cbc199f16d3a3476f3e91705da60bf981ea29d06b96c26cd78c309e7f8af6f33",
+      "function_count": 192,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-48f83d02525c",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/macroEngine-Datapack-v26.3",
+      "archive": "vorta-core-48f83d02525c.zip",
+      "sha256": "4bd4e7802706f644548af4603116b9ba654eb45ab16d91c7d22202ceea942b5c",
+      "function_count": 1249,
+      "guard_mode": "early-return",
+      "runtime_validated": false
+    },
+    {
+      "id": "vorta-core-31ed8232f979",
+      "repository": "vorta-core",
+      "source_commit": "c308fd97588eaa3202b00547b5f20088e130147e",
+      "source_path": "core/archived/packs/vf_macro",
+      "archive": "vorta-core-31ed8232f979.zip",
+      "sha256": "86345f34c36e7f7f7509a8d9e207e1f4dd1a0a2e8d8b39a48c683656b93a8e36",
+      "function_count": 51,
+      "guard_mode": "legacy-per-command",
+      "runtime_validated": false
+    }
+  ]
+}

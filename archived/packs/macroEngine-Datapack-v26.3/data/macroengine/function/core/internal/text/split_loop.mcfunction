@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/split_loop [INTERNAL] one segment per separator match
 execute unless data storage macroengine:text idx[0] run return 0
 execute store result score #tx_k macroengine.tmp run data get storage macroengine:text idx[0]

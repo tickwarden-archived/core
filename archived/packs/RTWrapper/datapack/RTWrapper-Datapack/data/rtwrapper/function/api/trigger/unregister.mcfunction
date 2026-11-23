@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Unregister a trigger. Removes the registry entry only - the scoreboard objective itself
 # is left in place (vanilla has no clean way to remove an objective's data mid-session
 # without affecting player scores unexpectedly; operators can `/scoreboard objectives

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/validate/_fid_loop [INTERNAL]
 # Checks every entry of macroengine:validate fid.segs with safe_name (an empty entry fails).
 execute unless data storage macroengine:validate fid.segs[0] run return 1

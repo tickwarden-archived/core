@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # Hit any sign-like block
 execute if block ~ ~ ~ #minecraft:all_signs run return run function vortex:api/input/private/sign_capture
 execute if block ~ ~ ~ #minecraft:signs run return run function vortex:api/input/private/sign_capture

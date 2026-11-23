@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # vortex:world/entity/for_each_in_radius
 # Runs a function as every entity of a given type within radius

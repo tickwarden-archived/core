@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "entry_guard_mode": "early-return",
+  "pack_id": "core-160267d56371",
+  "source_format": {
+    "pack_format": 26,
+    "description": "Click Detection System v1.0.0 | Macro-free | 1.20.x"
+  },
+  "namespace": "vf_eol_3b9a8e469f",
+  "objective": "vfE3b9a8e469f",
+  "clock": "online-ticks-not-wall-clock",
+  "expected_tps": 20,
+  "read_only_at_ticks": 5184000,
+  "locked_at_ticks": 12096000,
+  "guarded_functions": [
+    "data/click_detection/functions/on_lc.mcfunction",
+    "data/click_detection/functions/on_rc.mcfunction",
+    "data/click_detection/functions/archive_warning.mcfunction"
+  ],
+  "readonly_functions": [],
+  "literal_internal_scheduled_targets_for_manual_ownership_review": [],
+  "automatic_schedule_clear": false,
+  "dynamic_schedules_detected": false,
+  "schedule_detection_complete": false,
+  "persistent_data_deleted": false,
+  "deep_cleanup_enabled": false,
+  "runtime_validated": false,
+  "status_function": "vf_eol_3b9a8e469f:status",
+  "control_plane_exception": "Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.",
+  "source_manifest": {
+    ".gitignore": "ba8edf8e347b9d6eb720ea0b67a5a14056f9af2a96a6f61a41d8cb46345fff10",
+    "LICENSE": "930bf24ab4ee2d2afe2d1bdff27320f3e84f90ae0a2fd2f0c53ac0a594c9b9ec",
+    "NOTICE": "0edf8c50a8d19ddef02e2642cb50344367371a2926bf9482d00b33d18fd2ed38",
+    "README.md": "4352a6b129a23ae0b07fc0d382ccf009b0bcb3f8bcfb1c34e9260535a42ea7a8",
+    "SECURITY.md": "8fd8066dbb2048704f3bc9912434e511d4ef4b3a483f713cdc70c0d0ad3c1008",
+    "data/click_detection/advancements/lc.json": "c5c389f6b7866dc2deabd4ba6bdbb53307f7009681a428bee1d60075395b6f40",
+    "data/click_detection/advancements/rc.json": "49a0f9ec184ed3871f5e7c3f932fed15c1300fa87741016b464bf232fc083c78",
+    "data/click_detection/functions/_vc_origin.mcfunction": "561fbaef14c29546b8b1845e0c5bf437634dfd82867d86e7809a335e9bf94d86",
+    "data/click_detection/functions/on_lc.mcfunction": "3f5897a768f4078cd4dbcf5ade8031d40fa8f8a0a32f848fada61e17effd7cc7",
+    "data/click_detection/functions/on_rc.mcfunction": "70e3eb4735e8fea40d3a2aff5e623224ea0ceaaad325c9bc07140cbadf5788be",
+    "data/click_detection/tags/functions/on_lc.json": "489711deb6d620e83d3dd373268130b27115d3d1be943672f2eab8f656bfae80",
+    "data/click_detection/tags/functions/on_rc.json": "489711deb6d620e83d3dd373268130b27115d3d1be943672f2eab8f656bfae80",
+    "pack.mcmeta": "60ca0da598b2d6ff8092aebc9eeac252d2ac26d9c079ba1dd640f908df84fb52"
+  },
+  "comment_only_functions": [
+    "data/click_detection/functions/_vc_origin.mcfunction"
+  ],
+  "generated_warning_functions": [
+    "data/click_detection/functions/archive_warning.mcfunction"
+  ]
+}

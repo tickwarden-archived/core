@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/tui/header - title bar for @s, same look as api/toggle/show
 #
 # INPUT vortex:tui in:  text (string with %tokens%, required), args (optional)

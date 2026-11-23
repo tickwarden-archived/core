@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # guikit :: api/register_menu
 # Input storage guikit:in: {id:"shop", menu:{...full menu object...}}
 # Writes into guikit:lib and rebuilds reg entry.

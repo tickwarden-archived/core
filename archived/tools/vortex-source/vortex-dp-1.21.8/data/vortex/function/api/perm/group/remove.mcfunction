@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/perm/group/remove [MACRO]  INPUT: $(player) $(group)
 # Removes an online player from a group: drops the group.<group> tag and
 # the perm.<name> tag of every permission in the group. KNOWN LIMIT: if

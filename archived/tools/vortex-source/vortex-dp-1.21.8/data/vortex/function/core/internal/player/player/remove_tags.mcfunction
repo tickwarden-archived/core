@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # Vortex player module — drop all state tags before this tick's
 # detection runs. Tags are re-added below when their condition holds.
 

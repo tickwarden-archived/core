@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/replace
 # INPUT  vortex:text: s, needle, rep (strings), n (int, optional: 0 all, +n first n, -n last n)
 # OUTPUT vortex:text: out (string)   on failure: err, out unset

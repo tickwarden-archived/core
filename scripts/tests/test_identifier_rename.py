@@ -50,6 +50,9 @@ def _files():
             continue
         if any(x in p.parts for x in ("build", ".gradle", "node_modules", "__pycache__")):
             continue
+        # Frozen imports are byte-preserved upstream history, not live identifiers.
+        if _rel(p).startswith(("archived/historical/", "archived/imported/")) or _rel(p) == "archived/eol-kit/migration-manifest.json":
+            continue
         yield p
 
 
@@ -70,6 +73,7 @@ class NoLiveOldIdentifier(unittest.TestCase):
     def test_no_source_tree_is_still_nested_under_the_old_package(self):
         hits = [_rel(p) for p in ROOT.rglob(OLD_PACKAGE_DIR)
                 if p.is_dir() and ".git" not in p.parts
+                and not _rel(p).startswith(("archived/historical/", "archived/imported/"))
                 and any(x in p.parts for x in ("src", "java"))]
         self.assertEqual(hits, [], f"package directory not moved: {hits}")
 

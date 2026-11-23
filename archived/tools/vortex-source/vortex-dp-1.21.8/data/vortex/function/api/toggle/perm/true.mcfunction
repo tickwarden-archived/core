@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/toggle/perm/true — Enable the perm module (permission checks work again)
 
 # Who may flip it: a server/console executor (no entity) or a player with the vortex.admin tag.

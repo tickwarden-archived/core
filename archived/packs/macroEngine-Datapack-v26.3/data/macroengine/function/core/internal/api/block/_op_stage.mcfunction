@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/block/_op_stage [INTERNAL]
 # Runs the handler named like the op (insert, take, hopper_in, hopper_out); with no handler the
 # default container behaviour runs. RETURN 1 success, 0 failure.

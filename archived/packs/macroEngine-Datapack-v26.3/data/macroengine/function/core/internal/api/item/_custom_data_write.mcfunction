@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/item/_custom_data_write [MACRO]
 # Internal - writes custom_data once item_id / item_count are known.
 # 26.3 notes: `item modify entity ... {inline JSON}` is silently ignored, and

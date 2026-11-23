@@ -113,6 +113,26 @@ class CheckIsIdempotentAndBites(unittest.TestCase):
                 tag.write_text(json.dumps(data))
             self.assertEqual(self.run_check(packs_dir=copy), 1)
 
+    def test_unknown_file_in_eol_namespace_is_not_ignored(self):
+        import tempfile, shutil
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = pathlib.Path(tmp) / 'packs'
+            shutil.copytree(PACKS, copy)
+            pack = copy / 'DailyBonus'
+            policy = json.loads((pack / 'vortaforge-eol.json').read_text(encoding='utf-8'))
+            control = pack / 'data' / policy['namespace']
+            directory = next(p for p in control.iterdir() if p.is_dir())
+            (directory / 'unexpected.mcfunction').write_text('say unexpected\n', encoding='utf-8')
+            self.assertEqual(self.run_check(packs_dir=copy), 1)
+
+    def test_eol_added_warning_is_wired_and_guarded(self):
+        pack = PACKS / 'InteractionClickDetection'
+        policy = json.loads((pack / 'vortaforge-eol.json').read_text(encoding='utf-8'))
+        tag = json.loads((pack / 'data/minecraft/tags/functions/load.json').read_text(encoding='utf-8'))
+        self.assertLess(tag['values'].index(policy['namespace'] + ':load'), tag['values'].index('click_detection:archive_warning'))
+        warning = (pack / 'data/click_detection/functions/archive_warning.mcfunction').read_text(encoding='utf-8').splitlines()
+        self.assertEqual(warning[1], f"execute unless data storage {policy['namespace']}:lifecycle {{phase:1}} run return 0")
+
     @staticmethod
     def run_check(packs_dir=None):
         import contextlib, importlib.util, io
@@ -138,9 +158,19 @@ class RealPacksAreCorrect(unittest.TestCase):
 
     def test_every_generated_component_is_valid_json_with_a_real_url(self):
         for f in self.files:
-            line = [l for l in f.read_text(encoding="utf-8").splitlines()
-                    if l.startswith("tellraw")]
-            self.assertTrue(line, f"{f}: no tellraw line")
+            lines = f.read_text(encoding="utf-8").splitlines()
+            line = [l for l in lines if l.startswith("tellraw @a ")]
+            if not line:
+                # Legacy EOL functions gate each original command; accept only
+                # the exact phase-one prefix declared by this pack's policy.
+                root = f
+                while root.parent != PACKS and not (root / "pack.mcmeta").is_file():
+                    root = root.parent
+                policy = json.loads((root / "vortaforge-eol.json").read_text(encoding="utf-8"))
+                self.assertEqual(policy['entry_guard_mode'], 'legacy-per-command')
+                prefix = f"execute if data storage {policy['namespace']}:lifecycle {{phase:1}} run "
+                line = [l[len(prefix):] for l in lines if l.startswith(prefix + "tellraw @a ")]
+            self.assertEqual(len(line), 1, f"{f}: expected exactly one guarded warning")
             comp = json.loads(line[0].split("tellraw @a ", 1)[1])
             self.assertIsInstance(comp, list)
             clicky = [c for c in comp if "click_event" in c or "clickEvent" in c]

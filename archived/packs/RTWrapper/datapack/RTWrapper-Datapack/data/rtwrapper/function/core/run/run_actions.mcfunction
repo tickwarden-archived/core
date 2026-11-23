@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Drain rtwrapper:runtime queue and any direct rtwrapper:api request immediately:
 # process one action via run_next, then recurse while work remains. Used by
 # api/run.mcfunction and api/run_batch.mcfunction for immediate (non-autotick)
