@@ -137,13 +137,13 @@ jobs:
       # No checkout: exercise the action exactly like an external repository.
       - name: Download a public repository
         id: clone
-        uses: vortaforge/core/.github/actions/download@0531478375d416a4b08db08bfcc328b9af596932
+        uses: vortaforge/core/.github/actions/download@2415745d80f3026efbdab2098a8b933a84327078
         with:
           repository: docs
           ref: 11ec4f3293807cfe63819dc9b3210e941f726086
           destination: clone/docs
       - name: Execute a public repository script
-        uses: vortaforge/core/.github/actions/execute@0531478375d416a4b08db08bfcc328b9af596932
+        uses: vortaforge/core/.github/actions/execute@2415745d80f3026efbdab2098a8b933a84327078
         with:
           repository: core
           ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
@@ -153,7 +153,7 @@ jobs:
           working-directory: workspace
       - name: Run inline Python
         id: python
-        uses: vortaforge/core/.github/actions/vf_script@0531478375d416a4b08db08bfcc328b9af596932
+        uses: vortaforge/core/.github/actions/vf_script@2415745d80f3026efbdab2098a8b933a84327078
         with:
           code: |
             import json
