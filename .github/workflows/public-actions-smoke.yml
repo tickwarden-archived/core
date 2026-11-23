@@ -1,0 +1,65 @@
+name: Public actions smoke test
+
+on:
+  pull_request:
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/public-actions-smoke.yml'
+  push:
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/public-actions-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-reference:
+    name: Public cross-repository action reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Deliberately no checkout: public callers should be able to reference
+      # the action by repository path and immutable published commit.
+      - name: Set up Python via public action
+        uses: vortaforge/core/.github/actions/setup-toolchain@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        with:
+          python-version: '3.12'
+      - name: Create sample manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sample
+          printf 'public action test\n' > sample/example.txt
+          (cd sample && sha256sum example.txt > SHA256SUMS)
+      - name: Verify via public action
+        id: verified
+        uses: vortaforge/core/.github/actions/verify-sha256@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        with:
+          directory: sample
+          reject-extra: 'true'
+      - name: Validate outputs
+        shell: bash
+        env:
+          VERIFIED_FILES: ${{ steps.verified.outputs.files }}
+          VERIFIED_BYTES: ${{ steps.verified.outputs.bytes }}
+        run: |
+          set -euo pipefail
+          test "$VERIFIED_FILES" = 1
+          test "$VERIFIED_BYTES" = 19
+      - name: Tamper with the fixture
+        shell: bash
+        run: printf 'changed\n' > sample/example.txt
+      - name: Expect tampered file to fail verification
+        id: tampered
+        continue-on-error: true
+        uses: vortaforge/core/.github/actions/verify-sha256@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        with:
+          directory: sample
+          reject-extra: 'true'
+      - name: Assert verification failed
+        shell: bash
+        env:
+          RESULT: ${{ steps.tampered.outcome }}
+        run: test "$RESULT" = failure
