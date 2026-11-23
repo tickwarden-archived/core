@@ -3,11 +3,13 @@ name: Public actions smoke test
 on:
   pull_request:
     paths:
-      - '.github/actions/**'
+      - 'actions/**'
+      - 'action.yml'
       - '.github/workflows/public-actions-smoke.yml'
   push:
     paths:
-      - '.github/actions/**'
+      - 'actions/**'
+      - 'action.yml'
       - '.github/workflows/public-actions-smoke.yml'
   workflow_dispatch:
 
@@ -23,7 +25,7 @@ jobs:
       # Deliberately no checkout: public callers should be able to reference
       # the action by repository path and immutable published commit.
       - name: Set up Python via public action
-        uses: vortaforge/core/.github/actions/setup-toolchain@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        uses: vortaforge/core/actions/setup-toolchain@6486aec911a34ed900d5b02074aa0f6186b7a70b
         with:
           python-version: '3.12'
       - name: Create sample manifest
@@ -35,7 +37,7 @@ jobs:
           (cd sample && sha256sum example.txt > SHA256SUMS)
       - name: Verify via public action
         id: verified
-        uses: vortaforge/core/.github/actions/verify-sha256@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        uses: vortaforge/core/actions/verify-sha256@6486aec911a34ed900d5b02074aa0f6186b7a70b
         with:
           directory: sample
           reject-extra: 'true'
@@ -54,7 +56,7 @@ jobs:
       - name: Expect tampered file to fail verification
         id: tampered
         continue-on-error: true
-        uses: vortaforge/core/.github/actions/verify-sha256@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        uses: vortaforge/core/actions/verify-sha256@6486aec911a34ed900d5b02074aa0f6186b7a70b
         with:
           directory: sample
           reject-extra: 'true'
@@ -74,14 +76,14 @@ jobs:
           persist-credentials: false
       - name: Download a public VortaForge repository
         id: download
-        uses: ./.github/actions/download
+        uses: ./actions/download
         with:
           repository: docs
           ref: 11ec4f3293807cfe63819dc9b3210e941f726086
           destination: action-test/docs
       - name: Run a public repository script from caller workspace
         id: execute
-        uses: ./.github/actions/execute
+        uses: ./actions/execute
         with:
           repository: core
           ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
@@ -101,7 +103,7 @@ jobs:
           test "$CORE_SHA" = ff4691c6a36662ff4c2d80c197856a65c4a07324
       - name: Run Python with explicit and opt-in mapped dependencies
         id: python
-        uses: ./.github/actions/vf_script
+        uses: ./actions/vf_script
         with:
           code: |
             import requests, yaml
@@ -120,7 +122,7 @@ jobs:
       - name: Expect invalid Python syntax to fail
         id: syntax
         continue-on-error: true
-        uses: ./.github/actions/vf_script
+        uses: ./actions/vf_script
         with:
           code: 'if True print(1)'
       - name: Verify syntax failure is enforced
@@ -137,13 +139,13 @@ jobs:
       # No checkout: exercise the action exactly like an external repository.
       - name: Download a public repository
         id: clone
-        uses: vortaforge/core/.github/actions/download@2415745d80f3026efbdab2098a8b933a84327078
+        uses: vortaforge/core/actions/download@6486aec911a34ed900d5b02074aa0f6186b7a70b
         with:
           repository: docs
           ref: 11ec4f3293807cfe63819dc9b3210e941f726086
           destination: clone/docs
       - name: Execute a public repository script
-        uses: vortaforge/core/.github/actions/execute@2415745d80f3026efbdab2098a8b933a84327078
+        uses: vortaforge/core/actions/execute@6486aec911a34ed900d5b02074aa0f6186b7a70b
         with:
           repository: core
           ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
@@ -153,7 +155,7 @@ jobs:
           working-directory: workspace
       - name: Run inline Python
         id: python
-        uses: vortaforge/core/.github/actions/vf_script@2415745d80f3026efbdab2098a8b933a84327078
+        uses: vortaforge/core/actions/vf_script@6486aec911a34ed900d5b02074aa0f6186b7a70b
         with:
           code: |
             import json
@@ -167,3 +169,113 @@ jobs:
           set -euo pipefail
           test "$CLONE_SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086
           test "$IMPORTS" = json
+
+  root-dispatch:
+    name: Root dispatcher
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Root toolchain setup
+        uses: ./
+        with:
+          action: setup-toolchain
+          python-version: '3.12'
+      - name: Root download
+        id: clone
+        uses: ./
+        with:
+          action: download
+          repository: docs
+          ref: 11ec4f3293807cfe63819dc9b3210e941f726086
+          destination: root-action/docs
+      - name: Root execute
+        uses: ./
+        with:
+          action: execute
+          repository: core
+          ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
+          destination: root-action/core
+          script: scripts/repo/datapacks_disable.py
+          args-json: '["status"]'
+          working-directory: workspace
+      - name: Root Python
+        id: python
+        uses: ./
+        with:
+          action: vf_script
+          code: |
+            import json
+            print(json.dumps({'result': 'root action ok'}))
+      - name: Create checksum fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p root-checksum
+          printf 'abc' > root-checksum/file.txt
+          (cd root-checksum && sha256sum file.txt > SHA256SUMS)
+      - name: Root checksum
+        id: checksum
+        uses: ./
+        with:
+          action: verify-sha256
+          directory: root-checksum
+          reject-extra: 'true'
+      - name: Verify root outputs
+        shell: bash
+        env:
+          CLONE_SHA: ${{ steps.clone.outputs.sha }}
+          IMPORTS: ${{ steps.python.outputs.imports }}
+          FILES: ${{ steps.checksum.outputs.files }}
+          BYTES: ${{ steps.checksum.outputs.bytes }}
+        run: |
+          set -euo pipefail
+          test "$CLONE_SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086
+          test "$IMPORTS" = json
+          test "$FILES" = 1
+          test "$BYTES" = 3
+      - name: Reject unknown selection
+        id: invalid
+        continue-on-error: true
+        uses: ./
+        with:
+          action: unexpected
+      - name: Verify invalid selection failed
+        shell: bash
+        env:
+          RESULT: ${{ steps.invalid.outcome }}
+        run: test "$RESULT" = failure
+
+  root-public-reference:
+    name: Public root dispatcher reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # The repository is not checked out: this reproduces third-party usage.
+      - name: Root public Python
+        id: python
+        uses: vortaforge/core@6486aec911a34ed900d5b02074aa0f6186b7a70b
+        with:
+          action: vf_script
+          code: |
+            import json
+            print(json.dumps({'root': 'public'}))
+      - name: Root public download
+        id: source
+        uses: vortaforge/core@6486aec911a34ed900d5b02074aa0f6186b7a70b
+        with:
+          action: download
+          repository: docs
+          ref: 11ec4f3293807cfe63819dc9b3210e941f726086
+          destination: public-root/docs
+      - name: Check root outputs
+        shell: bash
+        env:
+          IMPORTS: ${{ steps.python.outputs.imports }}
+          SHA: ${{ steps.source.outputs.sha }}
+        run: |
+          set -euo pipefail
+          test "$IMPORTS" = json
+          test "$SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086

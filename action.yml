@@ -1,0 +1,219 @@
+name: VortaForge actions
+description: Select a VortaForge toolchain, checksum, public download, script or Python action.
+inputs:
+  action:
+    description: setup-toolchain, verify-sha256, download, execute, or vf_script.
+    required: true
+  repository:
+    description: Public vortaforge repository name for download or execute.
+    required: false
+    default: ''
+  ref:
+    description: Repository ref; pin to a reviewed commit SHA.
+    required: false
+    default: main
+  destination:
+    description: New relative workspace directory for the cloned repository.
+    required: false
+    default: ''
+  script:
+    description: Script path inside the cloned repository for execute.
+    required: false
+    default: ''
+  interpreter:
+    description: python3, bash, node or direct for execute.
+    required: false
+    default: python3
+  working-directory:
+    description: repository or workspace for execute.
+    required: false
+    default: repository
+  args-json:
+    description: JSON array of string arguments for execute or vf_script.
+    required: false
+    default: '[]'
+  code:
+    description: Inline Python; supply either code or script-path for vf_script.
+    required: false
+    default: ''
+  script-path:
+    description: Workspace-relative Python file for vf_script.
+    required: false
+    default: ''
+  requirements:
+    description: Workspace-relative requirements file for vf_script.
+    required: false
+    default: ''
+  packages:
+    description: Newline-separated package requirements for vf_script.
+    required: false
+    default: ''
+  auto-install:
+    description: Enable the reviewed import-to-package fallback map for vf_script.
+    required: false
+    default: 'false'
+  ignore-imports:
+    description: Comma-separated optional imports to skip for vf_script.
+    required: false
+    default: ''
+  directory:
+    description: Directory containing files and a SHA-256 manifest.
+    required: false
+    default: '.'
+  manifest:
+    description: SHA-256 manifest filename relative to directory.
+    required: false
+    default: SHA256SUMS
+  reject-extra:
+    description: Reject unlisted files when verifying SHA-256.
+    required: false
+    default: 'false'
+  allow-empty:
+    description: Permit empty files in SHA-256 verification.
+    required: false
+    default: 'false'
+  summary:
+    description: Write checksum verification counts to the job summary.
+    required: false
+    default: 'true'
+  python-version:
+    description: Python version for setup-toolchain, empty to skip.
+    required: false
+    default: ''
+  python-cache:
+    description: Enable pip caching for setup-toolchain.
+    required: false
+    default: 'false'
+  python-cache-dependency-path:
+    description: Dependency path for the pip cache key.
+    required: false
+    default: ''
+  node-version:
+    description: Node version for setup-toolchain, empty to skip.
+    required: false
+    default: ''
+  java-version:
+    description: Java version for setup-toolchain, empty to skip.
+    required: false
+    default: ''
+  java-distribution:
+    description: Distribution accepted by actions/setup-java.
+    required: false
+    default: temurin
+  gradle:
+    description: Enable Gradle setup for setup-toolchain.
+    required: false
+    default: 'false'
+  validate-gradle-wrappers:
+    description: Validate Gradle wrapper JARs during Gradle setup.
+    required: false
+    default: 'true'
+outputs:
+  path:
+    description: Cloned checkout path for download or execute.
+    value: ${{ steps.dispatch.outputs.path }}
+  sha:
+    description: Cloned commit SHA for download or execute.
+    value: ${{ steps.dispatch.outputs.sha }}
+  imports:
+    description: Statically discovered imports for vf_script.
+    value: ${{ steps.dispatch.outputs.imports }}
+  automatic-packages:
+    description: Number of packages installed by the opt-in fallback.
+    value: ${{ steps.dispatch.outputs.automatic-packages }}
+  files:
+    description: Number of verified files for verify-sha256.
+    value: ${{ steps.dispatch.outputs.files }}
+  bytes:
+    description: Number of verified bytes for verify-sha256.
+    value: ${{ steps.dispatch.outputs.bytes }}
+  python-version:
+    description: Resolved Python version for setup-toolchain.
+    value: ${{ steps.python.outputs.python-version }}
+  node-version:
+    description: Resolved Node version for setup-toolchain.
+    value: ${{ steps.node.outputs.node-version }}
+  java-version:
+    description: Resolved Java version for setup-toolchain.
+    value: ${{ steps.java.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - name: Validate action selection
+      shell: bash
+      env:
+        VF_ACTION: ${{ inputs.action }}
+        PYTHON_VERSION: ${{ inputs.python-version }}
+        PYTHON_CACHE: ${{ inputs.python-cache }}
+        JAVA_VERSION: ${{ inputs.java-version }}
+        GRADLE: ${{ inputs.gradle }}
+        VALIDATE_WRAPPERS: ${{ inputs.validate-gradle-wrappers }}
+      run: |
+        set -euo pipefail
+        case "$VF_ACTION" in setup-toolchain|verify-sha256|download|execute|vf_script) ;; *) echo '::error::Unknown action selection'; exit 1;; esac
+        if [[ "$VF_ACTION" == setup-toolchain ]]; then
+          case "$PYTHON_CACHE" in true|false) ;; *) echo '::error::python-cache must be true or false'; exit 1;; esac
+          case "$GRADLE" in true|false) ;; *) echo '::error::gradle must be true or false'; exit 1;; esac
+          case "$VALIDATE_WRAPPERS" in true|false) ;; *) echo '::error::validate-gradle-wrappers must be true or false'; exit 1;; esac
+          if [[ "$PYTHON_CACHE" == true && -z "$PYTHON_VERSION" ]]; then echo '::error::python-cache requires python-version'; exit 1; fi
+          if [[ "$GRADLE" == true && -z "$JAVA_VERSION" ]]; then echo '::error::gradle requires java-version'; exit 1; fi
+        fi
+    - name: Set up Java
+      id: java
+      if: ${{ inputs.action == 'setup-toolchain' && inputs.java-version != '' }}
+      uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+      with:
+        distribution: ${{ inputs.java-distribution }}
+        java-version: ${{ inputs.java-version }}
+    - name: Set up Python
+      id: python
+      if: ${{ inputs.action == 'setup-toolchain' && inputs.python-version != '' }}
+      uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: ${{ inputs.python-cache == 'true' && 'pip' || '' }}
+        cache-dependency-path: ${{ inputs.python-cache-dependency-path }}
+    - name: Set up Node
+      id: node
+      if: ${{ inputs.action == 'setup-toolchain' && inputs.node-version != '' }}
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: ${{ inputs.node-version }}
+    - name: Set up Gradle
+      if: ${{ inputs.action == 'setup-toolchain' && inputs.gradle == 'true' }}
+      uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+      with:
+        validate-wrappers: ${{ inputs.validate-gradle-wrappers }}
+    - name: Run selected action
+      id: dispatch
+      if: ${{ inputs.action != 'setup-toolchain' }}
+      shell: bash
+      env:
+        VF_ACTION: ${{ inputs.action }}
+        VF_REPOSITORY: ${{ inputs.repository }}
+        VF_REF: ${{ inputs.ref }}
+        VF_DESTINATION: ${{ inputs.destination }}
+        VF_SCRIPT: ${{ inputs.script }}
+        VF_INTERPRETER: ${{ inputs.interpreter }}
+        VF_WORKDIR: ${{ inputs.working-directory }}
+        VF_ARGS_JSON: ${{ inputs.args-json }}
+        VF_CODE: ${{ inputs.code }}
+        VF_SCRIPT_PATH: ${{ inputs.script-path }}
+        VF_REQUIREMENTS: ${{ inputs.requirements }}
+        VF_PACKAGES: ${{ inputs.packages }}
+        VF_AUTO_INSTALL: ${{ inputs.auto-install }}
+        VF_IGNORE_IMPORTS: ${{ inputs.ignore-imports }}
+        CHECK_DIRECTORY: ${{ inputs.directory }}
+        CHECK_MANIFEST: ${{ inputs.manifest }}
+        CHECK_REJECT_EXTRA: ${{ inputs.reject-extra }}
+        CHECK_ALLOW_EMPTY: ${{ inputs.allow-empty }}
+        CHECK_SUMMARY: ${{ inputs.summary }}
+      run: |
+        set -euo pipefail
+        case "$VF_ACTION" in
+          download) python3 "$GITHUB_ACTION_PATH/actions/download/download.py" ;;
+          execute) python3 "$GITHUB_ACTION_PATH/actions/execute/execute.py" ;;
+          vf_script) python3 "$GITHUB_ACTION_PATH/actions/vf_script/vf_script.py" ;;
+          verify-sha256) python3 "$GITHUB_ACTION_PATH/actions/verify-sha256/verify.py" ;;
+          *) echo '::error::Unknown action selection'; exit 1 ;;
+        esac

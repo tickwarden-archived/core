@@ -133,7 +133,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: ./.github/actions/setup-toolchain
+        uses: ./actions/setup-toolchain
         with:
           python-version: "3.x"
 

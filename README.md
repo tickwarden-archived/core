@@ -4,6 +4,8 @@ Monorepo for VortaForge: **Fabric mods**. The Minecraft datapacks, resource
 packs and the datapack tooling that used to live here are **archived and
 hard-disabled** (2026-11-05) - see [Datapacks are disabled](#datapacks-are-disabled).
 
+Reusable GitHub Actions are available through the [root action](action.yml) and individually under [`actions/`](actions/README.md).
+
 ---
 # 🚨 CRITICAL SECURITY RISK
 
