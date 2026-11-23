@@ -103,10 +103,11 @@ class DownloadAction(unittest.TestCase):
 
     def test_private_repo_is_rejected(self):
         class Response(io.BytesIO):
+            status = 404
+            def geturl(self): return 'https://github.com/vortaforge/core'
             def __enter__(self): return self
             def __exit__(self,*args): self.close()
-        payload=json.dumps({'private':True,'visibility':'private','owner':{'login':'vortaforge'}}).encode()
-        with tempfile.TemporaryDirectory() as d, patch.object(dl.urllib.request,'urlopen',return_value=Response(payload)):
+        with tempfile.TemporaryDirectory() as d, patch.object(dl.urllib.request,'urlopen',return_value=Response(b'')):
             with self.assertRaisesRegex(ValueError,'public'): dl.download('core','main','out',d)
             self.assertFalse((Path(d)/'out').exists())
 

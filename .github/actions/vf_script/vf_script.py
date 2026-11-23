@@ -15,7 +15,7 @@ import venv
 from pathlib import Path
 
 # No general guessing from import names. Only these exact opt-in mappings.
-AUTO = {'requests': 'requests==2.32.3', 'yaml': 'PyYAML==6.0.2', 'PIL': 'Pillow==11.1.0'}
+AUTO = {'requests': 'requests==2.32.3', 'yaml': 'PyYAML==6.0.4', 'PIL': 'Pillow==13.0.0'}
 PACKAGE = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]*(?:\[[A-Za-z0-9_,.-]+\])?(?:[<>=!~][A-Za-z0-9.*,+!=<>~_-]+)?\Z')
 IDENT = re.compile(r'[A-Za-z_][A-Za-z0-9_]*\Z')
 
@@ -51,6 +51,13 @@ def missing_imports(python, names, path, workspace):
     env = dict(os.environ, PYTHONPATH=os.pathsep.join([str(path), str(workspace)]), PYTHONNOUSERSITE='1')
     output = subprocess.check_output([str(python), '-c', probe, json.dumps(names)], cwd=path, text=True, env=env)
     return json.loads(output)
+
+def install(command, workspace):
+    # Requirements may contain private index credentials. Do not forward pip's
+    # potentially sensitive URLs or command output to the job log.
+    subprocess.run(command, cwd=workspace, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    print('Dependency installation completed.', flush=True)
+
 
 def run(environ):
     workspace = Path(environ['GITHUB_WORKSPACE']).resolve(strict=True)
@@ -89,7 +96,7 @@ def run(environ):
         print('Initially missing:', ', '.join(before) or '(none)', flush=True)
         if requirements or packages:
             cmd = pip + (['-r', str(requirements)] if requirements else []) + (['--'] + packages if packages else [])
-            subprocess.run(cmd, cwd=workspace, check=True)
+            install(cmd, workspace)
         missing = missing_imports(python, checked, script.parent if script else workspace, workspace)
         installed = []
         if missing and auto == 'true':
@@ -97,7 +104,7 @@ def run(environ):
             if unknown:
                 raise ValueError('Unknown import-to-package mapping; declare it explicitly: ' + ', '.join(unknown))
             installed = sorted({AUTO[n] for n in missing})
-            subprocess.run(pip + ['--'] + installed, cwd=workspace, check=True)
+            install(pip + ['--'] + installed, workspace)
             missing = missing_imports(python, checked, script.parent if script else workspace, workspace)
         if missing:
             raise ValueError('Unresolved static imports; declare dependencies or ignore optional imports: ' + ', '.join(missing))
@@ -123,6 +130,11 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except (ValueError, OSError, KeyError, SyntaxError, subprocess.CalledProcessError) as exc:
+    except subprocess.CalledProcessError as exc:
+        # Arguments supplied to a script may contain secrets; never echo a
+        # failed subprocess command or its arguments in our error message.
+        print(f'::error::vf_script subprocess failed with exit code {exc.returncode}', file=sys.stderr)
+        sys.exit(1)
+    except (ValueError, OSError, KeyError, SyntaxError) as exc:
         print(f'::error::vf_script failed: {type(exc).__name__}: {exc}', file=sys.stderr)
         sys.exit(1)
