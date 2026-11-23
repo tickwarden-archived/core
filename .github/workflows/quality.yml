@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        uses: ./.github/actions/setup-toolchain
         with:
           python-version: "3.12"
 
@@ -180,31 +180,16 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Set up JDK 25
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+      # Node 24 is required for the website behaviour test. The composite action
+      # configures only the explicitly requested runtimes and preserves pip cache.
+      - name: Set up CI toolchain
+        uses: ./.github/actions/setup-toolchain
         with:
-          distribution: temurin
           java-version: "25"
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
-        with:
           python-version: "3.12"
-          cache: pip
-
-      # Node is still required, but only for the website behaviour test
-      # (scripts/tests/site_behavior.test.mjs). The dpgen and datapack_lint
-      # npm caches that used to live here were archived with the programme.
-      # Node 20 went EOL on 2026-04-30; 24 is the supported LTS line. Note this
-      # is the runtime the tests execute under, which is a separate thing from
-      # the Node version the setup-node action itself is built on.
-      - name: Set up Node.js 24
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
+          python-cache: "true"
           node-version: "24"
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
+          gradle: "true"
 
       - name: Install Python quality tools
         shell: bash
@@ -262,6 +247,12 @@ jobs:
           cp -v "${files[@]}" release-assets/
           ( cd release-assets && sha256sum -- *.jar > SHA256SUMS )
 
+      - name: Verify release checksums
+        uses: ./.github/actions/verify-sha256
+        with:
+          directory: release-assets
+          reject-extra: "true"
+
       - name: Write job summary
         shell: bash
         run: |
@@ -274,7 +265,7 @@ jobs:
             echo "| Gradle entry point | \`./gradlew ci\` |"
             echo "| Java | \`25\` |"
             echo "| Python | \`3.12\` |"
-            echo "| Node | \`20\` |"
+            echo "| Node | \`24\` |"
             echo "| Release assets (mod jars) | \`$(find release-assets -maxdepth 1 -type f -name '*.jar' | wc -l | tr -d ' ')\` |"
             echo "| Datapacks | retired (archived/archive.json) |"
             echo "| Commit | \`${GITHUB_SHA}\` |"

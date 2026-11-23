@@ -1,0 +1,169 @@
+name: Public actions smoke test
+
+on:
+  pull_request:
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/public-actions-smoke.yml'
+  push:
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/public-actions-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-reference:
+    name: Public cross-repository action reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Deliberately no checkout: public callers should be able to reference
+      # the action by repository path and immutable published commit.
+      - name: Set up Python via public action
+        uses: vortaforge/core/.github/actions/setup-toolchain@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        with:
+          python-version: '3.12'
+      - name: Create sample manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sample
+          printf 'public action test\n' > sample/example.txt
+          (cd sample && sha256sum example.txt > SHA256SUMS)
+      - name: Verify via public action
+        id: verified
+        uses: vortaforge/core/.github/actions/verify-sha256@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        with:
+          directory: sample
+          reject-extra: 'true'
+      - name: Validate outputs
+        shell: bash
+        env:
+          VERIFIED_FILES: ${{ steps.verified.outputs.files }}
+          VERIFIED_BYTES: ${{ steps.verified.outputs.bytes }}
+        run: |
+          set -euo pipefail
+          test "$VERIFIED_FILES" = 1
+          test "$VERIFIED_BYTES" = 19
+      - name: Tamper with the fixture
+        shell: bash
+        run: printf 'changed\n' > sample/example.txt
+      - name: Expect tampered file to fail verification
+        id: tampered
+        continue-on-error: true
+        uses: vortaforge/core/.github/actions/verify-sha256@1f3a10246fd3d2e7b58d5b6a6d811458c6630b8f
+        with:
+          directory: sample
+          reject-extra: 'true'
+      - name: Assert verification failed
+        shell: bash
+        env:
+          RESULT: ${{ steps.tampered.outcome }}
+        run: test "$RESULT" = failure
+
+  new-actions:
+    name: Download, execute and Python actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Download a public VortaForge repository
+        id: download
+        uses: ./.github/actions/download
+        with:
+          repository: docs
+          ref: 11ec4f3293807cfe63819dc9b3210e941f726086
+          destination: action-test/docs
+      - name: Run a public repository script from caller workspace
+        id: execute
+        uses: ./.github/actions/execute
+        with:
+          repository: core
+          ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
+          destination: action-test/core
+          script: scripts/repo/datapacks_disable.py
+          interpreter: python3
+          args-json: '["status"]'
+          working-directory: workspace
+      - name: Verify downloaded commits
+        shell: bash
+        env:
+          DOCS_SHA: ${{ steps.download.outputs.sha }}
+          CORE_SHA: ${{ steps.execute.outputs.sha }}
+        run: |
+          set -euo pipefail
+          test "$DOCS_SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086
+          test "$CORE_SHA" = ff4691c6a36662ff4c2d80c197856a65c4a07324
+      - name: Run Python with explicit and opt-in mapped dependencies
+        id: python
+        uses: ./.github/actions/vf_script
+        with:
+          code: |
+            import requests, yaml
+            print(requests.__version__, yaml.__version__)
+          packages: requests==2.32.3
+          auto-install: 'true'
+      - name: Check Python action outputs
+        shell: bash
+        env:
+          IMPORTS: ${{ steps.python.outputs.imports }}
+          FALLBACK: ${{ steps.python.outputs.automatic-packages }}
+        run: |
+          set -euo pipefail
+          test "$IMPORTS" = requests,yaml
+          test "$FALLBACK" = 1
+      - name: Expect invalid Python syntax to fail
+        id: syntax
+        continue-on-error: true
+        uses: ./.github/actions/vf_script
+        with:
+          code: 'if True print(1)'
+      - name: Verify syntax failure is enforced
+        shell: bash
+        env:
+          RESULT: ${{ steps.syntax.outcome }}
+        run: test "$RESULT" = failure
+
+  new-public-reference:
+    name: New actions through public repository reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # No checkout: exercise the action exactly like an external repository.
+      - name: Download a public repository
+        id: clone
+        uses: vortaforge/core/.github/actions/download@2415745d80f3026efbdab2098a8b933a84327078
+        with:
+          repository: docs
+          ref: 11ec4f3293807cfe63819dc9b3210e941f726086
+          destination: clone/docs
+      - name: Execute a public repository script
+        uses: vortaforge/core/.github/actions/execute@2415745d80f3026efbdab2098a8b933a84327078
+        with:
+          repository: core
+          ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
+          destination: clone/core
+          script: scripts/repo/datapacks_disable.py
+          args-json: '["status"]'
+          working-directory: workspace
+      - name: Run inline Python
+        id: python
+        uses: vortaforge/core/.github/actions/vf_script@2415745d80f3026efbdab2098a8b933a84327078
+        with:
+          code: |
+            import json
+            print(json.dumps({'result': 'ok'}))
+      - name: Validate action outputs
+        shell: bash
+        env:
+          CLONE_SHA: ${{ steps.clone.outputs.sha }}
+          IMPORTS: ${{ steps.python.outputs.imports }}
+        run: |
+          set -euo pipefail
+          test "$CLONE_SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086
+          test "$IMPORTS" = json

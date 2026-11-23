@@ -1,0 +1,31 @@
+name: Download public VortaForge repository
+description: Clone a public vortaforge repository at a chosen ref into a new workspace directory.
+inputs:
+  repository:
+    description: Repository name or vortaforge/name; only public repositories in vortaforge are accepted.
+    required: true
+  ref:
+    description: Branch, tag, or full commit SHA; pin to a reviewed SHA for reproducibility.
+    required: false
+    default: main
+  destination:
+    description: New relative path under the caller workspace; must not exist.
+    required: true
+outputs:
+  path:
+    description: Absolute path of the checkout.
+    value: ${{ steps.clone.outputs.path }}
+  sha:
+    description: Resolved commit SHA.
+    value: ${{ steps.clone.outputs.sha }}
+runs:
+  using: composite
+  steps:
+    - name: Download repository
+      id: clone
+      shell: bash
+      env:
+        VF_REPOSITORY: ${{ inputs.repository }}
+        VF_REF: ${{ inputs.ref }}
+        VF_DESTINATION: ${{ inputs.destination }}
+      run: python3 "$GITHUB_ACTION_PATH/download.py"
