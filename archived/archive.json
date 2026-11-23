@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_on": "2026-11-05",
+  "updated_on": "2026-10-29",
   "summary": "Every datapack, datapack generator, datapack linter, datapack test harness and datapack-focused mod in vortaforge/core is archived here and hard-disarmed: nothing under archived/ is built, merged, zipped or executed by the Gradle build or CI.",
   "projects": [
     {
@@ -836,6 +836,102 @@
         "Required a PHP toolchain (setup-php) on every Pages run for one script.",
         "Had no tests; a bad API response was only caught by reading the log."
       ]
+    },
+    {
+      "id": "vortex-dp",
+      "name": "vortex-dp",
+      "kind": "datapack",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Maintainer requested unified datapack retirement; mods remain active.",
+      "last_version": "source HEAD recorded in migration-manifest.json",
+      "license": "Preserved upstream license files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/imported/vortex/vortex-dp",
+      "source_url": "https://github.com/vortaforge/vortex",
+      "disarmed": true,
+      "is_datapack": true
+    },
+    {
+      "id": "vortex-dp-1.21.8",
+      "name": "vortex-dp-1.21.8",
+      "kind": "datapack",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Maintainer requested unified datapack retirement; mods remain active.",
+      "last_version": "source HEAD recorded in migration-manifest.json",
+      "license": "Preserved upstream license files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/imported/vortex/vortex-dp-1.21.8",
+      "source_url": "https://github.com/vortaforge/vortex",
+      "disarmed": true,
+      "is_datapack": true
+    },
+    {
+      "id": "vortex-example",
+      "name": "vortex-example",
+      "kind": "datapack",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Maintainer requested unified datapack retirement; mods remain active.",
+      "last_version": "source HEAD recorded in migration-manifest.json",
+      "license": "Preserved upstream license files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/examples/vortex-example",
+      "source_url": "https://github.com/vortaforge/vortex",
+      "disarmed": true,
+      "is_datapack": true
+    },
+    {
+      "id": "vortex-support",
+      "name": "vortex-support",
+      "kind": "script",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Maintainer requested unified datapack retirement; mods remain active.",
+      "last_version": "source HEAD recorded in migration-manifest.json",
+      "license": "Preserved upstream license files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/tools/vortex-support",
+      "source_url": "https://github.com/vortaforge/vortex",
+      "disarmed": true,
+      "is_datapack": true
+    },
+    {
+      "id": "vorta-core-historical-differences",
+      "name": "vorta-core-historical-differences",
+      "kind": "other",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Maintainer requested unified datapack retirement; mods remain active.",
+      "last_version": "source HEAD recorded in migration-manifest.json",
+      "license": "Preserved upstream license files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/historical/vorta-core",
+      "source_url": "https://github.com/vortaforge/vorta-core",
+      "disarmed": true,
+      "is_datapack": true
+    },
+    {
+      "id": "datapack-eol-kit",
+      "name": "datapack-eol-kit",
+      "kind": "script",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Maintainer requested unified datapack retirement; mods remain active.",
+      "last_version": "source HEAD recorded in migration-manifest.json",
+      "license": "Preserved upstream license files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/eol-kit",
+      "source_url": "https://github.com/vortaforge/core",
+      "disarmed": true,
+      "is_datapack": true
     }
   ]
 }

@@ -1,0 +1,8 @@
+# vortex:systems/log/error
+# Usage: $function vortex:systems/log/error {message:"[System] Something failed"}
+# Level: 1 — always shown unless log is off
+execute if data storage vortex:engine modules{log:0b} run return 0
+$data modify storage vortex:engine _log_add_tmp.message set value "$(message)"
+data modify storage vortex:engine _log_add_tmp.level set value "ERROR"
+data modify storage vortex:engine _log_add_tmp.color set value "red"
+execute if score #vortex.log_level vortex.log_level matches 1.. run function vortex:systems/log/add with storage vortex:engine _log_add_tmp

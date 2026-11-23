@@ -1,0 +1,9 @@
+{
+  "tag": {
+    "vortex": {
+      "input": true,
+      "inputItem": "anvil"
+    }
+  },
+  "type": "minecraft:set_custom_data"
+}

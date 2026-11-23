@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────────────────────────
+# vortex:api/wand/cooldown_check
+# Checks whether the wand cooldown is active.
+# NOTE: Wand cooldowns are stored under vortex:engine wand_cooldowns;
+#      this avoids collision with vortex:cooldown module's "$(player).$(key)" path
+# so there is zero risk of key collision.
+#
+# INPUT:
+#   $(player) → player name
+#   $(tag)    → wand tag
+# OUTPUT:
+# vortex:output result → 0b=ready (no cooldown), 1b=cooldown active
+# ─────────────────────────────────────────────────────────────────
+
+execute if data storage vortex:engine modules{wand:0b} run return 0
+data modify storage vortex:output result set value 0b
+
+$execute unless data storage vortex:engine wand_cooldowns.$(player).$(tag) run return 0
+
+$execute store result score $wcc_exp vortex.tmp run data get storage vortex:engine wand_cooldowns.$(player).$(tag)
+execute store result score $wcc_now vortex.tmp run scoreboard players get $epoch vortex.time
+
+execute if score $wcc_now vortex.tmp < $wcc_exp vortex.tmp run data modify storage vortex:output result set value 1b

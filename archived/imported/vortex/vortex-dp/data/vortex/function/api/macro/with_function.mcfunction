@@ -1,0 +1,34 @@
+# ─────────────────────────────────────────────
+# vortex:api/macro/with_function [MACRO]
+#
+# Runs a provider (source) function; passes the data that function
+# wrote to vortex:engine _macro_pipe storage as macro variable source
+# to a consumer (target) function.
+#
+# Establishes a type-safe data bridge between two functions.
+#
+# Usage:
+#   function vortex:api/macro/with_function \
+#     {source:"ns:provider", target:"ns:consumer"}
+#
+# Parameters:
+#   source — function that produces data and writes it to vortex:engine _macro_pipe
+#   target — function that consumes data from the pipe as macro variables
+#
+# Contract:
+#   source function must write its output to this storage:
+#     data modify storage vortex:engine _macro_pipe.<key> set value <val>
+#   target function can access those keys as $(key).
+# ─────────────────────────────────────────────
+
+# Run provider function — it writes its output to _macro_pipe
+execute if data storage vortex:engine modules{macro:0b} run return 0
+execute if data storage vortex:engine modules{macro_function:0b} run return run function vortex:core/internal/callback/blocked/function {site:"api/macro/with_function"}
+$function $(source)
+
+# Pass pipe to consumer as macro source
+execute if data storage vortex:engine modules{macro_function:0b} run return run function vortex:core/internal/callback/blocked/function {site:"api/macro/with_function"}
+$function $(target) with storage vortex:engine _macro_pipe
+
+# Clear pipe before source runs
+data remove storage vortex:engine _macro_pipe

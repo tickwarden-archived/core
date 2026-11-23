@@ -1,0 +1,9 @@
+{
+  "entity": "this",
+  "predicate": {
+    "effects": {
+      "minecraft:speed": {}
+    }
+  },
+  "condition": "minecraft:entity_properties"
+}

@@ -1,0 +1,24 @@
+{
+  "criteria": {
+    "interact_trapped_chest": {
+      "trigger": "minecraft:default_block_use",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "minecraft:trapped_chest"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "function": "vortex:core/internal/player/internal/interact_trapped_chest"
+  }
+}

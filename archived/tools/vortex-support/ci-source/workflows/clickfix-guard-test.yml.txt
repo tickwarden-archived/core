@@ -1,0 +1,22 @@
+# AI-assisted: written with Claude (Anthropic); see the PR description and commit trailer.
+name: ClickFix guard tests
+
+on:
+  pull_request:
+    paths:
+      - ".github/scripts/**"
+      - ".github/clickfix-guard.json"
+      - ".github/workflows/clickfix-guard*.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - run: python3 .github/scripts/test_clickfix_guard.py
