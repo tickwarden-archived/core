@@ -128,3 +128,42 @@ jobs:
         env:
           RESULT: ${{ steps.syntax.outcome }}
         run: test "$RESULT" = failure
+
+  new-public-reference:
+    name: New actions through public repository reference
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # No checkout: exercise the action exactly like an external repository.
+      - name: Download a public repository
+        id: clone
+        uses: vortaforge/core/.github/actions/download@0531478375d416a4b08db08bfcc328b9af596932
+        with:
+          repository: docs
+          ref: 11ec4f3293807cfe63819dc9b3210e941f726086
+          destination: clone/docs
+      - name: Execute a public repository script
+        uses: vortaforge/core/.github/actions/execute@0531478375d416a4b08db08bfcc328b9af596932
+        with:
+          repository: core
+          ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
+          destination: clone/core
+          script: scripts/repo/datapacks_disable.py
+          args-json: '["status"]'
+          working-directory: workspace
+      - name: Run inline Python
+        id: python
+        uses: vortaforge/core/.github/actions/vf_script@0531478375d416a4b08db08bfcc328b9af596932
+        with:
+          code: |
+            import json
+            print(json.dumps({'result': 'ok'}))
+      - name: Validate action outputs
+        shell: bash
+        env:
+          CLONE_SHA: ${{ steps.clone.outputs.sha }}
+          IMPORTS: ${{ steps.python.outputs.imports }}
+        run: |
+          set -euo pipefail
+          test "$CLONE_SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086
+          test "$IMPORTS" = json
