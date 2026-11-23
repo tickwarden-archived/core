@@ -932,6 +932,22 @@
       "source_url": "https://github.com/vortaforge/core",
       "disarmed": true,
       "is_datapack": true
+    },
+    {
+      "id": "experimental-eol-candidates",
+      "name": "Experimental versioned datapack EOL candidates",
+      "kind": "datapack",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Candidate EOL-enabled copies are frozen and unvalidated; original sources remain preserved.",
+      "last_version": "experimental-do-not-deploy",
+      "license": "See the license files within each source and generated archive",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/eol-candidates",
+      "source_url": "https://github.com/vortaforge/core",
+      "disarmed": true,
+      "is_datapack": true
     }
   ]
 }

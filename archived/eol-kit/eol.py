@@ -50,50 +50,76 @@ def _generate(source,output,pack_id,acknowledge=False):
         if f.is_symlink():raise ValueError('Source symlinks rejected')
         if f.is_file():
             before[f.relative_to(source).as_posix()]=sha(f)
-            if f.suffix=='.mcfunction' and f.relative_to(source).parts[0]=='data':functions.append(f)
+            parts=f.relative_to(source).parts
+            if f.suffix=='.mcfunction' and parts[0]=='data' and len(parts)>=4 and parts[2] in ('function','functions'):functions.append(f)
+            elif f.suffix=='.mcfunction' and parts[0]!='data':raise ValueError('Overlay or external function layout requires review')
     if not functions:raise ValueError('Not a standalone functional datapack; resourcepacks need archival policy only')
-    if any(len(f.relative_to(source).parts)<4 for f in functions):raise ValueError('Unsupported function outside namespace function directory')
+    # Reject stray functions but ignore data namespace test fixtures, which are not executable.
+    for f in source.rglob('*.mcfunction'):
+        parts=f.relative_to(source).parts
+        if parts[0]=='data' and len(parts)<4:raise ValueError('Unsupported function outside namespace function directory')
     styles={f.relative_to(source).parts[2] for f in functions}
-    if len(styles)!=1 or not styles.issubset({'function','functions'}):raise ValueError('Ambiguous version/function layout requires review')
-    style=next(iter(styles));suffix=hashlib.sha256(pack_id.encode()).hexdigest()[:10];ns='vf_eol_'+suffix;obj='vfE'+suffix
+    raw=meta['pack'].get('min_format',meta['pack'].get('pack_format'))
+    supported=meta['pack'].get('supported_formats')
+    if isinstance(supported,dict):raw=supported.get('min_inclusive',raw)
+    elif isinstance(supported,list) and len(supported)==2:raw=supported[0]
+    elif isinstance(supported,int):raw=supported
+    if isinstance(raw,list):raw=raw[0] if raw else None
+    if not isinstance(raw,int):raise ValueError('Cannot determine minimum supported pack format')
+    modern=raw>=18
+    # Legacy and modern layout coexist where the original pack supplies both.
+    suffix=hashlib.sha256(pack_id.encode()).hexdigest()[:10];ns='vf_eol_'+suffix;obj='vfE'+suffix
     if (source/'data'/ns).exists() or any(obj in f.read_text(encoding='utf-8') for f in functions):raise ValueError('Lifecycle identifier collision')
-    target_data=output/'data'/ns/style
+    target_data=output/'data'/ns/next(iter(styles))
     originals={f.relative_to(source).as_posix():f.read_text(encoding='utf-8') for f in functions}
     ids={':'.join([f.relative_to(source).parts[1],'/'.join(f.relative_to(source).parts[3:])[:-11]]) for f in functions}
     # Refuse continuation syntax until version-specific parsing is validated.
-    if any(re.search(r'\\[ \t]*\r?$',line) for text in originals.values() for line in text.split('\n')):
-        raise ValueError('Backslash line continuation requires version-aware review; output not generated')
+    if not modern and any(re.search(r'\\[ \t]*\r?$',line) for text in originals.values() for line in text.split('\n') if not line.lstrip().startswith('#')):
+        raise ValueError('Legacy pack has unsupported line continuation')
     scheduled=set();dynamic_schedule=False
     for text in originals.values():
         if re.search(r'\bschedule function [^\s]*\$\(',text):dynamic_schedule=True
         for name in re.findall(r'\bschedule function ([a-z0-9_.-]+:[a-z0-9_./-]+)(?=\s|$)',text):
             if name in ids:scheduled.add(name)
-    shutil.copytree(source,output);target_data.mkdir(parents=True)
+    shutil.copytree(source,output)
+    for style in styles:(output/'data'/ns/style).mkdir(parents=True)
     guarded=[];readonly=[]
     for rel,text in originals.items():
-        lines=text.split('\n');is_pure=pure(lines);threshold='3..' if is_pure else '2..';rendered=['# Generated EOL guard; source bytes preserved in recovery archive.']
-        for line in lines:
-            t=line.strip()
-            if not t or t.startswith('#'):rendered.append(line);continue
-            macro=t.startswith('$');body=t[1:] if macro else t
-            rendered.append(('$' if macro else '')+f'execute unless score #phase {obj} matches {threshold} run '+body)
-        (output/rel).write_text('\n'.join(rendered)+'\n',encoding='utf-8');guarded.append(rel)
+        lines=text.split('\n');is_pure=pure(lines);threshold='3..' if is_pure else '2..'
+        # 1.20.2+: early function-level guard preserves all original command bytes,
+        # including multiline commands and macros. Older versions lack /return.
+        if modern:
+            guard=f'execute unless data storage {ns}:lifecycle {{phase:1}}'
+            if is_pure:guard+=f' unless data storage {ns}:lifecycle {{phase:2}}'
+            rendered=f'# EOL entry guard; see vortaforge-eol.json\n{guard} run return 0\n'+text
+        else:
+            output_lines=['# EOL entry guard; legacy Minecraft requires each command to be gated.']
+            for line in lines:
+                t=line.strip()
+                if not t or t.startswith('#'):output_lines.append(line);continue
+                if t.startswith('$'):raise ValueError('Macro command in legacy pack')
+                output_lines.append(f'execute if data storage {ns}:lifecycle {{phase:1}} run '+t)
+                if is_pure:output_lines.append(f'execute if data storage {ns}:lifecycle {{phase:2}} run '+t)
+            rendered='\n'.join(output_lines)
+        (output/rel).write_text(rendered,encoding='utf-8');guarded.append(rel)
         if is_pure:readonly.append(rel)
-    def write(name,lines):(target_data/(name+'.mcfunction')).write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    def write(name,lines):
+        for style in styles:(output/'data'/ns/style/(name+'.mcfunction')).write_text('\n'.join(lines)+'\n',encoding='utf-8')
     def warn(text):return 'tellraw @a '+json.dumps({'text':'[VortaForge EOL] '+text,'color':'gold'},ensure_ascii=False)
-    write('refresh',[f'scoreboard players set #phase {obj} 1',f'execute if score #ticks {obj} matches {READ_ONLY_TICKS}.. run scoreboard players set #phase {obj} 2',f'execute if score #ticks {obj} matches {LOCK_TICKS}.. run scoreboard players set #phase {obj} 3'])
+    write('refresh',[f'scoreboard players set #phase {obj} 1',f'execute if score #ticks {obj} matches {READ_ONLY_TICKS}.. run scoreboard players set #phase {obj} 2',f'execute if score #ticks {obj} matches {LOCK_TICKS}.. run scoreboard players set #phase {obj} 3',f'execute store result storage {ns}:lifecycle phase int 1 run scoreboard players get #phase {obj}'])
     notices=[f'execute if score #phase {obj} matches 1 run '+warn(pack_id+': warning phase; read-only after 72 online hours, locked after 168 online hours at 20 TPS.'),f'execute if score #phase {obj} matches 2 run '+warn(pack_id+': restricted functions phase; non-function data and external commands are not blocked. Persistent world data is NOT erased.'),f'execute if score #phase {obj} matches 3 run '+warn(pack_id+': EOL locked. Use function '+ns+':status for lifecycle state.'),f'scoreboard players operation #last {obj} = #phase {obj}']
     write('notice',notices)
     write('load',[f'execute unless data storage {ns}:lifecycle initialized run scoreboard objectives add {obj} dummy',f'data modify storage {ns}:lifecycle initialized set value 1b',*[f'scoreboard players add {n} {obj} 0' for n in ['#ticks','#phase','#last','#cleaned']],f'function {ns}:refresh',f'execute unless score #last {obj} = #phase {obj} run function {ns}:notice'])
-    write('cleanup',[ '# Exact statically-owned scheduled callbacks only; no world/player/storage/objective/entity deletion.',*[f'schedule clear {name}' for name in sorted(scheduled)],f'scoreboard players set #cleaned {obj} 1'])
+    write('cleanup',[ '# No automatic schedule clearing: function identifiers may be shared across packs.', '# No world, player, storage, objective or entity deletion.', f'scoreboard players set #cleaned {obj} 1'])
     write('tick',[f'execute if score #phase {obj} matches 1..2 run scoreboard players add #ticks {obj} 1',f'function {ns}:refresh',f'execute unless score #last {obj} = #phase {obj} run function {ns}:notice',f'execute if score #phase {obj} matches 3 if score #cleaned {obj} matches 0 run function {ns}:cleanup'])
     write('status',[f'scoreboard players get #phase {obj}',f'scoreboard players get #ticks {obj}',f'scoreboard players get #cleaned {obj}'])
-    for tag in ['load','tick']:
-        p=output/'data/minecraft/tags'/style/(tag+'.json');p.parent.mkdir(parents=True,exist_ok=True)
-        data=json.loads(p.read_text(encoding='utf-8')) if p.exists() else {'values':[]}
-        if not isinstance(data.get('values'),list):raise ValueError('Invalid entry-point tag')
-        data['values'].insert(0,ns+':'+tag);p.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8')
-    policy={'schema':1,'pack_id':pack_id,'source_format':meta['pack'],'namespace':ns,'objective':obj,'clock':'online-ticks-not-wall-clock','expected_tps':TPS,'read_only_at_ticks':READ_ONLY_TICKS,'locked_at_ticks':LOCK_TICKS,'guarded_functions':guarded,'readonly_functions':readonly,'literal_internal_scheduled_targets_to_clear_best_effort':sorted(scheduled),'dynamic_schedules_detected':dynamic_schedule,'schedule_detection_complete':False,'persistent_data_deleted':False,'deep_cleanup_enabled':False,'runtime_validated':False,'status_function':ns+':status','control_plane_exception':'Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.','source_manifest':before}
+    for style in styles:
+        for tag in ['load','tick']:
+            p=output/'data/minecraft/tags'/style/(tag+'.json');p.parent.mkdir(parents=True,exist_ok=True)
+            data=json.loads(p.read_text(encoding='utf-8')) if p.exists() else {'values':[]}
+            if not isinstance(data.get('values'),list):raise ValueError('Invalid entry-point tag')
+            data['values'].insert(0,ns+':'+tag);p.write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8')
+    policy={'schema':1,'entry_guard_mode':'early-return' if modern else 'legacy-per-command','pack_id':pack_id,'source_format':meta['pack'],'namespace':ns,'objective':obj,'clock':'online-ticks-not-wall-clock','expected_tps':TPS,'read_only_at_ticks':READ_ONLY_TICKS,'locked_at_ticks':LOCK_TICKS,'guarded_functions':guarded,'readonly_functions':readonly,'literal_internal_scheduled_targets_for_manual_ownership_review':sorted(scheduled),'automatic_schedule_clear':False,'dynamic_schedules_detected':dynamic_schedule,'schedule_detection_complete':False,'persistent_data_deleted':False,'deep_cleanup_enabled':False,'runtime_validated':False,'status_function':ns+':status','control_plane_exception':'Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.','source_manifest':before}
     (output/'vortaforge-eol.json').write_text(json.dumps(policy,indent=2)+'\n',encoding='utf-8')
     if manifest(source)!=before:raise ValueError('Source changed during generation; no output published')
     return policy
