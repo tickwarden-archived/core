@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/string/to_number
 # Input:  vortex:input string — numeric string (e.g. "42" or "3.14")
 # Output: vortex:output string.result — numeric NBT value

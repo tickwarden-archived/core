@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/safe_loop [INTERNAL]
 # Pops the first character of sf and rejects a double quote or a backslash.
 data modify storage macroengine:text sc set string storage macroengine:text sf 0 1

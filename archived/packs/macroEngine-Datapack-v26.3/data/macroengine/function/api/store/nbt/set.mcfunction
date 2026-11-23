@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/nbt/set [MACRO]
 # Writes macroengine:store nbt.value to storage/path. Input (macro args): storage, path
 # Passing the value through storage means any SNBT is safe: no escaping needed.

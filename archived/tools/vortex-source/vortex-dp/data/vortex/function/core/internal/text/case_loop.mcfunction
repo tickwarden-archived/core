@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/case_loop [INTERNAL] one character per call
 scoreboard players operation #tx_a vortex.tmp = #tx_i vortex.tmp
 scoreboard players operation #tx_b vortex.tmp = #tx_i vortex.tmp

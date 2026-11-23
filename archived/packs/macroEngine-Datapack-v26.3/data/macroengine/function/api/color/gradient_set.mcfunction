@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/color/gradient_set [MACRO]
 # Registers a named gradient as an ordered list of color strings.
 # Steps are accessed by index via macroengine:api/color/lerp.

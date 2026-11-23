@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/favorites_collect
 execute unless data storage vortex:dialog_filter queue[0] run return 1
 data modify storage vortex:dialog_filter model.items append from storage vortex:dialog_filter queue[0].item

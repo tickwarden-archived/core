@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/toggle/perm/false — Disable the perm module: permission checks pass for everybody (cmd_gate stays strict)
 
 # Who may flip it: a server/console executor (no entity) or a player with the macroengine.admin tag.

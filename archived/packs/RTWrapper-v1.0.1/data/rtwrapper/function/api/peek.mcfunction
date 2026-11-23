@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Read-only queue inspection: reports the next queued action's cmd (and queue[0] existence)
 # WITHOUT consuming it — unlike run_next/run_actions this never dequeues or dispatches.
 # Useful for a dependent pack that wants to check what's about to run before draining.

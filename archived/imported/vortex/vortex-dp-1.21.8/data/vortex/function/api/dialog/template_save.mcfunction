@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/template_save [MACRO]
 execute if data storage vortex:dialog_work {notification:1b} run return 0
 # Trusted key: [a-z0-9_]+. Save a complete draft before showing it.

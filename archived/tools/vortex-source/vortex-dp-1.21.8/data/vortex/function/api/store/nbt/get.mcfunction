@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/store/nbt/get [MACRO]
 # Reads one NBT value into vortex:store nbt.result.
 # Input (macro args): storage (e.g. "mypack:data"), path (e.g. "player.stats")

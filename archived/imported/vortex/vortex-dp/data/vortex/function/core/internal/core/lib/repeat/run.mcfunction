@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/repeat/run
 execute store result score $rep_r vortex.tmp run data get storage vortex:engine _repeat.remaining
 execute if score $rep_r vortex.tmp matches ..0 run execute as @s run tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"lib/repeat ","color":"aqua"},{"text":"DONE ","color":"green"},{"text":"all iterations completed","color":"#555555"}]

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 execute unless data storage guikit:work queue[0] run return 0
 data remove storage guikit:work cur
 data modify storage guikit:work cur set from storage guikit:work queue[0].id

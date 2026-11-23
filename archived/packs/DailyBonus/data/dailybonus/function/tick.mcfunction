@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_f98a9615fe:lifecycle {phase:1} run return 0
 # Runs every tick. Tracks the current in-game day (gameTime / 24000) on
 # every online player's db_gameday score, then hands out the bonus to
 # anyone whose db_last_day is behind the current day.

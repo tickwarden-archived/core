@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/rate_limit/check — Sliding window check + consume [MACRO]
 #
 # The core API call. Checks whether the key is under its configured limit

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/form_code [MACRO]
 # Fixed-width decimal pattern from trusted developer; 1..6 digits. inputs must output digits.
 $data modify storage vortex:dialog_work route set value {label:$(label),callback:$(callback),payload:$(payload),min:$(min),max:$(max),digits:$(digits),suffix:"$(pattern)"}

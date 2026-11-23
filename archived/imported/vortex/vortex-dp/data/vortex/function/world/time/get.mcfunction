@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:world/time/get
 # 26.x ("World Clocks") grammar: `time query day` returns the ticks elapsed
 # in the current repetition of the minecraft:day timeline (= daytime,

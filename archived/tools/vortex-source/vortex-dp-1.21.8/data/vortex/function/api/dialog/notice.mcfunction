@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/notice
 # Convert first routed/raw button into notice footer; call before api/show.
 execute unless data storage vortex:dialog_work dialog.actions[0] run return 0

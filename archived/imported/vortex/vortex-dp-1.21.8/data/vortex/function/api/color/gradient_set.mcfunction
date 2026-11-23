@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/color/gradient_set [MACRO]
 # Registers a named gradient as an ordered list of color strings.
 # Steps are accessed by index via vortex:api/color/lerp.

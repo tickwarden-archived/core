@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/color/init
 # Called during engine load. Populates the named color lookup table
 # at macroengine:engine color._names for O(1) validate checks.

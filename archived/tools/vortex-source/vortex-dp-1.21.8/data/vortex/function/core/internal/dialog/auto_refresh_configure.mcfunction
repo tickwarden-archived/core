@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/auto_refresh_configure
 function vortex:api/dialog/auto_refresh_stop
 execute unless data storage vortex:dialog_work view.callback run return 0

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/num_check
 # INPUT  vortex:text: s, allow_dot (byte: 1b also accepts one decimal point)
 # RETURN 1 when s is a whole number (or decimal), 0 otherwise with err set.

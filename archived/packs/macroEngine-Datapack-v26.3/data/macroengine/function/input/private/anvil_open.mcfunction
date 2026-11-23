@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:input/private/anvil_open  [INTERNAL]
 # Reward of the macroengine:input/anvil_open advancement. @s = player who just
 # opened an anvil. Starts (or restarts) the anvil session; see input/anvil.

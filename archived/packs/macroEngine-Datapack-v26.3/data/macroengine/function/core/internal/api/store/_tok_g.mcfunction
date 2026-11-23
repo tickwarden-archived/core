@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_tok_g [INTERNAL]  token %g:name%
 data modify storage macroengine:store tmp.rest set string storage macroengine:store tmp.nm 2
 data remove storage macroengine:validate in

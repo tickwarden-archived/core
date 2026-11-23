@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_95ed379a2f:lifecycle {phase:1} run return 0
 # Macro: called with storage rtwrapper:runtime trigger_poll (field: index, an int).
 # Processes registry[index] for the current player context (@s), then hands off to
 # poll_next to check/recurse on index+1.

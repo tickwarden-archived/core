@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/tick
 execute as @a unless score @s vortex.dialog_id matches 1.. run function vortex:core/internal/dialog/identify
 execute as @a unless score @s vortex.dialog_epoch = #epoch vortex.dialog_sys run function vortex:core/internal/dialog/rejoin

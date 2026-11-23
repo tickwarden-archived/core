@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/container/_size_pick [INTERNAL, MACRO: src, ovr]
 # Sets #ct_size (macroengine.tmp) from macroengine:input <ovr> when given, else from the block
 # at macroengine:container <src> {x,y,z}. RETURN 1 when 1..256, else 0.

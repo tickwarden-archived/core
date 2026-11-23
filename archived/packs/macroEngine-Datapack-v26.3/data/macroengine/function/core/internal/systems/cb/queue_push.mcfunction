@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/cb/internal/queue_push
 # Reads macroengine:input cb {cmd, delay, x, y, z}; no macro, so nothing from the
 # caller is pasted into SNBT (a cmd containing a quote can no longer break out of

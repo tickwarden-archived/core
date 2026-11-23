@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/hook/internal/unbind_filter
 # Iterates over the _hook_unbinds list.
 # Copies back binds that do not match _hook_filter_event to hook_binds.

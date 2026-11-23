@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Priority enqueue: same request shapes as api/enqueue, but inserts at the FRONT
 # of the queue (index 0) instead of appending. Use when a dependent pack needs its
 # action to run before whatever is already queued (e.g. an urgent correction),

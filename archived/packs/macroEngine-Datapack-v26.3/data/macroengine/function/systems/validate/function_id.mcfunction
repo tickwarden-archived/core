@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/validate/function_id
 # Checks a function id ("namespace:path/to/function") WHILE IT IS STILL DATA, before it can reach a
 # `$function $(...)` line. Same idea as safe_name, which refuses ':' and '/', so the id is cut at

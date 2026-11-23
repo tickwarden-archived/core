@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/string/repeat
 # Repeats a single character (char) exactly `count` times (1–16).
 # Params: char (single character), count (integer 1–16)

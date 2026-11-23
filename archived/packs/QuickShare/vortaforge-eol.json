@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "entry_guard_mode": "early-return",
+  "pack_id": "core-124c741d56ce",
+  "source_format": {
+    "max_format": [
+      121,
+      0
+    ],
+    "min_format": [
+      121,
+      0
+    ],
+    "description": "QuickShare - per-player item sharing helper by VortaForge (based on Runtoolkit)"
+  },
+  "namespace": "vf_eol_67654ba1d3",
+  "objective": "vfE67654ba1d3",
+  "clock": "online-ticks-not-wall-clock",
+  "expected_tps": 20,
+  "read_only_at_ticks": 5184000,
+  "locked_at_ticks": 12096000,
+  "guarded_functions": [
+    "data/quickshare/function/_vc_origin.mcfunction",
+    "data/quickshare/function/archive_warning.mcfunction",
+    "data/quickshare/function/drop_mainhand_copy.mcfunction",
+    "data/quickshare/function/load.mcfunction",
+    "data/quickshare/function/share.mcfunction",
+    "data/quickshare/function/tick.mcfunction"
+  ],
+  "readonly_functions": [],
+  "literal_internal_scheduled_targets_for_manual_ownership_review": [],
+  "automatic_schedule_clear": false,
+  "dynamic_schedules_detected": false,
+  "schedule_detection_complete": false,
+  "persistent_data_deleted": false,
+  "deep_cleanup_enabled": false,
+  "runtime_validated": false,
+  "status_function": "vf_eol_67654ba1d3:status",
+  "control_plane_exception": "Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.",
+  "source_manifest": {
+    "LICENSE": "930bf24ab4ee2d2afe2d1bdff27320f3e84f90ae0a2fd2f0c53ac0a594c9b9ec",
+    "NOTICE": "813636ae10d3692f7444060c8d31c8715c2c0886c7852cb2808e9d2136f571f6",
+    "data/minecraft/tags/function/load.json": "f2404f0474ae03db57627fe6b8eb93d8d2a4b5a9c8a01fad57cb8b5489b03f24",
+    "data/minecraft/tags/function/tick.json": "51a9b268bd92457edc82d80a50fa2fbb6d29ab0d8579aed22d13feffff6b40d9",
+    "data/quickshare/function/_vc_origin.mcfunction": "0f954ae306ca6a7766c2d127df48ba873bf9235f465991b9538f7749d93f8beb",
+    "data/quickshare/function/archive_warning.mcfunction": "ffaeea92f8c93fd99171be56c4824d57423bfd5858991abb88963aefe886c0ee",
+    "data/quickshare/function/drop_mainhand_copy.mcfunction": "cc708915719a61d5e960fe7fa6eae44cc5672947a8839c9c2cfce7bde0789e54",
+    "data/quickshare/function/load.mcfunction": "8f57d8f4d7ecf3f1a19e22927c408435b316d108dbc165995ba76053c4bc6990",
+    "data/quickshare/function/share.mcfunction": "89af72e139fa5e08ab65314333ae1865b2ff6c1c032c3abf51e46e35f942b068",
+    "data/quickshare/function/tick.mcfunction": "e28b2b79297566bbf49bbc81f819e0c54369199f2c54265ec763b17b4acf21c0",
+    "pack.mcmeta": "e8686c293bd99d07ef1ce5354d0e711ae48bfa06dd32975c61e8223b93ae6a5c"
+  }
+}

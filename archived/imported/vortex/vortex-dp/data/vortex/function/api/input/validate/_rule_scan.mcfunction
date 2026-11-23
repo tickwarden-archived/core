@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/input/validate/_rule_scan (internal)
 # Walks vortex:input_validate _r.pending; sets _r.hit 1b as soon as one entry equals _r.s.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.

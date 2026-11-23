@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/cooldown [MACRO]
 # Sets the remaining cooldown for @s, clamped to 0..1200 ticks.
 $scoreboard players set @s vortex.dialog_cool $(ticks)

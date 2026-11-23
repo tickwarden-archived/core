@@ -1,5 +1,6 @@
 {
   "values": [
+    "vf_eol_95ed379a2f:tick",
     "rtwrapper:core/tick",
     "rtwrapper:core/trigger_tick"
   ]

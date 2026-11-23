@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/container/_addr [INTERNAL]
 # Builds vortex:container tmp.k {x,y,z[,slot][,slot2][,tx,ty,tz]} from vortex:input.
 # Every value is checked as a NUMBER first (see _num). RETURN 1 valid, 0 invalid.

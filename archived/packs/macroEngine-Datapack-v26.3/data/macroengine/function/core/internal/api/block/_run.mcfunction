@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/block/_run [INTERNAL]
 # validate stage, then op stage. Sets macroengine:output block {ok, denied}.
 data modify storage macroengine:output block set value {ok:0b,denied:0b}

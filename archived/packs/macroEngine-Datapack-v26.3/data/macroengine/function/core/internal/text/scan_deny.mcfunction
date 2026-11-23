@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/scan_deny
 # INPUT  macroengine:text: s, tbl (name of a table in macroengine:text_map)
 # RETURN 1 if any character of s is a key of that table, else 0.

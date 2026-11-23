@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/split_loop [INTERNAL] one segment per separator match
 execute unless data storage vortex:text idx[0] run return 0
 execute store result score #tx_k vortex.tmp run data get storage vortex:text idx[0]

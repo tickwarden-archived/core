@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/interaction/unbind_use [MACRO]
 execute if data storage macroengine:engine modules{interaction:0b} run return 0
 execute unless data storage macroengine:engine interaction_binds.use[0] run return 0

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/diagnostics/checks/config
 # Internal: called by systems/diagnostics/collect. Checks that the runtime config exists and that
 # core/config/apply has copied it to the scores the engine reads. It checks presence only and does

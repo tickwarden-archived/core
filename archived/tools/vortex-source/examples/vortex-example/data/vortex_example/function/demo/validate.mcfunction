@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:demo/validate
 # Checks sample values against the rules from setup. Each check puts the value under
 # storage vortex:input and names it by path; the result lands in vortex:input_validate result.

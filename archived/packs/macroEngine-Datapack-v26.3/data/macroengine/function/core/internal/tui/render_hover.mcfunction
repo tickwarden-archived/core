@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/tui/render_hover [INTERNAL]
 # Renders macroengine:tui in.hover (with %tokens%, in.args) into the plain string macroengine:tui h.
 # Falls back to "Click to run" when in.hover is missing or invalid.

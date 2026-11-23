@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # vortex:systems/math/sum3
 # Adds three integers with INT_MAX overflow guard.

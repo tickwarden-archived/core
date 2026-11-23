@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/concat_loop [INTERNAL]
 execute unless data storage macroengine:text cl[0] run return 1
 data modify storage macroengine:text s set string storage macroengine:text cl[0]

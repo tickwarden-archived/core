@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/store/nbt/copy [MACRO]
 # Copies one NBT value to another place.
 # Input (macro args): from, from_path, to, to_path   (from/to are storage ids)

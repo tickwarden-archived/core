@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/block/hopper_in
 # Hopper-style input into a registered custom block (same as insert, but the handler sees op=hopper_in).
 #

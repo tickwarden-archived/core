@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/push [MACRO]
 execute store result score #depth vortex.dialog_tmp run data get storage vortex:dialog_db players.p$(id).history
 execute if score #depth vortex.dialog_tmp matches 16.. run return 0

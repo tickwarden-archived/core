@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/lib/string/to_uppercase_full
 # Full variant — covers full Unicode lowercase mapping (slower)
 # Input:  vortex:input string — string to convert

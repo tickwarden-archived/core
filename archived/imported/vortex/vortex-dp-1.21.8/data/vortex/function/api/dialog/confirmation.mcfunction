@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/confirmation
 # Convert first two routed buttons into yes/no. Escape invokes no.
 execute unless data storage vortex:dialog_work dialog.actions[1] run return 0

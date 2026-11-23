@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/native_action/copy_to_clipboard [MACRO]
 # Native client button action. No server callback ticket is allocated.
 $data modify storage vortex:dialog_work dialog.actions append value {label:$(label),width:150,action:{type:"minecraft:copy_to_clipboard",value:"$(value)"}}

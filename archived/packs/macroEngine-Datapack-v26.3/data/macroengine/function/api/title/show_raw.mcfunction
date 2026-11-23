@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/title/show_raw — Atomic title display with raw JSON [MACRO]
 # Like title/show but accepts full serialized JSON component strings,
 # allowing gradients, translate, score, selector, and nbt text sources.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # vortex:systems/string/score_display
 # Sends a formatted label: value line from a scoreboard objective.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/ctl
 # RETURN 1 when vortex:text s contains a newline, a carriage return or a tab, else 0.
 # Such characters cannot be substituted into a macro line, so validators reject them.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/queue/size
 # Writes the current work_queue item count to vortex:output queue.size.
 # No macro input required.

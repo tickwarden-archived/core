@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/cb/fire_entry
 # Fires the command in _cb_entry via command block.
 # Reuses api/cb/internal machinery.

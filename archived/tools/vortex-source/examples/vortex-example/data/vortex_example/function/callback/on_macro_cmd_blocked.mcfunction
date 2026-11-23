@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:callback/on_macro_cmd_blocked
 # Listed in #vortex:callback/macro_cmd: runs when a $$(cmd) site is blocked because
 # module_macro_cmd is off. stack[-1].site is the blocked function path.

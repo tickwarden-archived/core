@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:systems/lib/string/concat
 # Input:  vortex:input list   — list of strings to concatenate
 # Output: vortex:output string.result — combined string

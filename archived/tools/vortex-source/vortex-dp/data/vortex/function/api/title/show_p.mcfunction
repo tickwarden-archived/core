@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/title/show_p - title + subtitle with %tokens% for @s
 #
 # Unlike title/show (which builds {"text":"$(title)"} and breaks on quotes or backslashes)

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 scoreboard players set @s guikit.last 0
 scoreboard players enable @s guikit.last
 execute unless score @s guikit.pid matches 1.. run function guikit:runtime/assign_pid

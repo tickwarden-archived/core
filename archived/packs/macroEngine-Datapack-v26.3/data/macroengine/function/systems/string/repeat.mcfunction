@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/string/repeat
 # Repeats a single character (char) exactly `count` times (1–16).
 # Params: char (single character), count (integer 1–16)

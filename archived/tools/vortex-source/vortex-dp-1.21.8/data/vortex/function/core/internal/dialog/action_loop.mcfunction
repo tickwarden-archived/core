@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/action_loop
 execute unless data storage vortex:dialog_dispatch stack[-1].pending[0] run return 1
 data modify storage vortex:dialog_dispatch stack[-1].current set from storage vortex:dialog_dispatch stack[-1].pending[0]

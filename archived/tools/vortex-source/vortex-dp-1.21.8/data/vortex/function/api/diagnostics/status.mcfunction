@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/diagnostics/status
 # Machine-readable health check. Runs systems/diagnostics/collect and returns the number of issues
 # (0 = healthy). Prints nothing. Full result: vortex:output diagnostics (see docs/diagnostics.md).

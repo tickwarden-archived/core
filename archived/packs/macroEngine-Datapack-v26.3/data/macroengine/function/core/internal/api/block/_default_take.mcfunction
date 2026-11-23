@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/block/_default_take [INTERNAL]
 # Default take: removes the stack of macroengine:input slot (default: first occupied slot) and
 # writes it to macroengine:output block.item.

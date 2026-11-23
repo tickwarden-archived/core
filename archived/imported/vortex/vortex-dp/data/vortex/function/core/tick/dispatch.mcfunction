@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # DL Tick — Simplified Dispatch (no runtime channel registry)
 # Rates come from the runtime config (core/config/apply); there is no JSON-configurable list.
 # Each system can be toggled on/off via a scoreboard flag (default 1 = on),

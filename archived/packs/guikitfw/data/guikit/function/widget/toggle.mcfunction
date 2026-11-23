@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 execute unless data storage guikit:draw w.off run data modify storage guikit:draw w.off set value "minecraft:gray_dye"
 execute unless data storage guikit:draw w.item run data modify storage guikit:draw w.item set value "minecraft:lime_dye"
 data modify storage guikit:work key set from storage guikit:draw w.key

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/perm/group/create [MACRO]  INPUT: $(group)
 # Creates an empty permission group. A group's permissions become effective
 # through the existing perm.<name> tags when the group is assigned, so

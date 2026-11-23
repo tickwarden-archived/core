@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/fiber/resume_dispatch [MACRO]
 # Dispatched via the queue -> queue_run_func -> #vortex:internal/dispatch
 # -> core/dispatch/exec chain. core/dispatch/exec forwards the entire

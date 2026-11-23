@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/tick/hud_systems
 execute if data storage vortex:engine pb_obj run scoreboard players operation $pb_mod vortex.tmp = $epoch vortex.time
 execute if data storage vortex:engine pb_obj run scoreboard players operation $pb_mod vortex.tmp %= $pb_four vortex.tmp

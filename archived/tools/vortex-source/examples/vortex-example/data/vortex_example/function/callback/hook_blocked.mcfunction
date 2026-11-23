@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:callback/hook_blocked
 # Registered in #vortex:callback/macro_function. This is how processing
 # bound through the hook module still happens when macro_function is OFF:

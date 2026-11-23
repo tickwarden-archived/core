@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Disabled by default. Enable with: function rtwrapper:api/autotick/on
 # Autotick intentionally processes only one action per tick. Use rtwrapper:api/run
 # when you explicitly want to drain the whole queue immediately.

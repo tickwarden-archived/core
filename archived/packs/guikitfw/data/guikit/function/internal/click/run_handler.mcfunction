@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Snapshot click before anything mutates storage
 data modify storage guikit:act click set from storage guikit:ctx click
 

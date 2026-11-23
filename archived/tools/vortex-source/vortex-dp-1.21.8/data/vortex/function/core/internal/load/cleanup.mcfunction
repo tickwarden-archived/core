@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/load/cleanup
 # Full reverse of loader/scoreboards + loader/storages + the third (other.mcfunction)
 # load-time file. Undoes every init action from those three, in reverse order

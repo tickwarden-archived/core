@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # cos(x) = sin(x + 90)
 execute if data storage vortex:engine modules{math:0b} run return 0
 $scoreboard players set $cos_d vortex.tmp $(deg)

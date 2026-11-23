@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # macro $(id) $(type) $(slot) $(x) $(y) $(z)
 $execute if score @s guikit.click matches 0 unless items block $(x) $(y) $(z) container.$(slot) *[custom_data~{guikit:{id:"$(id)"}}] run data modify storage guikit:ctx click set value {id:"$(id)",kind:"$(type)"}
 $execute if score @s guikit.click matches 0 if data storage guikit:ctx click{id:"$(id)"} run scoreboard players set @s guikit.click 1

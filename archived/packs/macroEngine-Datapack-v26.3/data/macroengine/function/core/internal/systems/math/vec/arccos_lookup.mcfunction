@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/math/vec/internal/arccos_lookup
 # $vang_dot macroengine.tmp = cos×1000 value ([-1000, 1000])
 # 10° resolution arccos lookup table.

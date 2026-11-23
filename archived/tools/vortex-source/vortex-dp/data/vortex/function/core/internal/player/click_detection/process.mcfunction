@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # copy uuid
 scoreboard players operation #uuid.0 vortex.player_action.data = @s vortex.player_action.uuid.0
 scoreboard players operation #uuid.1 vortex.player_action.data = @s vortex.player_action.uuid.1

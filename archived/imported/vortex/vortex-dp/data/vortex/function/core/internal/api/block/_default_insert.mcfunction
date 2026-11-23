@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/block/_default_insert [INTERNAL]
 # Default insert: the item goes into the first free slot (the slot used is written to vortex:input slot).
 execute unless data storage vortex:input item.id run return 0

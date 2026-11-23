@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:world/time/get
 # `time query minecraft:day repetition` do not exist on 1.21.8. They map to the
 # older `daytime` and `day` arguments respectively (confirmed against the

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/columns [MACRO]
 $data modify storage vortex:dialog_layout args set value {columns:$(columns)}
 execute store result score #columns vortex.dialog_tmp run data get storage vortex:dialog_layout args.columns

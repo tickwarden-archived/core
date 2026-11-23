@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/container/_ff_loop [INTERNAL, MACRO: x, y, z, i]
 # First slot below #ct_size without an item, searching from i. RETURN the slot, or -1 when full.
 $execute unless data block $(x) $(y) $(z) Items[{Slot:$(i)b}] run return $(i)

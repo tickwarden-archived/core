@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/block/unregister
 # Removes a registered custom block.
 # INPUT  vortex:input id   RETURN 1 done, 0 refused. Same caller rule as register.

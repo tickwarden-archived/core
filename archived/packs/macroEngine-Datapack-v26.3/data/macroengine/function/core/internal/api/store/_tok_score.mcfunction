@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_tok_score [INTERNAL]  token %score:objective%
 # Writes the executor's score as a plain string into tmp.val. tmp.val stays unset when the
 # objective name is invalid, the objective does not exist or the executor has no score.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # Vortex player module — module marker (load step 1 of 3).
 # Vortex targets a single Minecraft version per pack, so instead of
 # probing for installed library versions we simply pin the module marker

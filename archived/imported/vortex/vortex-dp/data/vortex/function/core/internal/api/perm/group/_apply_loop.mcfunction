@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/perm/group/_apply_loop [INTERNAL]
 # Applies vortex:engine _grp_tmp.pending (permission names) to the
 # player whose pid is $grp_pid, adding or removing perm.<name> tags

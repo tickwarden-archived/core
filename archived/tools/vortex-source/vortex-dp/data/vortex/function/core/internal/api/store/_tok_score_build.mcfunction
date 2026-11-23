@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_tok_score_build [MACRO] [INTERNAL]
 # $(obj) was checked with safe_name: no quote, backslash, brace, bracket or whitespace.
 # Reads the score with the scoreboard itself, so no text component is involved. The range

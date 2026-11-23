@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:callback/on_custom_module
 # Registered in #vortex:callback/dispatch. The runner has no per-module tag
 # for user modules, so this handler claims only the callbacks whose args

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/block/_prepare [INTERNAL]
 # Shared first step of insert / take / hopper_in / hopper_out / validate.
 # Checks the block id (safe_name), the position and slot (as numbers), that the id is registered,

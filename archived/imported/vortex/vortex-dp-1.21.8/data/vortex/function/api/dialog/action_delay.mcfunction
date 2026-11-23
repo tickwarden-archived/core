@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/action_delay [MACRO]
 $data modify storage vortex:dialog_delay args set value {ticks:$(ticks),callback:$(callback),payload:$(payload)}
 execute store result score #delay vortex.dialog_tmp run data get storage vortex:dialog_delay args.ticks

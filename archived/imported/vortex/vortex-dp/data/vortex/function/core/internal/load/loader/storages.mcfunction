@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/load/loader/storages
 # Initializes vortex:engine storage fields that do not yet exist.
 # (moved from vortex:core/internal/load/load/storages in v26.3 — load/ vs loader/

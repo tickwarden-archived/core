@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # Vortex player module — movement detection.
 # Compares the current position with the cached one (scaled by 70 to keep
 # sub-block motion visible after the int cast); any axis change marks the

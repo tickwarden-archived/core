@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/cmd_gate/_block_loop [INTERNAL]
 # Walks macroengine:cmd_gate tmp.pending once, comparing each entry with
 # tmp.root. String equality is the data-modify trick used by

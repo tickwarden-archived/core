@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/container/info
 # One-call summary of a container block: size, used and free slots, first free slot.
 # INPUT  macroengine:input x, y, z, size (int 1..256, optional: needed for modded or unknown blocks;

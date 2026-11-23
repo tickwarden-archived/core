@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/player/var/list [MACRO]
 $tellraw @a[tag=vortex.admin] ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"━━━ Player: ","color":"aqua"},{"text":"$(player)","color":"white","bold":true},{"text":" ━━━━━━━━━━━━━━","color":"#555555"}]
 $execute if data storage vortex:engine players.$(player) run tellraw @a[tag=vortex.admin] ["",{"text":" vars ","color":"#555555"},{"plain":true ,"storage":"vortex:engine","nbt":"players.$(player)","interpret":false,"color":"yellow"}]

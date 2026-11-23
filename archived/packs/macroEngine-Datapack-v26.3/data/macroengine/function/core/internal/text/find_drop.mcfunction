@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/find_drop [INTERNAL] pops the oldest match #tx_drop times
 data remove storage macroengine:text idx[0]
 scoreboard players remove #tx_drop macroengine.tmp 1

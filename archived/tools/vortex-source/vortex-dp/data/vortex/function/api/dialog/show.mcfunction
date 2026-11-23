@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/dialog/show
 execute unless entity @s[type=minecraft:player] run return 0
 execute store result score #owner vortex.dialog_tmp run data get storage vortex:dialog_work owner

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:setup — ordered load sequence (the old fake percentage output was removed:
 # it printed 20+ console lines per load and reported nothing real).
 

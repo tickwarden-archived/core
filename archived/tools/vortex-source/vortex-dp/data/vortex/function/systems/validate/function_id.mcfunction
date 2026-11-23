@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:systems/validate/function_id
 # Checks a function id ("namespace:path/to/function") WHILE IT IS STILL DATA, before it can reach a
 # `$function $(...)` line. Same idea as safe_name, which refuses ':' and '/', so the id is cut at

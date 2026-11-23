@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/load/loader/scoreboards
 # (moved from macroengine:core/internal/load/load/scoreboards in v26.3 — load/ vs loader/
 #  separates the loader bookkeeping from the actual init routines)

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/ticket
 # Never recycle tickets. Stop safely before the signed packed-input limit.
 execute if score #ticket vortex.dialog_sys matches 200000000.. run return 0

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/color/lerp [MACRO]
 # Looks up a precomputed lerp step from a named gradient table.
 # Gradients are registered via vortex:api/color/gradient_set.

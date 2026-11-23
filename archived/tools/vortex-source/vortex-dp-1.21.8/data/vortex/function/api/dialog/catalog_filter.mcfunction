@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/catalog_filter [MACRO]
 $data modify storage vortex:dialog_filter model set value {title:$(title),size:$(size),page:$(page),items:[]}
 $data modify storage vortex:dialog_filter queue set value $(items)

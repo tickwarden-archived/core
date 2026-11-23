@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/color/validate_exec [MACRO]
 # Internal — called by api/color/validate.
 # Sets vortex:output result to 1b if $(color) is a known named color,

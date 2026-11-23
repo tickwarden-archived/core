@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/load/loader/scoreboards
 # (moved from vortex:core/internal/load/load/scoreboards in v26.3 — load/ vs loader/
 #  separates the loader bookkeeping from the actual init routines)

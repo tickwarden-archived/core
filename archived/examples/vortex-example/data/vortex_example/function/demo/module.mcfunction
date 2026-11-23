@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:demo/module
 # Module-specific callbacks. Setting `module` on the callback makes the
 # runner fire that module's tag before the shared #vortex:callback/dispatch.

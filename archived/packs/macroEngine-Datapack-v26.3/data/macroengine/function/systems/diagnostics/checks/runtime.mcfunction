@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/diagnostics/checks/runtime
 # Internal: called by systems/diagnostics/collect. Engine load flag, tick pause state, log and audit.
 # Issue:   engine.not_loaded

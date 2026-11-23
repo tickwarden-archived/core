@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # Permission system off (module_perm 0b or perm_enforce 0b): everybody passes.
 execute if data storage vortex:engine modules{perm:0b} run return 1
 execute if score #perm_enforce vortex.tick_flags matches 0 run return 1

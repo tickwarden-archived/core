@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_tok_p [INTERNAL]  token %p:name%
 execute unless entity @s[type=player] run return 0
 data modify storage vortex:store tmp.rest set string storage vortex:store tmp.nm 2

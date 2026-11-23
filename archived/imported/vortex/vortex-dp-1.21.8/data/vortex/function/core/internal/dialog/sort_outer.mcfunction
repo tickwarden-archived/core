@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/sort_outer
 execute unless data storage vortex:dialog_sort remaining[0] run return 0
 data modify storage vortex:dialog_sort scan set from storage vortex:dialog_sort remaining

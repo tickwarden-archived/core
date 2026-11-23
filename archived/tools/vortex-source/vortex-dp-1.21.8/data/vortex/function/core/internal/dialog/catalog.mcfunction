@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/catalog
 execute store result score #size vortex.dialog_tmp run data get storage vortex:dialog_catalog model.size
 execute unless score #size vortex.dialog_tmp matches 1..27 run return 0

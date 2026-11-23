@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_find_loop [INTERNAL]
 # Tries the candidate languages in order. Every candidate is validated first, because
 # stored language values are data a player or pack may have written.

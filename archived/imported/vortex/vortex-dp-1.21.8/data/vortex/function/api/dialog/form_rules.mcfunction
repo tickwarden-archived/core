@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/form_rules [MACRO]
 execute unless data storage vortex:dialog_work form.callback run return 0
 $data modify storage vortex:dialog_rules candidate set value {step:$(step),offset:$(offset),allowed:$(allowed)}

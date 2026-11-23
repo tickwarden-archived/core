@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/begin
 # @s player. Shared draft: finish synchronously before any other builder begins.
 execute unless entity @s[type=minecraft:player] run return 0

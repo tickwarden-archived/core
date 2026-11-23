@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/container/_swap_m [INTERNAL, MACRO: x, y, z, slot, slot2]
 $execute unless data block $(x) $(y) $(z) Items run return 0
 data remove storage vortex:container tmp.a

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:systems/lib/queue/process
 scoreboard players add $pq_depth vortex.tmp 1
 execute if score $pq_depth vortex.tmp > #queue_cap vortex.tick run return 0

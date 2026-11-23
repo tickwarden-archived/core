@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/string/split  [INTERNAL: the copy modules may call]
 # Input:  vortex:input string      — original string
 #         vortex:input separator   — split delimiter (default " ", ""=each char)

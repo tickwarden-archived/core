@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/safe_loop [INTERNAL]
 # Pops the first character of sf and rejects a double quote or a backslash.
 data modify storage vortex:text sc set string storage vortex:text sf 0 1

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/callback/run_id [MACRO]
 # Shortcut for api/callback/run when there is no payload.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.

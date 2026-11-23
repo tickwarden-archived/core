@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # vortex:systems/math/ratio_percent [MACRO]
 # Computes what percent part is of total (integer, rounds toward zero).

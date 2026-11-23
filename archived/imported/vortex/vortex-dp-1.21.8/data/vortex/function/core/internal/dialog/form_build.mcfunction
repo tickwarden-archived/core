@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/form_build [MACRO]
 $data modify storage vortex:dialog_work dialog.actions append value {label:$(label),action:{type:"minecraft:dynamic/run_command",template:"/trigger vortex.dialog_input set $(ticket)$(suffix)"}}
 execute store result score #button_index vortex.dialog_tmp run data get storage vortex:dialog_work dialog.actions

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # The work queue (and its drain loop) is the lib module. Reached through the
 # queue_process slot, so an install without lib simply has nothing to drain.
 function #macroengine:hook/queue_process

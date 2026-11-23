@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/ctl_loop [INTERNAL]
 # Pops the first character of cf and compares it with \n, \r and \t.
 data modify storage vortex:text sc set string storage vortex:text cf 0 1

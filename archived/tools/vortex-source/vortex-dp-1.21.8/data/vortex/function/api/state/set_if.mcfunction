@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ======================================================================================
 # vortex:api/state/set_if
 # Compare-and-set for a player state: change the state to <to> only while it is still <from>.

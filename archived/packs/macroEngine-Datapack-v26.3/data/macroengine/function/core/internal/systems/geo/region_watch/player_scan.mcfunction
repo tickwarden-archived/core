@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/geo/region_watch/internal/player_scan
 # @s = the player to check
 # Reads coordinates to storage, then iterates all regions.

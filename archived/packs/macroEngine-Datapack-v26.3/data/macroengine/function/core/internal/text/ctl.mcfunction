@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/ctl
 # RETURN 1 when macroengine:text s contains a newline, a carriage return or a tab, else 0.
 # Such characters cannot be substituted into a macro line, so validators reject them.

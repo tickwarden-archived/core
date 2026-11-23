@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/title/actionbar_p
 # Action bar with %tokens% for @s. The text is rendered with api/store/render into a plain
 # string (macroengine:store out.string); the component only exists while the command runs.

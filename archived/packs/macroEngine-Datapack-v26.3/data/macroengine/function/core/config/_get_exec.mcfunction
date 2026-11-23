@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/config/_get_exec [MACRO, INTERNAL]
 # Only keys present in the schema are readable; a dotted path into a schema entry has no type and is refused.
 data remove storage macroengine:engine config_sc

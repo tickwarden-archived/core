@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/perm/trigger/run_if_perm [MACRO]
 execute if entity @s[tag=vortex.admin] run function vortex:core/internal/api/perm/trigger/exec with storage vortex:engine _ptd_current
 

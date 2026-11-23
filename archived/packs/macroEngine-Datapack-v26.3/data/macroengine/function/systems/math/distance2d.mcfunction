@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/math/distance2d [MACRO]
 execute if data storage macroengine:engine modules{math:0b} run return 0
 $scoreboard players set $d2d_x1 macroengine.tmp $(x1)

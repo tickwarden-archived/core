@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/to_number
 # INPUT  vortex:text: s (string like "42", "-7", "3.14")
 # OUTPUT vortex:text: out (int or double)   on failure: err, out unset

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/block/_default_insert [INTERNAL]
 # Default insert: the item goes into the first free slot (the slot used is written to macroengine:input slot).
 execute unless data storage macroengine:input item.id run return 0

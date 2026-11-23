@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/block/_default_take [INTERNAL]
 # Default take: removes the stack of vortex:input slot (default: first occupied slot) and
 # writes it to vortex:output block.item.

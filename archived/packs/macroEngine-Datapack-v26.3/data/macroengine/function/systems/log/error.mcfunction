@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/log/error
 # Usage: $function macroengine:systems/log/error {message:"[System] Something failed"}
 # Level: 1 — always shown unless log is off

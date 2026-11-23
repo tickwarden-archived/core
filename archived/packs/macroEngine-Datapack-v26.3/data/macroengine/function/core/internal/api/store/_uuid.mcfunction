@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_uuid [INTERNAL]
 # Splits the executor's UUID into four ints in tmp.k (a, b, c, d). Ints cannot carry
 # command text, so they are safe macro arguments. RETURN 1 for a player, else 0.

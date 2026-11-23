@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/block/_call [INTERNAL, MACRO: id, h]
 # Runs the registered handler <h> at the block position. The handler id was validated at register.
 # RETURN the handler's return value (1 = ok, 0 = deny), or -1 when no handler is registered.

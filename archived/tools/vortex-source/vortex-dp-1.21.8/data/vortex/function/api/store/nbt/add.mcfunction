@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/store/nbt/add [MACRO]
 # Adds `by` (negative to subtract) to the integer at storage/path; a missing path counts as 0.
 # Input (macro args): storage, path, by.  RETURN the new value.

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/auto_refresh [MACRO]
 $data modify storage vortex:dialog_refresh requested set value $(ticks)
 execute store result score #refresh_ticks vortex.dialog_tmp run data get storage vortex:dialog_refresh requested

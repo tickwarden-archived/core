@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/rate_limit/config — Register or update a rate limit rule [MACRO]
 #
 # Creates or replaces a sliding window rule for any key.

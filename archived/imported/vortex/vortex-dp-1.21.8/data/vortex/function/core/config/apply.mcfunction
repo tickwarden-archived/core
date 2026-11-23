@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/config/apply
 # Copies the runtime config in vortex:engine config to the places the engine reads.
 # Called after every load, by core/config/set and by core/config/ensure. Values the engine

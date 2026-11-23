@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/config/_set_int [MACRO, INTERNAL]  $(key) is a schema key; value is clamped to min..max
 execute store result score #cfg_in vortex.tmp run data get storage vortex:engine config_in.value
 execute store result score #cfg_min vortex.tmp run data get storage vortex:engine config_sc.min

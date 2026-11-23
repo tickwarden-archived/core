@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/tick/hud_systems
 execute if data storage macroengine:engine pb_obj run scoreboard players operation $pb_mod macroengine.tmp = $epoch macroengine.time
 execute if data storage macroengine:engine pb_obj run scoreboard players operation $pb_mod macroengine.tmp %= $pb_four macroengine.tmp

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/callback/blocked/function [MACRO]
 # Called by a guard line when macro_function is switched off: instead of dropping the call silently,
 # the site is reported as a callback with module "macro_function".

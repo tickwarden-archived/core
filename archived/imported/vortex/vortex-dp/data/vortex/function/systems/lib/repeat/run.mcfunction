@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:systems/lib/repeat/run [MACRO]
 $data modify storage vortex:engine _repeat.func set value "$(func)"
 $scoreboard players set $rep_n vortex.tmp $(count)

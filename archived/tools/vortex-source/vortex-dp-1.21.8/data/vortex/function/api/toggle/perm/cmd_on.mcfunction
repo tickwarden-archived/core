@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/toggle/perm/cmd_on
 # Per-command permissions ON: every api/cmd/<name> wrapper needs the permission cmd.<name> (needs perm enforcement on).
 

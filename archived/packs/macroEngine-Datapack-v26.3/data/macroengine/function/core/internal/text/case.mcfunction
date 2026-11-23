@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/case [INTERNAL] maps every character of s through table macroengine:text tbl
 data remove storage macroengine:text err
 data remove storage macroengine:text out

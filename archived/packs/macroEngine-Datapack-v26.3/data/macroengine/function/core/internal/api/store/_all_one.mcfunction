@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_all_one [INTERNAL]
 # Runs as one player: renders the current in.* and appends {uuid, string} to all.entries.
 execute unless function macroengine:api/store/render run return 0

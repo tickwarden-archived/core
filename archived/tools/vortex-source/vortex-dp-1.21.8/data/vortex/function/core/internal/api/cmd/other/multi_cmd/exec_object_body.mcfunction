@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ─────────────────────────────────────────────────────────────────
 # vortex:core/internal/api/cmd/other/multi_cmd/exec_object_body
 # The execution half of exec_object, reached only when the entry's

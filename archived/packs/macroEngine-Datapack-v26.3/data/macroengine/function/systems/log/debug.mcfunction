@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/log/debug
 # Usage: $function macroengine:systems/log/debug {message:"[System] Trace detail"}
 # Level: 4 — only shown when debug mode active

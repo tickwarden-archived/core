@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/diagnostics/checks/runtime
 # Internal: called by systems/diagnostics/collect. Engine load flag, tick pause state, log and audit.
 # Issue:   engine.not_loaded

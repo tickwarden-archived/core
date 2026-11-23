@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/input/validate/rule [MACRO]
 # Checks one captured value against a named rule (see input/validate/rule_define).
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.

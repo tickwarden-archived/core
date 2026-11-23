@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # ======================================================================================
 # macroengine:core/internal/ext/rng/shuffle_step [INTERNAL]
 # One Fisher-Yates round: swap element #ext_shf_i with a random element 0..#ext_shf_i,

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Tag this player's container as guikit.me
 tag @e[type=#guikit:container,tag=guikit.cart] remove guikit.me
 scoreboard players operation #pid guikit.tmp = @s guikit.pid

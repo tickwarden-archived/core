@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/interaction/list
 execute if data storage vortex:engine modules{interaction:0b} run return 0
 tellraw @s ["",{"text":"[VORTEX] ","color":"#00AAAA","bold":true},{"text":"interaction/list","color":"aqua"}]

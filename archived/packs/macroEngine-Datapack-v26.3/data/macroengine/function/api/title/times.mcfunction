@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/title/times [MACRO]
 # Sets title timing for a player without showing anything.
 # Input (macro args): player, fade_in, stay, fade_out (ticks)

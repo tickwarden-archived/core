@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/logic/if_lte [MACRO]
 execute if data storage vortex:engine modules{logic:0b} run return 0
 $scoreboard players set $if_a vortex.tmp $(a)

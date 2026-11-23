@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/container/_num [INTERNAL, MACRO: f]
 # Copies the NUMBER macroengine:input <f> into macroengine:container tmp.k.<f> as an int.
 # <f> is always a constant written by this pack, never caller data. Caller data only ever

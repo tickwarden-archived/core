@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/rate_limit/player/check — Per-player sliding window check [MACRO]
 #
 # Builds the compound key "player:<key>:<player>" and ensures the bucket exists.

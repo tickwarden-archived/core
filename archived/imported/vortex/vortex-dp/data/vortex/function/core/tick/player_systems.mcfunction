@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/tick/player_systems
 execute as @a[scores={vortex.run=1..}] run function #vortex:admin/run
 scoreboard players set @a[scores={vortex.run=1..}] vortex.run 0

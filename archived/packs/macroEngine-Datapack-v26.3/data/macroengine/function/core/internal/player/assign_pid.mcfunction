@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/player/assign_pid [MACRO]
 execute store result score $next_pid macroengine.tmp run data get storage macroengine:engine _pid_seq
 

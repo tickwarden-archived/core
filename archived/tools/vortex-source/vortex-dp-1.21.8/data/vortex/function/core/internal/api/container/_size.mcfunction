@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/container/_size [INTERNAL, MACRO: x, y, z]
 # Slot count of the vanilla container at the position. RETURN 0 when unknown.
 # Double chests report the size of one half (each half is its own block entity).

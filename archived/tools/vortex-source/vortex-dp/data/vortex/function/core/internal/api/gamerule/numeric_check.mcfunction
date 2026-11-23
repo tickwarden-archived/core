@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/gamerule/numeric_check [MACRO]
 # Converts value string to score, checks against gr_matches range, calls gr_on_value.
 # Called exclusively by dispatch — do NOT call directly.

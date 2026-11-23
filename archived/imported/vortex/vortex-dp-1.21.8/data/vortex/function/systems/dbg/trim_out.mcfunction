@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/dbg/trim_out
 # Keeps storage vortex:dbg out at 50 entries (drops the oldest).
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.

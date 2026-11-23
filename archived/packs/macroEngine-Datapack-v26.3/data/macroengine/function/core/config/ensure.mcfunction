@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/config/ensure
 # Makes sure the runtime config is complete and applied. One cheap check per tick: the revision
 # marker written by config.mcfunction plus two applied scores. It covers worlds loaded by an older

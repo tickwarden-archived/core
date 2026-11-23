@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_resolve [INTERNAL]
 # tmp.segs[0] is a name between two '%'. Appends exactly one entry to tmp.frags.
 data modify storage vortex:store tmp.nm set from storage vortex:store tmp.segs[0]

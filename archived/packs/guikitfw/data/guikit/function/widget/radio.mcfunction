@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # w.radio.score, w.radio.value, on/off items
 data modify storage guikit:work key set from storage guikit:draw w.radio.score
 execute store result score #val guikit.tmp run data get storage guikit:draw w.radio.value

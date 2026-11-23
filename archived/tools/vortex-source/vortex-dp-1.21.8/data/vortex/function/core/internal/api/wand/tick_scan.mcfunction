@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/wand/tick_scan
 # Every tick: detect players with vortex.right_click score 1+,
 # check their held item, run the matching bind.

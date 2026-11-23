@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:setup
 # Runs on load (#minecraft:load) and at the start of demo/run_all.
 # Defines three input rules. A datapack calls vortex:api/input/validate/rule

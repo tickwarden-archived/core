@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/rate_limit/channel/check — Per-tick-system rate guard [MACRO]
 #
 # Prevents a tick system's function (e.g. core/tick/admin_systems) from

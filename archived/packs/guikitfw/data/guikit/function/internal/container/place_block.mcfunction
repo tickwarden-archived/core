@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 # Place block container at menu.pos [x,y,z] (or menu.container.pos)
 # Sets player guikit.bx/by/bz and mode=1
 data remove storage guikit:work pos

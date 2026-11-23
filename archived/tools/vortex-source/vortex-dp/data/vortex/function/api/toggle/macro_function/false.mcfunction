@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/toggle/macro_function/false - Disable macro-called function IDs: every `$function $(id)` line
 # Caller: vortex.admin tag required.
 # AI-assisted: written with Claude (Anthropic); see CREDITS.md.

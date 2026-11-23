@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/callback [MACRO]
 # Trusted typed action arrays; copy before invoking any reentrant renderer.
 execute unless data storage vortex:dialog_dispatch stack run data modify storage vortex:dialog_dispatch stack set value []

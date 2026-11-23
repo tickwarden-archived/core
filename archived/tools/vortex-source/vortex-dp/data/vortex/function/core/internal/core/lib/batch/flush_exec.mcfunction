@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/batch/flush_exec [MACRO]
 # INPUT: $(id)
 # For each item, delay = floor(idx * spread_over / total) is computed.

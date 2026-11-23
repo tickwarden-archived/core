@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_1f44a31786:lifecycle {phase:1} run return 0
 # Immediate drain mode: processes a direct request or queued requests until the queue is empty.
 # Do not use this from the tick loop; autotick uses core/run/run_next to process one action per tick.
 # Silent mode suppresses RTWrapper's own tellraw debug/status messages. It does not

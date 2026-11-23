@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/systems/audit/show_loop  [INTERNAL]
 # Prints entry #au_i, then recurses until #au_i reaches #au_n. Depth is at most 10.
 execute store result storage vortex:audit idx.i int 1 run scoreboard players get #vortex.au_i vortex.tmp

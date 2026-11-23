@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_plang [INTERNAL]
 # Appends the executor's own "lang" value (api/store/player/set) to tmp.langs.
 data modify storage vortex:store tmp.pk set value {}

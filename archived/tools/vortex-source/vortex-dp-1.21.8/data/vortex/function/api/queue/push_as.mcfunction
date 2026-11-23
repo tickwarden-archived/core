@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/queue/push_as
 # Appends a function to the work queue, tagged to execute AS a specific player.
 # The player must be online when the item is processed; if offline, it is skipped.

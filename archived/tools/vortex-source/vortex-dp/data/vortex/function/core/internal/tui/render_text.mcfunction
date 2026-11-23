@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/tui/render_text [INTERNAL]
 # Renders vortex:tui in.text (with %tokens%, in.args) into the plain string vortex:tui t.
 # Leaves t unset when in.text is missing or the template is invalid.

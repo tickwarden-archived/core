@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/player/var/transfer [MACRO]
 $execute store result score $tr_f vortex.tmp run data get storage vortex:engine players.$(from).$(key)
 $scoreboard players set $tr_a vortex.tmp $(amount)

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/flag/toggle_system - Toggle a built-in tick system on/off [MACRO]
 # Usage: function macroengine:systems/flag/toggle_system {system:"time"}
 # Valid systems: time | queue | player | hud | admin (anything else does nothing).

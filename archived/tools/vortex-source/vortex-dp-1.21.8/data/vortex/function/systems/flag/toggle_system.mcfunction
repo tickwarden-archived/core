@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/flag/toggle_system - Toggle a built-in tick system on/off [MACRO]
 # Usage: function vortex:systems/flag/toggle_system {system:"time"}
 # Valid systems: time | queue | player | hud | admin (anything else does nothing).

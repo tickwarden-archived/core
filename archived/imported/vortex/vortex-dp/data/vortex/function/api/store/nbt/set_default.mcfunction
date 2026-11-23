@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/store/nbt/set_default [MACRO]
 # Writes vortex:store nbt.value to storage/path ONLY when the path does not exist yet
 # (first-run initialisation that never overwrites live data).

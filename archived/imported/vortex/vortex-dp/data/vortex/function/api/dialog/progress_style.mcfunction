@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/dialog/progress_style [MACRO]
 $data modify storage vortex:dialog_progress style set value {segments:$(segments),width:$(width),filled:$(filled),empty:$(empty)}
 execute store result score #bar_segments vortex.dialog_tmp run data get storage vortex:dialog_progress style.segments

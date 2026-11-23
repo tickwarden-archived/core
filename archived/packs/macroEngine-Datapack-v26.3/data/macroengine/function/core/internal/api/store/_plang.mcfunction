@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/api/store/_plang [INTERNAL]
 # Appends the executor's own "lang" value (api/store/player/set) to tmp.langs.
 data modify storage macroengine:store tmp.pk set value {}

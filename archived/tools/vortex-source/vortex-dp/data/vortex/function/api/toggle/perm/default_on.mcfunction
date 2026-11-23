@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/toggle/perm/default_on
 # Make "enforcement on" the DEFAULT. Takes effect when perm_enforce is created or reset (core/config/reset); it does not change the current state.
 

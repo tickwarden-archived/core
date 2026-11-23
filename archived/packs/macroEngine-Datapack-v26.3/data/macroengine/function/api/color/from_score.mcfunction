@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/color/from_score [MACRO]
 # Maps an integer score range to a color using a threshold table.
 # Useful for health bars, progress displays, danger indicators.

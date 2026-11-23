@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/dialog/translate [MACRO]
 $data modify storage vortex:dialog_i18n ctx.key set value "$(key)"
 $data modify storage vortex:dialog_i18n result set value {text:"[missing: $(key)]",color:"red"}

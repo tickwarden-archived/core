@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/num_check
 # INPUT  macroengine:text: s, allow_dot (byte: 1b also accepts one decimal point)
 # RETURN 1 when s is a whole number (or decimal), 0 otherwise with err set.

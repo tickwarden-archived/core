@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/join_take [INTERNAL] joins the next 16 entries of pc into one entry of nl
 data modify storage vortex:text jarg set value {p0:"",p1:"",p2:"",p3:"",p4:"",p5:"",p6:"",p7:"",p8:"",p9:"",p10:"",p11:"",p12:"",p13:"",p14:"",p15:""}
 execute if data storage vortex:text pc[0] run data modify storage vortex:text jarg.p0 set from storage vortex:text pc[0]

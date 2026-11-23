@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/audit/show
 # Prints the latest 10 audit entries to the caller. ADMIN ONLY (tag macroengine.admin).
 # A server/console executor (no entity) is treated as trusted, same as api/perm/grant.

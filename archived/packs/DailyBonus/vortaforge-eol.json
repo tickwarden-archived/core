@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "entry_guard_mode": "early-return",
+  "pack_id": "core-7dc59306347b",
+  "source_format": {
+    "max_format": [
+      121,
+      0
+    ],
+    "min_format": [
+      121,
+      0
+    ],
+    "description": "DailyBonus - once-per-in-game-day login reward by VortaForge (based on Runtoolkit)"
+  },
+  "namespace": "vf_eol_f98a9615fe",
+  "objective": "vfEf98a9615fe",
+  "clock": "online-ticks-not-wall-clock",
+  "expected_tps": 20,
+  "read_only_at_ticks": 5184000,
+  "locked_at_ticks": 12096000,
+  "guarded_functions": [
+    "data/dailybonus/function/_vc_origin.mcfunction",
+    "data/dailybonus/function/archive_warning.mcfunction",
+    "data/dailybonus/function/grant.mcfunction",
+    "data/dailybonus/function/load.mcfunction",
+    "data/dailybonus/function/tick.mcfunction"
+  ],
+  "readonly_functions": [],
+  "literal_internal_scheduled_targets_for_manual_ownership_review": [],
+  "automatic_schedule_clear": false,
+  "dynamic_schedules_detected": false,
+  "schedule_detection_complete": false,
+  "persistent_data_deleted": false,
+  "deep_cleanup_enabled": false,
+  "runtime_validated": false,
+  "status_function": "vf_eol_f98a9615fe:status",
+  "control_plane_exception": "Lifecycle scores, storage and notices change. Other datapack resources, operators and external commands are not blocked; scoreboard reset bypasses the mechanism. A function with any non-allowlisted command is wholly blocked in phase 2.",
+  "source_manifest": {
+    "LICENSE": "930bf24ab4ee2d2afe2d1bdff27320f3e84f90ae0a2fd2f0c53ac0a594c9b9ec",
+    "NOTICE": "69dd800a5cfd125e2434dd2e0a14d4b5ea2c39c08cc509adf2b5fd81e83de7a7",
+    "data/dailybonus/function/_vc_origin.mcfunction": "e16282727f6ac320696024f338e2d686390ab94d16d7bd5cebc9cc7b92066fe1",
+    "data/dailybonus/function/archive_warning.mcfunction": "1cf846def20989681c6f09b0428a45cd950619eb8914acb0b2582025070e0739",
+    "data/dailybonus/function/grant.mcfunction": "2d4131171578b39a03e13a84312b8e63b7008e804a46da215682179eee1d685c",
+    "data/dailybonus/function/load.mcfunction": "2bb41359f2d7fce1147af2095e7386967015e42733452560c0232e6eb45a3abe",
+    "data/dailybonus/function/tick.mcfunction": "5e9e8bd4ba78ec2014bc875422cc043ea0ad4c02d3b2b593e083ee4e59f4a686",
+    "data/dailybonus/loot_table/daily_reward.json": "7edecb43cbb22d911edac63a534035c33938fd80fc44d5ac73c6ba96d085cdef",
+    "data/dailybonus/test/first_login_is_granted.mcfunction": "0b65b3313a77acf70a062eb02cd94a7c7a9151bba4ceb5ad8182d53701bd1f2b",
+    "data/minecraft/tags/function/load.json": "32e4be03fc69981d28b9532eb142b46c52b7b6856e39ee56aee7123d6d4f8463",
+    "data/minecraft/tags/function/tick.json": "ef04b61cfad79f53bfe79e7d0a88eae0a70615e3aa592dbdd58c57bfc8cbe87e",
+    "pack.mcmeta": "d987bfe87e9ede8e84a8a5610856d405d7de3ac5ad3625a66b800b7542da3565"
+  }
+}

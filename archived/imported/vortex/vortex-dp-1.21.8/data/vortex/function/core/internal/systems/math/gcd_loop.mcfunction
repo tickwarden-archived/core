@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # Euclidean step: a = b, b = a % b — repeat until b is zero
 execute if score $gcd_b vortex.tmp matches 0 run return 0
 

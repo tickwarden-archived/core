@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_c8645e117f:lifecycle {phase:1} run return 0
 data remove storage guikit:act w
 data modify storage guikit:act w set value {}
 # Prefer click id match against current page widgets in lib

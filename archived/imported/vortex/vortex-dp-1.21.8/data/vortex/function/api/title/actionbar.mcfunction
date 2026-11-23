@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/title/actionbar — Raw JSON actionbar display [MACRO]
 # Displays a full JSON component string in the actionbar of a named player.
 # Unlike cmd/actionbar (text + color only), this accepts any serialized component

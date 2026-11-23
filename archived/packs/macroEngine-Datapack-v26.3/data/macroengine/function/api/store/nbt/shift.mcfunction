@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/store/nbt/shift [MACRO]
 # Removes the FIRST element of the list at storage/path (queue behaviour) into macroengine:store nbt.result.
 # Input (macro args): storage, path.  RETURN 1 when an element was removed, 0 otherwise.

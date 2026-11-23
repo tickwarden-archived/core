@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/load/cleanup
 # Full reverse of loader/scoreboards + loader/storages + the third (other.mcfunction)
 # load-time file. Undoes every init action from those three, in reverse order

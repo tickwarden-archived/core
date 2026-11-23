@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ======================================================================================
 # vortex:core/internal/ext/api/perm_count [MACRO] [INTERNAL]
 # $(player) has already been validated by api/perm/count.

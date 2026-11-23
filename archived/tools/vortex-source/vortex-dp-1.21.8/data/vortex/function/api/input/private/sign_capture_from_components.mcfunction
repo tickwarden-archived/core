@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 data modify storage vortex:input _t set value ""
 data modify storage vortex:input _t set from block ~ ~ ~ components."minecraft:sign_text_front".messages[0].text
 execute if data storage vortex:input {_t:""} run data modify storage vortex:input _t set from block ~ ~ ~ components."minecraft:sign_text_front".messages[0]

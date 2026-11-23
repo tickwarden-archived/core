@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # ======================================================================================
 # macroengine:systems/hook/on_brewed_potion
 # Binds a function or command to the "brewed_potion" event (fires when a player takes a potion out of a brewing stand).

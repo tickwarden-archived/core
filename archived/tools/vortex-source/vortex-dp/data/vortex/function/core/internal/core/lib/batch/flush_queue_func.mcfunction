@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/batch/flush_queue_func [MACRO]
 # INPUT: $(delay) — func is NBT-copied from _bfl_cur, not macro-spliced
 

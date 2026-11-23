@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/gamerule/reset [MACRO]
 # Removes a custom gamerule from engine storage entirely.
 # Does NOT touch vanilla /gamerule — this is for vortex-tracked rules only.

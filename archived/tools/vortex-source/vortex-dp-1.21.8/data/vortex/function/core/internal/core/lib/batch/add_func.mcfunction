@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/core/lib/batch/add_func [MACRO]
 # INPUT: $(id) — func is NBT-copied from vortex:input, not macro-spliced
 # Called with func field guaranteed.

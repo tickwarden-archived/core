@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/geo/region_watch/internal/fire_leave_cmd [MACRO]
 # INPUT: $(on_leave_cmd) — from _rw_cur; called ONLY when on_leave_cmd field exists.
 # @s = player leaving the region

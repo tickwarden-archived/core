@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "status": "experimental-not-runtime-validated",
+  "originals": "Git parent c6846148d7a60add52945e402e8092e8e5fea3da for core; original Vortex Git bundle at archived/tools/vortex-source/recovery/vortex.bundle; also original candidate source manifests and remote recovery backups",
+  "packs": [
+    {
+      "path": "archived/examples/template-datapack",
+      "candidate": "core-62c96bf76d3b.zip",
+      "candidate_sha256": "74f4152db2c4900c35c4182e2c56dffe9e9d2b474efa14dee5f0ba2ff87f69dd",
+      "pack_id": "core-62c96bf76d3b",
+      "namespace": "vf_eol_46942fd13a",
+      "guard_mode": "early-return",
+      "function_count": 2,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/DailyBonus",
+      "candidate": "core-7dc59306347b.zip",
+      "candidate_sha256": "e1eea40c12ff190701284b0341eb02153d1da4a61e8f3314b4b3ff98f899514e",
+      "pack_id": "core-7dc59306347b",
+      "namespace": "vf_eol_f98a9615fe",
+      "guard_mode": "early-return",
+      "function_count": 5,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/InteractionClickDetection",
+      "candidate": "core-160267d56371.zip",
+      "candidate_sha256": "f8bd6e596cf2528c1e35761d248e9499f06be7e7bc1cdb05023922dd58707416",
+      "pack_id": "core-160267d56371",
+      "namespace": "vf_eol_3b9a8e469f",
+      "guard_mode": "early-return",
+      "function_count": 3,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/LeftClickDetection",
+      "candidate": "core-25d5fd9ab8f9.zip",
+      "candidate_sha256": "085a45331a94486342728c313b82aafed455655db84e952aae557612adcfbbb9",
+      "pack_id": "core-25d5fd9ab8f9",
+      "namespace": "vf_eol_402f6da28f",
+      "guard_mode": "early-return",
+      "function_count": 12,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/QuickShare",
+      "candidate": "core-124c741d56ce.zip",
+      "candidate_sha256": "51993ab186cd0e8c673a6859570d44e9f2d11027e4d4b8555f54892df7a1e0e2",
+      "pack_id": "core-124c741d56ce",
+      "namespace": "vf_eol_67654ba1d3",
+      "guard_mode": "early-return",
+      "function_count": 6,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/RTWrapper-v1.0.1",
+      "candidate": "core-e370d484ecb0.zip",
+      "candidate_sha256": "48f87abe46b95f17da903cb708f860b170b7aa7c16b1602a05170f76118ef5bd",
+      "pack_id": "core-e370d484ecb0",
+      "namespace": "vf_eol_1f44a31786",
+      "guard_mode": "early-return",
+      "function_count": 682,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/RTWrapper/datapack/RTWrapper-Datapack",
+      "candidate": "core-fe13f9ed5b98.zip",
+      "candidate_sha256": "1424c30214dbe065618347e6a222914941592974398be07e57f94981d9c0c974",
+      "pack_id": "core-fe13f9ed5b98",
+      "namespace": "vf_eol_95ed379a2f",
+      "guard_mode": "early-return",
+      "function_count": 680,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/TunnelScript",
+      "candidate": "core-d9600c15de4a.zip",
+      "candidate_sha256": "882ed3c9b90e4ddb1bd5da367b3f0b970d139b5bc8cb252d1cfd5ce7f6f8fd16",
+      "pack_id": "core-d9600c15de4a",
+      "namespace": "vf_eol_601484f105",
+      "guard_mode": "legacy-per-command",
+      "function_count": 100,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/cmdTunnel-datapack",
+      "candidate": "core-e43c0c672bcb.zip",
+      "candidate_sha256": "61fe139b81e23430ce22dd185663f44f3a78bcf7ba35fc605692839283e1ccf7",
+      "pack_id": "core-e43c0c672bcb",
+      "namespace": "vf_eol_f11a08b8a7",
+      "guard_mode": "legacy-per-command",
+      "function_count": 9,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/guikitfw",
+      "candidate": "core-054e268687fd.zip",
+      "candidate_sha256": "dad1cb210bae0f1d3d643e93bb25a3b1ee2aba1b435b7534be551735f1449113",
+      "pack_id": "core-054e268687fd",
+      "namespace": "vf_eol_c8645e117f",
+      "guard_mode": "early-return",
+      "function_count": 192,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/macroEngine-Datapack-v26.3",
+      "candidate": "core-f45e29d3e141.zip",
+      "candidate_sha256": "7e9fbc0ca8b565b2cf8d215ec9836b330bf6b5a39dd15f4832d50992ca648014",
+      "pack_id": "core-f45e29d3e141",
+      "namespace": "vf_eol_cc1cb841d8",
+      "guard_mode": "early-return",
+      "function_count": 1244,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/packs/vf_macro",
+      "candidate": "core-5b836e483e78.zip",
+      "candidate_sha256": "9a11b83e71e026369ad76cfa887075ade2cef4ca02e49425a891724a23968f03",
+      "pack_id": "core-5b836e483e78",
+      "namespace": "vf_eol_5f312cf5a6",
+      "guard_mode": "legacy-per-command",
+      "function_count": 51,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/tools/vortex-source/examples/vortex-example",
+      "candidate": "vortex-92441e84db98.zip",
+      "candidate_sha256": "cf0f8a662e916b176a4fa681c5d8232771d007cefc7d7a6bdc4a4d3d7775e269",
+      "pack_id": "vortex-92441e84db98",
+      "namespace": "vf_eol_55b54ff038",
+      "guard_mode": "early-return",
+      "function_count": 22,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/examples/vortex-example",
+      "candidate": "vortex-92441e84db98.zip",
+      "candidate_sha256": "cf0f8a662e916b176a4fa681c5d8232771d007cefc7d7a6bdc4a4d3d7775e269",
+      "pack_id": "vortex-92441e84db98",
+      "namespace": "vf_eol_55b54ff038",
+      "guard_mode": "early-return",
+      "function_count": 22,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/tools/vortex-source/vortex-dp-1.21.8",
+      "candidate": "vortex-5154be20712d.zip",
+      "candidate_sha256": "1ceae258dae2e1aed448e517fff5abde957080159fb013b37f68727a6f893b8d",
+      "pack_id": "vortex-5154be20712d",
+      "namespace": "vf_eol_63b504a29e",
+      "guard_mode": "early-return",
+      "function_count": 1450,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/imported/vortex/vortex-dp-1.21.8",
+      "candidate": "vortex-5154be20712d.zip",
+      "candidate_sha256": "1ceae258dae2e1aed448e517fff5abde957080159fb013b37f68727a6f893b8d",
+      "pack_id": "vortex-5154be20712d",
+      "namespace": "vf_eol_63b504a29e",
+      "guard_mode": "early-return",
+      "function_count": 1450,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/tools/vortex-source/vortex-dp",
+      "candidate": "vortex-05d16a42219e.zip",
+      "candidate_sha256": "30595f6051219d5b9910b79bf116befa8467efbdd36d4a2ab168c783d4a341b8",
+      "pack_id": "vortex-05d16a42219e",
+      "namespace": "vf_eol_8ca60b8329",
+      "guard_mode": "early-return",
+      "function_count": 1451,
+      "runtime_validated": false
+    },
+    {
+      "path": "archived/imported/vortex/vortex-dp",
+      "candidate": "vortex-05d16a42219e.zip",
+      "candidate_sha256": "30595f6051219d5b9910b79bf116befa8467efbdd36d4a2ab168c783d4a341b8",
+      "pack_id": "vortex-05d16a42219e",
+      "namespace": "vf_eol_8ca60b8329",
+      "guard_mode": "early-return",
+      "function_count": 1451,
+      "runtime_validated": false
+    }
+  ]
+}

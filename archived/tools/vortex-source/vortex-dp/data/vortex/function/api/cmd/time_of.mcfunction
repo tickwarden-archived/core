@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/cmd/time_of
 # Usage: /function vortex:api/cmd/time_of {clock:"vortex:test", action:"set", value:"12000"}
 # For action:"query", value is a time query argument: "gametime", a timeline

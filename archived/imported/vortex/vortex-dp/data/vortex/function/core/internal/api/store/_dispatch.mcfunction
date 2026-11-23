@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/store/_dispatch [INTERNAL]
 # Sets tmp.val from tmp.nm, or leaves it unset when the token is unknown.
 execute if data storage vortex:store tmp{nm:"nl"} run data modify storage vortex:store tmp.val set value "\n"

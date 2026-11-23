@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/callback/run
 # THE shared callback runner. Every callback in the pack goes through here: the public
 # api/callback/run is a thin wrapper.

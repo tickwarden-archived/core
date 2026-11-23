@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:systems/rate_limit/global/check — Global sliding window check [MACRO]
 #
 # Convenience wrapper for global (server-wide) rate limits.

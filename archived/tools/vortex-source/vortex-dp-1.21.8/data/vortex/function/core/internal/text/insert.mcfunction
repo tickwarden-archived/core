@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/insert
 # INPUT  vortex:text: s, ins (strings), at (int, 0..length)
 # OUTPUT vortex:text: out (string)   on failure: err, out unset

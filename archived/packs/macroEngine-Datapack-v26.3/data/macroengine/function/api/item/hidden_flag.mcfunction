@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/item/hidden_flag
 #
 # Appends a named boolean flag to minecraft:custom_data.macroengine.flags on the

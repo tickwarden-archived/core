@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/template_form_patch [MACRO]
 $execute if data storage vortex:dialog_work dialog.actions[{action:{template:"/trigger vortex.dialog_input set $(old)$(suffix)"}}] run data modify storage vortex:dialog_work dialog.actions[{action:{template:"/trigger vortex.dialog_input set $(old)$(suffix)"}}].action.template set value "/trigger vortex.dialog_input set $(new)$(suffix)"
 $execute if data storage vortex:dialog_work dialog.exit_action{action:{template:"/trigger vortex.dialog_input set $(old)$(suffix)"}} run data modify storage vortex:dialog_work dialog.exit_action.action.template set value "/trigger vortex.dialog_input set $(new)$(suffix)"

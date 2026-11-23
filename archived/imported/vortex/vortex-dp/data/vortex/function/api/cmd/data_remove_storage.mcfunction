@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # Storage removal: applies immediately — no permission check. This command
 # can destroy arbitrary storage data (including vortex's own engine
 # state) — callers should be careful with $(path).

@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:player/get/name
 # Resolves the executor's profile name and UUID into macroengine:names temp.
 # Uses a short-lived marker armor_stand at the execution position instead of a block,

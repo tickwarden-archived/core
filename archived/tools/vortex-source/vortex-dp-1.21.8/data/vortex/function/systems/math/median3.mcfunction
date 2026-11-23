@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # ======================================================================================
 # vortex:systems/math/median3 [MACRO]
 # Median (middle value) of three integers. Uses compare-and-swap, so there is no

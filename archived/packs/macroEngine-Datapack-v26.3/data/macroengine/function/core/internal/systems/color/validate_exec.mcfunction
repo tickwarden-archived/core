@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:systems/color/internal/validate_exec [MACRO]
 # Internal — called by api/color/validate.
 # Sets macroengine:output result to 1b if $(color) is a known named color,

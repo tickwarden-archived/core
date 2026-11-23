@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/dialog/authorize
 execute if data storage vortex:dialog_event route{enabled:0b} run return run function vortex:core/internal/dialog/reject_disabled
 execute if data storage vortex:dialog_event route{enabled:0} run return run function vortex:core/internal/dialog/reject_disabled

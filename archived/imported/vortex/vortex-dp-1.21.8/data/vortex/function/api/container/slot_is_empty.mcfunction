@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/container/slot_is_empty
 # Condition: is this slot empty?
 # INPUT  vortex:input x, y, z, slot

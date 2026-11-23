@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/load/main — load entry
 # data-loss is only a soft warning here; force-reload
 # (vortex:core/internal/load/force) applies immediately, no confirmation

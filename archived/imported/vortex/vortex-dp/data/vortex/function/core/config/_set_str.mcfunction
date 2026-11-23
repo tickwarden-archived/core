@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/config/_set_str [MACRO, INTERNAL]  $(key) is a schema key
 # The string must pass safe_name (no quotes, backslashes, braces, whitespace...) and fit the key's max length.
 data remove storage vortex:validate in

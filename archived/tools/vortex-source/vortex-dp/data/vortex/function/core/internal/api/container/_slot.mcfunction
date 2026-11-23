@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:core/internal/api/container/_slot [INTERNAL, MACRO: f]
 # Like _num, plus a range check 0..255. RETURN 1 valid, 0 invalid.
 scoreboard players set #vortex.chk vortex.tmp 0

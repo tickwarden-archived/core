@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/queue/set_rate
 # Sets how many work_queue items are processed per tick.
 # Default: 1. Raise for faster throughput; lower to reduce tick cost.

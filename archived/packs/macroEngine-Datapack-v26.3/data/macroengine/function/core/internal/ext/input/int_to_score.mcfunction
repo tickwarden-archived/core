@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # ======================================================================================
 # macroengine:core/internal/ext/input/int_to_score [MACRO] [INTERNAL]
 # $(s) is a string that already passed input/validate/check (optional '-', digits only)

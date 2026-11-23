@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:systems/hook/on_entity_kill
 # Reward: entity_kill advancement (player_killed_entity trigger)
 execute if data storage vortex:engine modules{hook:0b} run return 0

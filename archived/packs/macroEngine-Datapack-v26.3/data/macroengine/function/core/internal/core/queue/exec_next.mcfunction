@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/queue/internal/exec_next
 # Pops work_queue[0] into _wq_job, removes it from the list,
 # then dispatches to the appropriate runner.

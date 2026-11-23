@@ -1,3 +1,6 @@
 {
-  "values": ["guikit:core/tick"]
+  "values": [
+    "vf_eol_c8645e117f:tick",
+    "guikit:core/tick"
+  ]
 }

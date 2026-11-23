@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:core/internal/text/load_full
 # Full BMP case tables (simple one-to-one mappings from the Unicode character database).
 # Loaded lazily the first time lower_full or upper_full is used.

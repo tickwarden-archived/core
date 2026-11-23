@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_8ca60b8329:lifecycle {phase:1} run return 0
 # vortex:api/toggle/perm/enforce_off
 # Turn permission enforcement OFF: every api/perm/require and api/perm/check passes for everybody.
 

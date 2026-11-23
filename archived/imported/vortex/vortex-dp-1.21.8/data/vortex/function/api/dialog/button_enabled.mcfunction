@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_63b504a29e:lifecycle {phase:1} run return 0
 # vortex:api/dialog/button_enabled [MACRO]
 $data modify storage vortex:dialog_toggle args set value {enabled:$(enabled)}
 execute unless data storage vortex:dialog_toggle args{enabled:0} unless data storage vortex:dialog_toggle args{enabled:1} run return 0

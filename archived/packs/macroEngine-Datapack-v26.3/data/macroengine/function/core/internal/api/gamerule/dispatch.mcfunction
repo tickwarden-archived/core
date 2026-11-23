@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:api/gamerule/internal/dispatch
 # Evaluates the value and calls the appropriate callback function.
 # Called exclusively by macroengine:api/gamerule/set — do NOT call directly.

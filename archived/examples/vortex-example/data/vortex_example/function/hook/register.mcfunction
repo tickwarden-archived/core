@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:hook/register
 # Binds the example's processing function to the player_death hook, once.
 # Hook binds live in storage (vortex:engine hook_binds) and survive

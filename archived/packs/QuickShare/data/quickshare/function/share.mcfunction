@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_67654ba1d3:lifecycle {phase:1} run return 0
 # /function quickshare:share
 # Drops a copy of the item in the executing player's main hand at their feet
 # (the original stays in hand), with a per-player 5s (100 tick) cooldown

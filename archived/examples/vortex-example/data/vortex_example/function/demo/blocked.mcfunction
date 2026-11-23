@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_55b54ff038:lifecycle {phase:1} run return 0
 # vortex_example:demo/blocked
 # Switches the macro toggles off, calls a guarded site, and switches them back on.
 # With a toggle off the site still stops, but first fires a callback whose handler is listed in

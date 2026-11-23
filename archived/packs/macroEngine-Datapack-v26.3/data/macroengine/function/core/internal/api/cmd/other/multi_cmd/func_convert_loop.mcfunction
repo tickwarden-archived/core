@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # Convert string list to {func:"..."} objects
 execute unless data storage macroengine:input list[0] run return 0
 

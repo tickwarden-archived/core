@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # Module toggle guard — skips this module when disabled via macroengine:api/toggle/interaction/false
 execute unless data storage macroengine:engine {modules:{interaction:1b}} run return 0
 scoreboard players operation #scan_mod macroengine.tick = #tick_ctr macroengine.tick

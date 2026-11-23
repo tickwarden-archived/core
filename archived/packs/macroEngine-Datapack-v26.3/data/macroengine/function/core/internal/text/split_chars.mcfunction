@@ -1,3 +1,5 @@
+# EOL entry guard; see vortaforge-eol.json
+execute unless data storage vf_eol_cc1cb841d8:lifecycle {phase:1} run return 0
 # macroengine:core/internal/text/split_chars [INTERNAL] one entry per character
 scoreboard players operation #tx_a macroengine.tmp = #tx_i macroengine.tmp
 scoreboard players operation #tx_b macroengine.tmp = #tx_i macroengine.tmp
