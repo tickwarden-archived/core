@@ -25,6 +25,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+          fetch-depth: 0 # Required for the pinned pre-EOL mod input tree.
       - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
           distribution: temurin
@@ -37,11 +38,19 @@ jobs:
         run: |
           set -euo pipefail
           work="$RUNNER_TEMP/macroengine-modules"
+          # The standalone archived pack is EOL-guarded; mods must stay open.
+          # Reconstruct the separately pinned, original input from Git history.
+          SOURCE_SHA=c6846148d7a60add52945e402e8092e8e5fea3da
+          SOURCE_PATH=archived/packs/macroEngine-Datapack-v26.3
+          test "$(git rev-parse "$SOURCE_SHA:$SOURCE_PATH")" = 4d34dd17548601b6a0d9f0a9001ead1f5e20d00f
+          mkdir -p "$RUNNER_TEMP/macroengine-source"
+          git archive "$SOURCE_SHA" "$SOURCE_PATH" | tar -xf - -C "$RUNNER_TEMP/macroengine-source" --strip-components=3
           cp -a "$GITHUB_WORKSPACE/components/macroengine-modules" "$work"
           cd "$work"
           python3 tools/test_split_guard.py
           python3 tools/test_check_manifest_parity.py
-          python3 tools/split.py --source "$GITHUB_WORKSPACE/archived/packs/macroEngine-Datapack-v26.3" --out . --in-place
+          python3 tools/split.py --source "$RUNNER_TEMP/macroengine-source" --out . --in-place
+          python3 tools/check_no_eol.py packs
           python3 tools/verify.py --pack packs --graph
           python3 tools/check_shape.py --baseline "$GITHUB_WORKSPACE/components/macroengine-modules/modules.json"
           python3 tools/check_refs.py packs
@@ -49,11 +58,12 @@ jobs:
           python3 tools/test_module_removal.py
           cp -a packs "$RUNNER_TEMP/macroengine-packs-first"
           cp modules.json "$RUNNER_TEMP/macroengine-modules-first.json"
-          python3 tools/split.py --source "$GITHUB_WORKSPACE/archived/packs/macroEngine-Datapack-v26.3" --out . --in-place
+          python3 tools/split.py --source "$RUNNER_TEMP/macroengine-source" --out . --in-place
           cmp "$RUNNER_TEMP/macroengine-modules-first.json" modules.json
           diff -r "$RUNNER_TEMP/macroengine-packs-first" packs
           ./gradlew --no-daemon --console=plain check dist
           python3 tools/check_manifest_parity.py --dist build/dist --manifest modules.json
+          python3 tools/check_no_eol.py build/dist
       - name: Store Fabric mod build output for review
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

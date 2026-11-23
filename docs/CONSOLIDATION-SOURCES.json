@@ -34502,8 +34502,8 @@
       "destination": "components/macroengine-modules/tools/split.py",
       "sha256": "2a97e8efd26ee707fc1f22d604435edaa5c4515789d39007009fb0a4549fef0d",
       "mode": "0o664",
-      "migrated_sha256": "cf8e9621a2fdbfc8cfae7b96d148f3b4a39c81b28c835476077cfb048445e649",
-      "change": "Fix and test current player-name and queue hook targets."
+      "migrated_sha256": "f13d35e1b7f797cc2afafa6e90275226a852b3b2b07e4b2435de9221be4f8411",
+      "change": "Correct hook targets and prevent retired EOL sources from contaminating Fabric builds."
     },
     {
       "repository": "macroengine-modules",
@@ -34544,8 +34544,8 @@
       "destination": "components/macroengine-modules/tools/test_split_guard.py",
       "sha256": "b28a30e210e6f0c28d4e188bb98ae558080f16b39114c1534e0d0a042a3218b8",
       "mode": "0o664",
-      "migrated_sha256": "d039f0a485d8dd96fcb4a0020cfdb2c74a954837e08eeb1621708ba61a6b88b9",
-      "change": "Fix and test current player-name and queue hook targets."
+      "migrated_sha256": "995ade11078ff50e8032a536c5bfa945cdd9be6d59b9e498b9096493d0ba34fc",
+      "change": "Correct hook targets and prevent retired EOL sources from contaminating Fabric builds."
     },
     {
       "repository": "macroengine-modules",
