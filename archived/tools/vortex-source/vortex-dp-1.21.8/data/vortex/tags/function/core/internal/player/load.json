@@ -1,0 +1,6 @@
+{
+  "values": [
+    "#vortex:core/internal/player/enumerate",
+    "#vortex:core/internal/player/resolve"
+  ]
+}

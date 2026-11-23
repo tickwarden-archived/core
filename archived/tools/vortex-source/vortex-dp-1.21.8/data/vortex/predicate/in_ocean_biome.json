@@ -1,0 +1,6 @@
+{
+  "predicate": {
+    "biomes": "#minecraft:is_ocean"
+  },
+  "condition": "minecraft:location_check"
+}

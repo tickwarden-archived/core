@@ -1,0 +1,109 @@
+{
+  "terms": [
+    {
+      "value": {
+        "type": "minecraft:score",
+        "target": "this",
+        "score": "vortex.player_action.uuid.0"
+      },
+      "type": "minecraft:int_value_check",
+      "test": {
+        "min": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.0"
+          },
+          "score": "vortex.player_action.data"
+        },
+        "max": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.0"
+          },
+          "score": "vortex.player_action.data"
+        }
+      }
+    },
+    {
+      "value": {
+        "type": "minecraft:score",
+        "target": "this",
+        "score": "vortex.player_action.uuid.1"
+      },
+      "type": "minecraft:int_value_check",
+      "test": {
+        "min": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.1"
+          },
+          "score": "vortex.player_action.data"
+        },
+        "max": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.1"
+          },
+          "score": "vortex.player_action.data"
+        }
+      }
+    },
+    {
+      "value": {
+        "type": "minecraft:score",
+        "target": "this",
+        "score": "vortex.player_action.uuid.2"
+      },
+      "type": "minecraft:int_value_check",
+      "test": {
+        "min": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.2"
+          },
+          "score": "vortex.player_action.data"
+        },
+        "max": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.2"
+          },
+          "score": "vortex.player_action.data"
+        }
+      }
+    },
+    {
+      "value": {
+        "type": "minecraft:score",
+        "target": "this",
+        "score": "vortex.player_action.uuid.3"
+      },
+      "type": "minecraft:int_value_check",
+      "test": {
+        "min": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.3"
+          },
+          "score": "vortex.player_action.data"
+        },
+        "max": {
+          "type": "minecraft:score",
+          "target": {
+            "type": "minecraft:fixed",
+            "name": "#uuid.3"
+          },
+          "score": "vortex.player_action.data"
+        }
+      }
+    }
+  ],
+  "type": "minecraft:any_of"
+}

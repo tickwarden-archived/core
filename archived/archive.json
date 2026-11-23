@@ -836,6 +836,22 @@
         "Required a PHP toolchain (setup-php) on every Pages run for one script.",
         "Had no tests; a bad API response was only caught by reading the log."
       ]
+    },
+    {
+      "id": "vortex-source",
+      "name": "Vortex datapack source and releases",
+      "kind": "datapack",
+      "status": "archived",
+      "archived_on": "2026-10-29",
+      "reason": "Consolidated from vortex; standalone datapack sources and related tools are retained as inert historical material.",
+      "last_version": "vortex@77b66efc8c43c2677683f14b732b11642e6fce94",
+      "license": "See upstream LICENSE and NOTICE files",
+      "deploy": "not_recommended",
+      "successor": null,
+      "path": "archived/tools/vortex-source",
+      "source_url": "https://github.com/vortaforge/vortex",
+      "disarmed": true,
+      "is_datapack": true
     }
   ]
 }

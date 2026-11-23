@@ -1,0 +1,24 @@
+{
+  "criteria": {
+    "interact_barrel": {
+      "trigger": "minecraft:default_block_use",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": [
+                  "minecraft:barrel"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "function": "vortex:core/internal/player/internal/interact_barrel"
+  }
+}
