@@ -1,0 +1,53 @@
+name: Run Python with dependency checks
+description: Syntax-check Python, inspect static imports, install declared dependencies in an isolated venv, and execute.
+inputs:
+  code:
+    description: Inline Python code; provide exactly one of code or script-path.
+    required: false
+    default: ''
+  script-path:
+    description: Python file relative to the caller workspace.
+    required: false
+    default: ''
+  requirements:
+    description: Optional requirements file relative to the workspace.
+    required: false
+    default: ''
+  packages:
+    description: Optional newline-separated PyPI package requirements.
+    required: false
+    default: ''
+  auto-install:
+    description: Explicitly enable the small reviewed import-to-package fallback map (true or false).
+    required: false
+    default: 'false'
+  ignore-imports:
+    description: Comma-separated top-level optional imports to exclude from static checks.
+    required: false
+    default: ''
+  args-json:
+    description: JSON array of string arguments passed to the Python script.
+    required: false
+    default: '[]'
+outputs:
+  imports:
+    description: Comma-separated statically discovered top-level imports.
+    value: ${{ steps.python.outputs.imports }}
+  automatic-packages:
+    description: Number of packages installed by the opt-in fallback.
+    value: ${{ steps.python.outputs.automatic-packages }}
+runs:
+  using: composite
+  steps:
+    - name: Check and run Python
+      id: python
+      shell: bash
+      env:
+        VF_CODE: ${{ inputs.code }}
+        VF_SCRIPT_PATH: ${{ inputs.script-path }}
+        VF_REQUIREMENTS: ${{ inputs.requirements }}
+        VF_PACKAGES: ${{ inputs.packages }}
+        VF_AUTO_INSTALL: ${{ inputs.auto-install }}
+        VF_IGNORE_IMPORTS: ${{ inputs.ignore-imports }}
+        VF_ARGS_JSON: ${{ inputs.args-json }}
+      run: python3 "$GITHUB_ACTION_PATH/vf_script.py"

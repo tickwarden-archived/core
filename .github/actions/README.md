@@ -55,3 +55,54 @@ Requires Python 3.9+ and Bash on the runner. Supports relative nested paths, rej
 ## Repository workflows
 
 `quality.yml`, `backup-org.yml` and `macroengine-modules.yml` use the same local toolchain action after checkout; `quality.yml` additionally verifies the generated release checksum manifest. The disabled publication job is unchanged and does not check out repository code under write permissions. Existing required job names, secret handling, deployment triggers and backup behavior remain unchanged.
+
+## Download a public VortaForge repository
+
+```yaml
+      - uses: vortaforge/core/.github/actions/download@main
+        id: source
+        with:
+          repository: docs                 # or vortaforge/docs
+          ref: main                        # use a reviewed commit SHA in production
+          destination: downloaded/docs     # new relative path in the workspace
+      - run: echo "Downloaded $SOURCE_SHA"
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
+```
+
+Only public repositories owned by `vortaforge` are accepted; the action does not use private-repository credentials or submodules. The target must not exist, and a failed checkout is left in place for inspection. Outputs are the absolute `path` and resolved `sha`. The GitHub public API rate limit applies. The caller must have Python 3.9+ and Git installed. A mutable ref may change: pin a full reviewed SHA. Existing workspace files are not overwritten.
+
+## Execute a script from a public VortaForge repository
+
+```yaml
+      - uses: vortaforge/core/.github/actions/execute@main
+        with:
+          repository: core
+          ref: main
+          destination: downloaded/core
+          script: scripts/repo/datapacks_disable.py
+          interpreter: python3
+          args-json: '["status"]'
+          working-directory: workspace      # or repository (default)
+```
+
+The script must be inside the downloaded repository; arguments are a JSON string array, passed without a shell. Supported interpreters are `python3`, `bash`, `node`, and `direct`. The action clones to a new path and exposes `path` and `sha` outputs after success. The script executes with the caller job's permissions and access to the workspace and job environment: **this is not a sandbox**. A public repository or a pinned commit does not make its code trustworthy. Review scripts and pin refs; do not run untrusted code in privileged jobs or expose secrets to it.
+
+## Run Python code: `vf_script`
+
+```yaml
+      - uses: vortaforge/core/.github/actions/vf_script@main
+        with:
+          code: |
+            import requests
+            print(requests.__version__)
+          packages: |
+            requests==2.32.3
+          auto-install: 'false'
+```
+
+Supply exactly one of inline `code` or a workspace-relative `script-path`. The action parses and compiles the code before installing anything, scans static top-level import names, creates an isolated temporary venv, installs declared `packages` and/or a workspace-relative `requirements` file using pip, then checks imports and runs the code in the caller workspace. `args-json` supplies string arguments. `ignore-imports` is a comma-separated list for intentionally optional static imports. Outputs: `imports` and `automatic-packages`.
+
+By default unknown dependencies are never guessed. If `auto-install: 'true'` is explicitly set, only three pinned direct mappings are attempted: `requests` → `requests==2.32.3`, `yaml` → `PyYAML==6.0.2`, `PIL` → `Pillow==11.1.0`. Unknown imports fail rather than guessing PyPI names. pip uses isolated mode and wheel-only installs; transitive dependencies are not necessarily pinned. A requirements file is trusted input and may itself configure pip. Verify package provenance and use fully pinned, hash-locked dependencies where needed. No package installation method guarantees code safety.
+
+The scanner does not evaluate dynamic imports, package extras, runtime-only branches or all import-name/distribution-name mismatches. Optional or platform-specific imports may need `ignore-imports`. It checks syntax and availability, not correctness or safety. Python and installed dependencies execute with the workflow job's privileges, network and environment; the venv is **not** a security sandbox. Never run untrusted Python or requirements with privileged credentials. Hosted Ubuntu with Python 3.9+, `venv`/`pip`, Git and Bash is the tested environment.

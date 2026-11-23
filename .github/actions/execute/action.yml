@@ -1,0 +1,50 @@
+name: Execute a VortaForge repository script
+description: Download a public vortaforge repo and execute a chosen script in that checkout or the caller workspace.
+inputs:
+  repository:
+    description: Public vortaforge repository name.
+    required: true
+  ref:
+    description: Branch, tag, or reviewed full commit SHA.
+    required: false
+    default: main
+  destination:
+    description: New relative workspace directory for the checkout.
+    required: true
+  script:
+    description: Relative script path inside the downloaded repository.
+    required: true
+  interpreter:
+    description: python3, bash, node, or direct.
+    required: false
+    default: python3
+  args-json:
+    description: JSON array of string arguments; no shell interpolation.
+    required: false
+    default: '[]'
+  working-directory:
+    description: repository or workspace.
+    required: false
+    default: repository
+outputs:
+  path:
+    description: Absolute path of the checkout.
+    value: ${{ steps.run-script.outputs.path }}
+  sha:
+    description: Resolved commit SHA.
+    value: ${{ steps.run-script.outputs.sha }}
+runs:
+  using: composite
+  steps:
+    - name: Download and run selected script
+      id: run-script
+      shell: bash
+      env:
+        VF_REPOSITORY: ${{ inputs.repository }}
+        VF_REF: ${{ inputs.ref }}
+        VF_DESTINATION: ${{ inputs.destination }}
+        VF_SCRIPT: ${{ inputs.script }}
+        VF_INTERPRETER: ${{ inputs.interpreter }}
+        VF_ARGS_JSON: ${{ inputs.args-json }}
+        VF_WORKDIR: ${{ inputs.working-directory }}
+      run: python3 "$GITHUB_ACTION_PATH/execute.py"

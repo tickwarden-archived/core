@@ -63,3 +63,68 @@ jobs:
         env:
           RESULT: ${{ steps.tampered.outcome }}
         run: test "$RESULT" = failure
+
+  new-actions:
+    name: Download, execute and Python actions
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Download a public VortaForge repository
+        id: download
+        uses: ./.github/actions/download
+        with:
+          repository: docs
+          ref: 11ec4f3293807cfe63819dc9b3210e941f726086
+          destination: action-test/docs
+      - name: Run a public repository script from caller workspace
+        id: execute
+        uses: ./.github/actions/execute
+        with:
+          repository: core
+          ref: ff4691c6a36662ff4c2d80c197856a65c4a07324
+          destination: action-test/core
+          script: scripts/repo/datapacks_disable.py
+          interpreter: python3
+          args-json: '["status"]'
+          working-directory: workspace
+      - name: Verify downloaded commits
+        shell: bash
+        env:
+          DOCS_SHA: ${{ steps.download.outputs.sha }}
+          CORE_SHA: ${{ steps.execute.outputs.sha }}
+        run: |
+          set -euo pipefail
+          test "$DOCS_SHA" = 11ec4f3293807cfe63819dc9b3210e941f726086
+          test "$CORE_SHA" = ff4691c6a36662ff4c2d80c197856a65c4a07324
+      - name: Run Python with explicit and opt-in mapped dependencies
+        id: python
+        uses: ./.github/actions/vf_script
+        with:
+          code: |
+            import requests, yaml
+            print(requests.__version__, yaml.__version__)
+          packages: requests==2.32.3
+          auto-install: 'true'
+      - name: Check Python action outputs
+        shell: bash
+        env:
+          IMPORTS: ${{ steps.python.outputs.imports }}
+          FALLBACK: ${{ steps.python.outputs.automatic-packages }}
+        run: |
+          set -euo pipefail
+          test "$IMPORTS" = requests,yaml
+          test "$FALLBACK" = 1
+      - name: Expect invalid Python syntax to fail
+        id: syntax
+        continue-on-error: true
+        uses: ./.github/actions/vf_script
+        with:
+          code: 'if True print(1)'
+      - name: Verify syntax failure is enforced
+        shell: bash
+        env:
+          RESULT: ${{ steps.syntax.outcome }}
+        run: test "$RESULT" = failure
