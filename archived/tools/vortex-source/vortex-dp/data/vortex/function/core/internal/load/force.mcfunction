@@ -1,0 +1,6 @@
+# vortex:core/internal/load/force
+# Force reload: applies immediately. Discards live
+# engine state (global.loaded and everything load/all's "unless data"
+# guards would otherwise preserve).
+
+function vortex:core/internal/load/force_apply

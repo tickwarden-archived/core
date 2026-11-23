@@ -1,0 +1,10 @@
+{
+  "values": [
+    "vortex:api/input/writable_book",
+    "vortex:api/input/command_block_minecart",
+    "vortex:api/input/name_tag",
+    "vortex:api/input/anvil",
+    "vortex:core/internal/api/cmd/freeze/tick",
+    "vortex:api/input/private/cbm_align_tp"
+  ]
+}

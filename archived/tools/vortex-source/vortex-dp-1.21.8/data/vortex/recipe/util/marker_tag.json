@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "vortex_util",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:glow_ink_sac"
+  ],
+  "result": {
+    "id": "minecraft:paper",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": {
+        "vortex": {
+          "util": {
+            "marker_tag": true
+          }
+        }
+      },
+      "minecraft:item_name": {
+        "translate": "item.vortex.marker_tag"
+      },
+      "minecraft:enchantment_glint_override": true,
+      "minecraft:lore": [
+        {
+          "translate": "item.vortex.marker_tag.lore",
+          "color": "gray",
+          "italic": true
+        }
+      ]
+    }
+  }
+}

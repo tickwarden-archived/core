@@ -533,19 +533,30 @@
          style="background: rgba(210, 153, 34, 0.12); border: 1px solid var(--warning); margin-bottom: 16px;">
       <strong style="color: var(--warning);">The datapack programme is retired and disabled.</strong>
       <div class="detail">
-        Every datapack, datapack generator, linter and test harness was archived on
-        2026-11-05 and hard-disarmed (<code>archived/archive.json</code>). No datapack is
-        built, published or supported any more, and new ones are blocked before they land.
+        Standalone datapack sources and datapack-only tooling are retained in
+        <code>archived/</code> for reference, not offered for installation. The separate
+        macroEngine Modules Fabric build may generate data resources as build inputs;
+        its output is not automatically published here.
         <br><br>
-        <em>Reason:</em> no type safety, no security model, no debugging, no warnings, and a
-        low review score — bad enough that it would have been better not to ship it at all.
-        The maintainer also hit real problems as a plain player using a datapack with no
-        client mod installed.
+        <em>Security note:</em> vanilla datapacks cannot launch operating-system
+        processes or arbitrarily read files, but commands and data can alter a world.
+        Mod or plugin command bridges and software vulnerabilities can introduce
+        additional risks. Review third-party content before use.
         <br><br>
-        The archived packs stay readable in the repository under
-        <code>archived/packs/</code> for reference only. Do not deploy them.
+        The experimental staged EOL work is not a validated release and does not
+        automatically affect older installations.
       </div>
     </div>
+
+    <section aria-labelledby="consolidated-heading">
+      <h2 id="consolidated-heading">Consolidated projects</h2>
+      <p class="lead" style="font-size: 13px;">
+        <a href="https://github.com/vortaforge/core/tree/main/components/macroengine-modules">macroEngine Modules</a>
+        is maintained here as a separate Fabric-module build; its generated artifacts are not automatically published.
+        <a href="https://github.com/vortaforge/core/tree/main/archived/tools/vortex-source">Vortex source and historical releases</a>
+        are archived for reference. Datapacks remain retired and are not offered for installation here.
+      </p>
+    </section>
 
     <h2 id="mods-heading">Fabric mods</h2>
     <p class="lead" style="font-size: 13px;">

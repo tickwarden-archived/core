@@ -1,0 +1,10 @@
+# vortex:core/internal/api/interaction/unbind_filter
+execute unless data storage vortex:engine _ia_ubinds[0] run return 0
+
+data modify storage vortex:engine _ia_ucur set from storage vortex:engine _ia_ubinds[0]
+data remove storage vortex:engine _ia_ubinds[0]
+
+function vortex:core/internal/api/interaction/unbind_check with storage vortex:engine _ia_ufilter
+
+function vortex:core/internal/api/interaction/unbind_filter
+data remove storage vortex:engine _ia_ucur

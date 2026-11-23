@@ -1,0 +1,9 @@
+{
+  "function": "minecraft:set_custom_data",
+  "tag": {
+    "vortex": {
+      "input": true,
+      "inputItem": "name_tag"
+    }
+  }
+}

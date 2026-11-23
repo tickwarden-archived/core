@@ -1,0 +1,10 @@
+{
+  "repo": "macroengine-modules",
+  "refs": {
+    "refs/heads/main": "e5e42a6120bfdb6e85dbed4ceabd14b9640eec7f"
+  },
+  "bundle_sha256": "e8eeef93a741d0a867ce772951eab93a9938b6b86e3a6f7bdea6fb6c04dfe726",
+  "bundle_bytes": 199598,
+  "independent_restore_refs_equal": true,
+  "fsck": true
+}

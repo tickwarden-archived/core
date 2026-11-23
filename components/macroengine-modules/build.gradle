@@ -1,0 +1,603 @@
+// =============================================================================
+// macroEngine Modules - build.gradle
+// =============================================================================
+//
+// The build produces **Fabric mod jars**, one per pack. Each jar holds
+//
+//     fabric.mod.json      the mod manifest the Fabric loader reads
+//     com/vortaforge/...   its entry point class
+//     pack.mcmeta          the data pack manifest
+//     data/                the pack's data
+//
+// The data pack lives at the jar root because that is exactly where Fabric looks
+// for a mod's bundled data pack. Loading the same directory from a world's
+// `datapacks/` folder still works, so nothing is lost by adding the mod layer.
+//
+// There is no Loom and no Minecraft dependency, deliberately:
+//
+//   * Loom exists to compile Java against Minecraft's classes and to launch a
+//     development client. This project has no Java that touches Minecraft - the
+//     entry point is a no-op marker - so Loom would be several hundred megabytes
+//     of toolchain to obtain nothing.
+//   * Loom would also drag in a Minecraft version pin in `gradle.properties` and a
+//     remapping step, both of which have to be re-checked on every version bump
+//     for a project whose content is `.mcfunction` text.
+//
+// What Gradle is here for:
+//
+//   1. packaging  - one mod jar per pack, with a manifest, a class and the data;
+//   2. versioning - one version string drives every fabric.mod.json and
+//                   pack.mcmeta, so core and modules cannot disagree;
+//   3. verification - `gradlew check` runs the splitter's guard, the cross-pack
+//                     verifier and the reference checker, so a broken reference
+//                     fails the build instead of the game.
+//
+// Pack format for 26.3 is 121. That number is in PACK_FORMAT below and nowhere
+// else - `pack.mcmeta` is generated from it, so a version bump is one edit.
+//
+// Console output: every step prints a [TAG] line (RUN / OK / WARN / FAIL), and a
+// failing tool prints its command, stdout, stderr and a hint before Gradle's own
+// "What went wrong". The helper lives in settings.gradle (gradle.ext.me).
+//
+//     ./gradlew check -PmeDebug        also print [DBG ] lines (paths, commands, timings)
+//     ./gradlew check -Pcolor=false    no ANSI colours (or NO_COLOR=1)
+//     PYTHON=<path> ./gradlew check    pick the interpreter for tools/*.py
+//
+// AI involvement: the console/diagnostics layer, the readable-failure handling and
+// the fixes listed in the commit message that introduced them were written with AI
+// assistance (Claude, Anthropic). The packaging design above is the repository
+// owner's.
+// =============================================================================
+
+plugins {
+    id 'base'
+}
+
+// The console helper comes from settings.gradle. If it is missing, the two files
+// are out of sync, and saying so beats a NullPointerException on line 90.
+def me = gradle.ext.has('me') ? gradle.ext.me : null
+if (me == null) {
+    throw new GradleException('build.gradle expects settings.gradle to register gradle.ext.me ' +
+            '(the console helper). The two files have to be replaced together.')
+}
+def packNamePattern = gradle.ext.packNamePattern
+
+ext {
+    // Data pack format for Minecraft 26.3.
+    packFormat = 121
+    minecraftVersion = '26.3'
+
+    // The version predicate the loader checks, not the pack format. The user's
+    // server reports itself as 26.3; whether that is "1.21.9 and later" under the
+    // old scheme or a new major is not something to guess, so the pin is on the
+    // data pack instead - pack.mcmeta's min_format/max_format is what actually
+    // decides whether the game runs these files, and it says 121.
+    minecraftRange = '*'
+    loaderRange = '>=0.16.0'
+
+    // Single source of truth for the version in every fabric.mod.json and every
+    // pack.mcmeta.
+    modulesVersion = (project.findProperty('modules_version') ?: '1.0.0').toString()
+
+    // Java level the entry point classes are compiled for. Bytecode for 21 runs on
+    // every newer JVM, including the one a 26.x server is launched with, and
+    // nothing here needs a newer language level. (--release is used below, so the
+    // JDK that runs Gradle may be newer than this.)
+    javaLevel = JavaVersion.VERSION_21
+
+    // The loader artifact the entry point compiles against. It is also the version
+    // the user reported, so the interface compiled here is the one that runs.
+    loaderVersion = '0.20.1'
+}
+
+// Fabric Loader accepts a non-semantic version string but warns about it on every
+// start, which is easy to miss in a server log. Say so at build time instead.
+if (!(ext.modulesVersion ==~ /\d+\.\d+\.\d+([-+][0-9A-Za-z.+-]+)?/)) {
+    me.warn("modules_version '${ext.modulesVersion}' is not x.y.z[-suffix]; the mods will load, but Fabric Loader will warn about the version.")
+}
+
+def projectRoot = projectDir
+def packsDir = file('packs')
+def packCount = subprojects.size()
+
+me.dbg("build   : modules ${ext.modulesVersion} | MC ${ext.minecraftVersion} | pack_format ${ext.packFormat} | loader ${ext.loaderVersion} | Java target ${ext.javaLevel}")
+me.dbg("build   : Gradle ${gradle.gradleVersion} on Java ${JavaVersion.current()} | ${packCount} pack(s)")
+
+gradle.taskGraph.whenReady { graph ->
+    me.dbg("graph   : ${graph.allTasks.size()} task(s) scheduled")
+}
+
+// One exception to throw wherever a task finds there is nothing to work on.
+def noPacks = { String task ->
+    me.problem("${task}: there are no packs to work on (${packsDir} is missing or has no me_<name>_module directories).".toString(),
+            ['The packs are generated from the source pack by tools/split.py; a fresh checkout has none.'],
+            'Generate them first:  python tools/split.py --source <pack> --out . --in-place')
+}
+
+// -----------------------------------------------------------------------------
+// Every pack (core included) is packaged the same way, from a shared recipe.
+// -----------------------------------------------------------------------------
+
+subprojects {
+    apply plugin: 'base'
+    // Every mod needs a compiled entry point class of its own.
+    apply plugin: 'java'
+
+    // The pack directory is named after the project (`me_cmd_module`), and the
+    // namespace inside it is the same string. Keeping the two equal is what lets
+    // `find_pack`-style tooling work without a lookup table.
+    def packName = project.name
+    def packDir = project.projectDir
+
+    // settings.gradle only includes names that match; this is the same check for
+    // the case where a sub-project arrives some other way, because the substring
+    // arithmetic below would otherwise throw StringIndexOutOfBoundsException.
+    if (!(packName ==~ packNamePattern)) {
+        throw me.problem("Sub-project '${packName}' does not follow the me_<name>_module naming scheme.".toString(),
+                ["Directory: ${packDir}".toString(),
+                 'The Fabric mod id is derived from the name: me_cb_module -> macroengine-cb.'],
+                'Rename the directory, or remove it from packs/.')
+    }
+
+    def javaLevel = rootProject.ext.javaLevel
+
+    java {
+        sourceCompatibility = javaLevel
+        targetCompatibility = javaLevel
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        // --release instead of -source/-target: a JDK newer than 21 (the one a 26.x
+        // dev machine has) warns "system modules path not set" for the latter.
+        options.release = Integer.parseInt(javaLevel.majorVersion)
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        maven { url = 'https://maven.fabricmc.net/' }
+        mavenCentral()
+    }
+
+    dependencies {
+        // The interface only. `compileOnly` because the running loader provides
+        // it; bundling fabric-loader inside a mod jar would be a disaster.
+        compileOnly "net.fabricmc:fabric-loader:${rootProject.ext.loaderVersion}"
+    }
+
+    // A sub-project's directory is `packs/me_cb_module`, so the default build
+    // directory would be `packs/me_cb_module/build` - inside the tree that
+    // verifyAll reads as an input. Gradle then (correctly) refuses to order the
+    // two, because verification would be reading a directory that compileJava is
+    // writing into. Everything a build produces goes under the root build/.
+    layout.buildDirectory = rootProject.layout.buildDirectory.dir("modules/${project.name}")
+
+    // `me_cb_module` -> `macroengine-cb`; must match tools/split.py: fabric_mod_id.
+    def modId = packName == 'me_core_module'
+            ? 'macroengine-core'
+            : 'macroengine-' + packName.substring(3, packName.length() - 7).replace('_', '-')
+
+    me.dbg("pack    : ${packName} -> mod id ${modId}")
+
+    // Fails with a message about the JDK instead of javac's "invalid source
+    // release: 21" when Gradle itself runs on something older.
+    compileJava.doFirst {
+        if (JavaVersion.current() < javaLevel) {
+            throw me.problem("${packName}: Gradle is running on Java ${JavaVersion.current()}, but the entry point is compiled for Java ${javaLevel}.".toString(),
+                    ["JAVA_HOME: ${System.getenv('JAVA_HOME') ?: '(not set)'}".toString()],
+                    "Run Gradle on JDK ${javaLevel.majorVersion} or newer (set JAVA_HOME, or org.gradle.java.home in gradle.properties).".toString())
+        }
+    }
+
+    // --- pack.mcmeta ---------------------------------------------------------
+    tasks.register('renderPackMeta') {
+        description = "Write ${packName}/pack.mcmeta from the root version settings."
+        group = 'build'
+
+        def metaFile = layout.projectDirectory.file('pack.mcmeta')
+        def fmt = rootProject.ext.packFormat
+        def version = rootProject.ext.modulesVersion
+
+        // Declared as an input so the task re-runs when either changes; otherwise
+        // a version bump would silently keep the old file.
+        inputs.property('packFormat', fmt)
+        inputs.property('modulesVersion', version)
+        outputs.file(metaFile)
+
+        doLast {
+            def packDescription = "${packName} (macroEngine ${version}) - one module of the " +
+                    "macroEngine engine; requires the macroengine-core mod."
+            if (packName == 'me_core_module') {
+                packDescription = "macroEngine core ${version} - engine internals, load and " +
+                        "tick. Modules attach to it through data/me_core_module/tags/function/hook."
+            }
+            // 26.x reads `min_format`/`max_format`, each a [major, minor] pair.
+            // `pack_format` + `supported_formats` is the pre-1.21.9 spelling and is
+            // silently ignored here, which would make the game treat the pack as
+            // incompatible on any future bump.
+            metaFile.asFile.text = """{
+  "pack": {
+    "description": ${groovy.json.JsonOutput.toJson(packDescription)},
+    "min_format": [
+      ${fmt},
+      0
+    ],
+    "max_format": [
+      ${fmt},
+      0
+    ]
+  }
+}
+"""
+            me.dbg("${packName}: wrote ${metaFile.asFile} (pack_format ${fmt}, ${me.size(metaFile.asFile.length())})")
+        }
+    }
+
+    // --- fabric.mod.json -----------------------------------------------------
+    //
+    // Generated rather than committed, for the same reason pack.mcmeta is: the
+    // version, the loader range and the dependency on the core are one decision
+    // each, and twenty-six hand-maintained copies of that decision is twenty-six
+    // places to forget it.
+    tasks.register('renderFabricMeta') {
+        description = "Write ${packName}/fabric.mod.json from the root version settings."
+        group = 'build'
+
+        // Written under build/ for the same reason as the entry point: packs/ is
+        // a verified input, and the shipped manifest is a build product. The
+        // editable copy that tools/split.py writes into packs/ stays there.
+        def metaFile = layout.buildDirectory.file('generated/fabric/fabric.mod.json')
+        def version = rootProject.ext.modulesVersion
+        def mcRange = rootProject.ext.minecraftRange
+        def loaderRange = rootProject.ext.loaderRange
+        def isCore = packName == 'me_core_module'
+        def packagePath = modId.replace('-', '_')
+        def displayName = isCore ? 'macroEngine core'
+                : 'macroEngine ' + packName.substring(3, packName.length() - 7)
+        def entry = "com.vortaforge.macroengine.${packagePath}.MacroEngineEntry"
+
+        inputs.property('modulesVersion', version)
+        inputs.property('minecraftRange', mcRange)
+        inputs.property('loaderRange', loaderRange)
+        outputs.file(metaFile)
+
+        doLast {
+            // `depends.minecraft` is a version predicate, not a data pack format.
+            // The data pack's own compatibility is pack.mcmeta's job; putting
+            // packFormat in here would make the loader reject the mod on a
+            // version it can actually run.
+            // The engine's content is a data pack inside the jar, and reading a
+            // mod jar's `data/` tree is not something the loader does - it is
+            // `fabric-resource-loader`, which ships in Fabric API. Without it the
+            // mods load, report healthy, and do nothing at all: no data pack, no
+            // engine, no error.
+            //
+            // The dependency is on `fabric-api`, not on
+            // `fabric-resource-loader-v0`. Both ids are real (verified against
+            // 0.165.2+26.3, where the module is `fabric-resource-loader-v0` and
+            // there is also a `-v1`), and naming a specific module ties this
+            // project to a module name Fabric API is free to retire. The umbrella
+            // id is the one that survives that.
+            def depends = [
+                    "fabricloader": loaderRange,
+                    "minecraft"   : mcRange,
+                    "fabric-api"  : "*",
+            ]
+            // Every module calls me_core_module:core/internal/..., so the core mod
+            // must be installed. The core depends on nothing: deleting any module
+            // leaves it loading and running.
+            if (!isCore) {
+                depends["macroengine-core"] = "*"
+            }
+            def manifest = [
+                    schemaVersion: 1,
+                    id           : modId,
+                    version      : version,
+                    name         : displayName,
+                    description  : isCore
+                            ? 'macroEngine core - engine internals, load and tick.'
+                            : "${displayName} - one module of the macroEngine engine; " +
+                            'requires macroengine-core.',
+                    authors     : ['vortaforge'],
+                    license     : 'Unlicense',
+                    environment : '*',
+                    entrypoints : [main: [entry]],
+                    depends     : depends,
+            ]
+            // The bundled data pack is what actually does the work; the entry
+            // point class is a marker so the loader has something to load.
+            def file = metaFile.get().asFile
+            file.parentFile.mkdirs()
+            file.text = groovy.json.JsonOutput.prettyPrint(
+                    groovy.json.JsonOutput.toJson(manifest)) + "\n"
+            me.dbg("${packName}: wrote ${file} (id ${modId}, depends on ${depends.keySet().join(', ')})")
+        }
+    }
+
+    // --- entry point source --------------------------------------------------
+    //
+    // One small class per mod, generated. It implements ModInitializer, because
+    // that is what Fabric casts the declared entrypoint to - the first version of
+    // this file generated a class with an onInitialize() method and no interface,
+    // and the loader refused to start the server.
+    //
+    // It is written under build/, not into the pack. packs/ is a verified input;
+    // this is a build product.
+    def entrySource = layout.buildDirectory.file(
+            "generated/entry/com/vortaforge/macroengine/${modId.replace('-', '_')}/MacroEngineEntry.java")
+
+    tasks.register('renderEntryPoint') {
+        description = "Write ${packName}'s ModInitializer."
+        group = 'build'
+
+        def out = entrySource
+        def cls = modId.replace('-', '_')
+        def id = modId
+        def version = rootProject.ext.modulesVersion
+
+        inputs.property('modId', id)
+        inputs.property('modulesVersion', version)
+        outputs.file(out)
+
+        doLast {
+            def file = out.get().asFile
+            file.parentFile.mkdirs()
+            file.text = """package com.vortaforge.macroengine.${cls};
+
+import net.fabricmc.api.ModInitializer;
+
+/**
+ * ${id}'s entry point.
+ *
+ * <p>It does nothing, and that is the correct amount for it to do. The behaviour
+ * is a data pack, which Fabric reads out of this jar's {@code data/} directory;
+ * nothing needs to be registered from Java.
+ *
+ * <p>It exists because Fabric requires it: the class named in
+ * {@code fabric.mod.json}'s {@code entrypoints.main} is constructed and cast to
+ * {@link ModInitializer}. A class that does not implement this interface fails
+ * that cast and stops the whole server, not just this mod.
+ */
+public final class MacroEngineEntry implements ModInitializer {
+
+    @Override
+    public void onInitialize() {
+        // Nothing to do. The data pack is the mod.
+    }
+}
+"""
+            me.dbg("${packName}: wrote ${file}")
+        }
+    }
+
+    // The generated source is where the java plugin looks for it.
+    sourceSets.main.java.srcDirs = [layout.buildDirectory.dir('generated/entry')]
+
+    compileJava.dependsOn 'renderEntryPoint'
+
+    // --- the jar -------------------------------------------------------------
+    tasks.register('packJar', Jar) {
+        description = "Package ${packName} as a Fabric mod jar with its bundled data pack."
+        group = 'build'
+        dependsOn 'classes'
+        dependsOn 'renderPackMeta', 'renderFabricMeta'
+
+        archiveBaseName = packName
+        archiveVersion = rootProject.ext.modulesVersion
+        destinationDirectory = rootProject.layout.buildDirectory.dir('dist')
+
+        // The compiled entry point. Fabric loads this class by name out of the
+        // mod jar and casts it to ModInitializer, so it has to be here and it has
+        // to implement that interface.
+        //
+        // It is compiled in this sub-project rather than shared or nested. Fabric's
+        // jar-in-jar is for nested *mods*: ModDiscoverer parses each declared
+        // nested jar expecting a fabric.mod.json and returns null when there is
+        // none, so a plain library jar nested there is silently dropped. One
+        // small class per mod is the shape the loader is built for.
+        from sourceSets.main.output
+
+        // The pack root goes at the top of the jar: pack.mcmeta + data/. Fabric's
+        // resource loader (fabric-resource-loader-v0, from Fabric API) scans every
+        // mod jar for `data/` and mounts it as a data pack. The loader alone does
+        // not; that is why `depends` names it.
+        //
+        // fabric.mod.json is produced by renderFabricMeta and is listed here
+        // rather than in a generated output directory because the pack directory
+        // *is* the mod's content root.
+        from(layout.projectDirectory) {
+            include 'pack.mcmeta'
+            include 'data/**'
+        }
+        from(layout.buildDirectory.dir('generated/fabric')) {
+            include 'fabric.mod.json'
+        }
+
+        // A jar without data/ loads, reports healthy and does nothing - the exact
+        // failure the `depends` comment above describes. Refuse to build it.
+        doFirst {
+            def dataDir = new File(packDir, 'data')
+            def top = dataDir.isDirectory() ? dataDir.list() : null
+            if (top == null || top.length == 0) {
+                throw me.problem("${packName}: nothing to package - ${dataDir} is missing or empty.".toString(),
+                        ['A mod jar without data/ loads fine and does nothing: no data pack, no error.'],
+                        'Regenerate the packs with tools/split.py, or add data/<namespace>/... to this one.')
+            }
+            me.dbg("${packName}: packaging ${dataDir} (${top.length} top-level entries: ${top.sort().join(', ')})")
+        }
+
+        // Same shape check checkJars does later, but per jar and right away, so
+        // `:me_cb_module:packJar` on its own does not hand out a hollow jar.
+        doLast { t ->
+            def jarFile = t.archiveFile.get().asFile
+            def names = new java.util.zip.ZipFile(jarFile).withCloseable { z -> Collections.list(z.entries())*.name }
+            def missing = []
+            if (!names.contains('fabric.mod.json')) missing << 'fabric.mod.json'
+            if (!names.contains('pack.mcmeta')) missing << 'pack.mcmeta'
+            if (!names.any { it.endsWith('.class') }) missing << 'the entry point class'
+            if (!names.any { it.startsWith('data/') }) missing << 'data/'
+            if (missing) {
+                throw me.problem("${packName}: ${jarFile.name} is missing ${missing.join(', ')}.".toString(),
+                        ["Jar: ${jarFile}".toString(), "It has ${names.size()} entries."],
+                        'Run with -PmeDebug and check the render* tasks above this one.')
+            }
+            me.ok("${packName} -> ${jarFile.name} (${me.size(jarFile.length())}, ${names.size()} entries)")
+        }
+    }
+
+    tasks.named('assemble') {
+        dependsOn 'packJar'
+    }
+
+    // Verification is a whole-set property (a module can only be checked against
+    // the modules it calls), so this is the same run as the root verifyAll. It used
+    // to re-run the whole verifier once per pack.
+    tasks.register('verify') {
+        description = "Check ${packName} resolves: references, boundaries, hook tags (runs verifyAll)."
+        group = 'verification'
+        dependsOn ':verifyAll'
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Whole-project tasks
+// -----------------------------------------------------------------------------
+
+tasks.register('dist') {
+    description = 'Every module jar plus the core jar, in build/dist.'
+    group = 'build'
+    dependsOn subprojects.collect { it.tasks.named('packJar') }
+
+    doFirst {
+        if (packCount == 0) throw noPacks('dist')
+        me.info("Building ${packCount} mod jar(s) into ${layout.buildDirectory.dir('dist').get().asFile}")
+    }
+}
+
+tasks.register('verifyAll') {
+    description = 'Run the cross-pack verifier once and fail the build on any problem.'
+    group = 'verification'
+
+    def script = file('tools/verify.py')
+
+    // The verifier reads pack.mcmeta, which every sub-project's `renderPackMeta`
+    // writes. Without this the two are unordered: Gradle 9 rejects the graph, and
+    // on an older Gradle verification could read a pack whose manifest has not been
+    // generated yet and report a missing pack.mcmeta the build was about to create.
+    dependsOn subprojects.collect { "${it.path}:renderPackMeta" }
+
+    // No inputs.dir(packs) / inputs.file(script) here, on purpose. With
+    // upToDateWhen { false } they buy nothing, and Gradle validates them before the
+    // task body runs: a missing packs/ aborted the build with a property-validation
+    // error and the "no packs" message below was never reached.
+    outputs.upToDateWhen { false }
+
+    doLast {
+        if (!packsDir.isDirectory() || packCount == 0) throw noPacks('verifyAll')
+        me.runScript('verifyAll', script, ['--pack', packsDir.absolutePath], projectRoot)
+    }
+}
+
+// Runs the splitter's output guard. (check_jars.py is what asserts the jars; see
+// checkJars below.)
+tasks.register('testTools') {
+    description = 'Run the tool self-tests (splitter output guard).'
+    group = 'verification'
+
+    def guard = file('tools/test_split_guard.py')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        me.runScript('testTools', guard, [], projectRoot)
+    }
+}
+
+// `check_refs` is the static stand-in for "boot a server and see what fails to
+// load". Every id a pack names has to resolve, or the game refuses the pack at
+// load time (a dialog) or silently never runs a function (`{func:"..."}`).
+tasks.register('checkRefs') {
+    description = 'Assert every id a pack names exists in some pack.'
+    group = 'verification'
+
+    def script = file('tools/check_refs.py')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        if (!packsDir.isDirectory() || packCount == 0) throw noPacks('checkRefs')
+        // Relative `packs`, run from the project root: the checker prints paths as
+        // it was given them, and relative ones are the readable ones.
+        me.runScript('checkRefs', script, ['packs'], projectRoot)
+    }
+}
+
+// The checker itself has to be able to fail. A test that only ever passes is not
+// evidence of anything - this is the one that catches the checker going blind.
+tasks.register('testCheckRefs') {
+    description = 'Prove check_refs.py reports each id shape that broke a server.'
+    group = 'verification'
+
+    def script = file('tools/test_check_refs.py')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        me.runScript('testCheckRefs', script, [], projectRoot)
+    }
+}
+
+// Every module has to be individually removable, or the split is cosmetic. This
+// deletes each one in turn and re-verifies what is left. Not part of `check`:
+// it is the slowest of the tool tests, so CI runs it by name.
+tasks.register('testModuleRemoval') {
+    description = 'Prove every module can be removed without breaking the rest.'
+    group = 'verification'
+
+    def script = file('tools/test_module_removal.py')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        me.runScript('testModuleRemoval', script, [], projectRoot)
+    }
+}
+
+// Separate from testTools because it needs the jars, and `check` alone does not
+// build them. A jar that claims to be a mod and cannot load is worse than no jar,
+// so `dist` is finalized by this check; it can also be run as `gradlew checkJars`.
+tasks.register('checkJars') {
+    description = 'Assert every jar in build/dist is a loadable Fabric mod.'
+    group = 'verification'
+    dependsOn 'dist'
+
+    def script = file('tools/check_jars.py')
+    def distDir = layout.buildDirectory.dir('dist')
+    outputs.upToDateWhen { false }
+
+    doLast {
+        def dir = distDir.get().asFile
+        def jars = dir.isDirectory() ? (dir.list() as List).findAll { it.endsWith('.jar') } : []
+        if (jars.isEmpty()) {
+            throw me.problem("checkJars: there are no jars in ${dir}.".toString(),
+                    ['dist did not produce anything, so there is nothing to check.'],
+                    'Look at the failure above this one (usually dist or packJar).')
+        }
+        me.info("Checking ${jars.size()} jar(s) in ${dir}")
+        me.runScript('checkJars', script, ['--dist', dir.absolutePath], projectRoot)
+    }
+}
+
+// `dist` on its own is what most people run; a jar that claims to be a mod and
+// cannot load is worse than no jar, so the check rides along with it.
+tasks.named('dist') {
+    finalizedBy 'checkJars'
+}
+
+// checkRefs and testCheckRefs were registered but not part of `check`, so the
+// reference checker only ever ran when someone remembered to ask for it.
+tasks.named('check') {
+    dependsOn 'verifyAll', 'testTools', 'checkRefs', 'testCheckRefs'
+}
+
+// `gradlew` with no arguments builds everything.
+tasks.register('all') {
+    description = 'Split-independent default: build every mod jar.'
+    group = 'build'
+    dependsOn 'dist'
+}

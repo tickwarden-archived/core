@@ -1,0 +1,504 @@
+{
+  "schema": 2,
+  "source": "macroengine data pack, format 121.0 / Minecraft 26.3",
+  "layout": "one core mod plus independently installable module mods",
+  "packaging": {
+    "type": "fabric-mod",
+    "manifest": "fabric.mod.json",
+    "bundledDataPack": "pack.mcmeta + data/ at the jar root",
+    "coreModId": "macroengine-core",
+    "everyModuleDependsOn": "macroengine-core"
+  },
+  "naming": "me_<module>_module:<path>, no api/ or systems/ segment",
+  "requires": "every module requires me_core_module; core requires nothing",
+  "hookSlots": {
+    "cb_tick": {
+      "tag": "me_core_module:hook/cb_tick",
+      "returns": false,
+      "empty": false
+    },
+    "cmd_freeze_tick": {
+      "tag": "me_core_module:hook/cmd_freeze_tick",
+      "returns": false,
+      "empty": false
+    },
+    "config_apply": {
+      "tag": "me_core_module:hook/config_apply",
+      "returns": false,
+      "empty": false
+    },
+    "config_ensure": {
+      "tag": "me_core_module:hook/config_ensure",
+      "returns": false,
+      "empty": false
+    },
+    "config_init": {
+      "tag": "me_core_module:hook/config_init",
+      "returns": false,
+      "empty": false
+    },
+    "events_fire": {
+      "tag": "me_core_module:hook/events_fire",
+      "returns": false,
+      "empty": false
+    },
+    "hook_tick": {
+      "tag": "me_core_module:hook/hook_tick",
+      "returns": false,
+      "empty": false
+    },
+    "interaction_tick": {
+      "tag": "me_core_module:hook/interaction_tick",
+      "returns": false,
+      "empty": false
+    },
+    "load": {
+      "tag": "me_core_module:hook/load",
+      "returns": false,
+      "empty": true
+    },
+    "perm_require": {
+      "tag": "me_core_module:hook/perm_require",
+      "returns": true,
+      "empty": false
+    },
+    "perm_tick": {
+      "tag": "me_core_module:hook/perm_tick",
+      "returns": false,
+      "empty": false
+    },
+    "player_enumerate": {
+      "tag": "me_core_module:hook/player_enumerate",
+      "returns": false,
+      "empty": false
+    },
+    "player_get_name": {
+      "tag": "me_core_module:hook/player_get_name",
+      "returns": true,
+      "empty": false
+    },
+    "player_init": {
+      "tag": "me_core_module:hook/player_init",
+      "returns": false,
+      "empty": false
+    },
+    "player_init_from_name": {
+      "tag": "me_core_module:hook/player_init_from_name",
+      "returns": false,
+      "empty": false
+    },
+    "player_init_online": {
+      "tag": "me_core_module:hook/player_init_online",
+      "returns": false,
+      "empty": false
+    },
+    "player_resolve": {
+      "tag": "me_core_module:hook/player_resolve",
+      "returns": false,
+      "empty": false
+    },
+    "player_tick": {
+      "tag": "me_core_module:hook/player_tick",
+      "returns": false,
+      "empty": true
+    },
+    "queue_process": {
+      "tag": "me_core_module:hook/queue_process",
+      "returns": false,
+      "empty": false
+    },
+    "tick": {
+      "tag": "me_core_module:hook/tick",
+      "returns": false,
+      "empty": true
+    },
+    "trigger_dispatch": {
+      "tag": "me_core_module:hook/trigger_dispatch",
+      "returns": false,
+      "empty": false
+    },
+    "wand_tick": {
+      "tag": "me_core_module:hook/wand_tick",
+      "returns": false,
+      "empty": false
+    }
+  },
+  "modules": [
+    {
+      "name": "core",
+      "namespace": "me_core_module",
+      "modId": "macroengine-core",
+      "pack": "packs/me_core_module",
+      "files": 911,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "events",
+      "namespace": "me_events_module",
+      "modId": "macroengine-events",
+      "pack": "packs/me_events_module",
+      "files": 13,
+      "hooks": {
+        "events_fire": [
+          "me_events_module:events/fire"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "text",
+      "namespace": "me_text_module",
+      "modId": "macroengine-text",
+      "pack": "packs/me_text_module",
+      "files": 5,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "geo",
+      "namespace": "me_geo_module",
+      "modId": "macroengine-geo",
+      "pack": "packs/me_geo_module",
+      "files": 9,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "player",
+      "namespace": "me_player_module",
+      "modId": "macroengine-player",
+      "pack": "packs/me_player_module",
+      "files": 58,
+      "hooks": {
+        "player_enumerate": [
+          "me_core_module:core/internal/player/enumerate"
+        ],
+        "player_resolve": [
+          "me_core_module:core/internal/player/resolve"
+        ],
+        "player_init": [
+          "me_core_module:core/internal/player/init"
+        ],
+        "player_init_online": [
+          "me_core_module:core/internal/player/init_online"
+        ],
+        "player_init_from_name": [
+          "me_core_module:core/internal/player/init_from_name"
+        ],
+        "player_get_name": [
+          "me_player_module:player/get_name"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "world",
+      "namespace": "me_world_module",
+      "modId": "macroengine-world",
+      "pack": "packs/me_world_module",
+      "files": 27,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "tui",
+      "namespace": "me_tui_module",
+      "modId": "macroengine-tui",
+      "pack": "packs/me_tui_module",
+      "files": 4,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "cmd",
+      "namespace": "me_cmd_module",
+      "modId": "macroengine-cmd",
+      "pack": "packs/me_cmd_module",
+      "files": 123,
+      "hooks": {
+        "cmd_freeze_tick": [
+          "me_core_module:core/internal/cmd/freeze/tick"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "store",
+      "namespace": "me_store_module",
+      "modId": "macroengine-store",
+      "pack": "packs/me_store_module",
+      "files": 32,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "wand",
+      "namespace": "me_wand_module",
+      "modId": "macroengine-wand",
+      "pack": "packs/me_wand_module",
+      "files": 12,
+      "hooks": {
+        "wand_tick": [
+          "me_core_module:core/internal/wand/tick_scan"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "perm",
+      "namespace": "me_perm_module",
+      "modId": "macroengine-perm",
+      "pack": "packs/me_perm_module",
+      "files": 20,
+      "hooks": {
+        "perm_tick": [
+          "me_core_module:core/internal/perm/trigger/tick_start"
+        ],
+        "perm_require": [
+          "me_perm_module:perm/require"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "title",
+      "namespace": "me_title_module",
+      "modId": "macroengine-title",
+      "pack": "packs/me_title_module",
+      "files": 16,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "block",
+      "namespace": "me_block_module",
+      "modId": "macroengine-block",
+      "pack": "packs/me_block_module",
+      "files": 8,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "item",
+      "namespace": "me_item_module",
+      "modId": "macroengine-item",
+      "pack": "packs/me_item_module",
+      "files": 6,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "container",
+      "namespace": "me_container_module",
+      "modId": "macroengine-container",
+      "pack": "packs/me_container_module",
+      "files": 9,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "interaction",
+      "namespace": "me_interaction_module",
+      "modId": "macroengine-interaction",
+      "pack": "packs/me_interaction_module",
+      "files": 7,
+      "hooks": {
+        "interaction_tick": [
+          "me_core_module:core/internal/interaction/tick_scan"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "gamerule",
+      "namespace": "me_gamerule_module",
+      "modId": "macroengine-gamerule",
+      "pack": "packs/me_gamerule_module",
+      "files": 3,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "toggle",
+      "namespace": "me_toggle_module",
+      "modId": "macroengine-toggle",
+      "pack": "packs/me_toggle_module",
+      "files": 25,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "trigger",
+      "namespace": "me_trigger_module",
+      "modId": "macroengine-trigger",
+      "pack": "packs/me_trigger_module",
+      "files": 7,
+      "hooks": {
+        "trigger_dispatch": [
+          "me_core_module:core/internal/trigger/dispatch"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "cb",
+      "namespace": "me_cb_module",
+      "modId": "macroengine-cb",
+      "pack": "packs/me_cb_module",
+      "files": 9,
+      "hooks": {
+        "cb_tick": [
+          "me_core_module:core/internal/cb/tick"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "macro",
+      "namespace": "me_macro_module",
+      "modId": "macroengine-macro",
+      "pack": "packs/me_macro_module",
+      "files": 5,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "color",
+      "namespace": "me_color_module",
+      "modId": "macroengine-color",
+      "pack": "packs/me_color_module",
+      "files": 10,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "diagnostics",
+      "namespace": "me_diagnostics_module",
+      "modId": "macroengine-diagnostics",
+      "pack": "packs/me_diagnostics_module",
+      "files": 2,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "input",
+      "namespace": "me_input_module",
+      "modId": "macroengine-input",
+      "pack": "packs/me_input_module",
+      "files": 41,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "logic",
+      "namespace": "me_logic_module",
+      "modId": "macroengine-logic",
+      "pack": "packs/me_logic_module",
+      "files": 10,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "flag",
+      "namespace": "me_flag_module",
+      "modId": "macroengine-flag",
+      "pack": "packs/me_flag_module",
+      "files": 13,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "rate_limit",
+      "namespace": "me_rate_limit_module",
+      "modId": "macroengine-rate-limit",
+      "pack": "packs/me_rate_limit_module",
+      "files": 7,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "sound",
+      "namespace": "me_sound_module",
+      "modId": "macroengine-sound",
+      "pack": "packs/me_sound_module",
+      "files": 3,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "hook",
+      "namespace": "me_hook_module",
+      "modId": "macroengine-hook",
+      "pack": "packs/me_hook_module",
+      "files": 40,
+      "hooks": {
+        "hook_tick": [
+          "me_core_module:core/internal/hook/tick_scan"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "config",
+      "namespace": "me_config_module",
+      "modId": "macroengine-config",
+      "pack": "packs/me_config_module",
+      "files": 12,
+      "hooks": {
+        "config_ensure": [
+          "me_config_module:core/config/ensure"
+        ],
+        "config_init": [
+          "me_config_module:core/config/init"
+        ],
+        "config_apply": [
+          "me_config_module:core/config/apply"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "cooldown",
+      "namespace": "me_cooldown_module",
+      "modId": "macroengine-cooldown",
+      "pack": "packs/me_cooldown_module",
+      "files": 12,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "lib",
+      "namespace": "me_lib_module",
+      "modId": "macroengine-lib",
+      "pack": "packs/me_lib_module",
+      "files": 53,
+      "hooks": {
+        "queue_process": [
+          "me_lib_module:core/lib/process_queue"
+        ]
+      },
+      "publishes": []
+    },
+    {
+      "name": "state",
+      "namespace": "me_state_module",
+      "modId": "macroengine-state",
+      "pack": "packs/me_state_module",
+      "files": 11,
+      "hooks": {},
+      "publishes": []
+    },
+    {
+      "name": "queue",
+      "namespace": "me_queue_module",
+      "modId": "macroengine-queue",
+      "pack": "packs/me_queue_module",
+      "files": 6,
+      "hooks": {},
+      "publishes": []
+    }
+  ],
+  "totalFiles": 1529,
+  "unmapped": []
+}

@@ -1,0 +1,6 @@
+{
+  "values": [
+    "#vortex:core/internal/player/interact_block",
+    "#vortex:core/internal/player/open_gui"
+  ]
+}
