@@ -83,6 +83,8 @@ class EOL(unittest.TestCase):
   self.assertFalse(self.out.exists());self.assertFalse(list(self.root.glob('.eol-stage-*')))
  def test_modern_entry_guard_preserves_continuations(self):
   (self.src/'pack.mcmeta').write_text(json.dumps({'pack':{'pack_format':18}}));body='say one '+chr(92)+'\n two\n';(self.f/'work.mcfunction').write_text(body,encoding='utf-8');r=self.generate();text=(self.out/'data/test/functions/work.mcfunction').read_text(encoding='utf-8');self.assertIn('run return 0\n'+body,text);self.assertEqual(r['entry_guard_mode'],'early-return')
+ def test_modern_guard_preserves_crlf_and_no_final_newline(self):
+  (self.src/'pack.mcmeta').write_text(json.dumps({'pack':{'pack_format':18}}),encoding='utf-8');body=b'# original\r\nsay hello\r\nsay goodbye';(self.f/'work.mcfunction').write_bytes(body);self.generate();out=(self.out/'data/test/functions/work.mcfunction').read_bytes();self.assertEqual(out.split(b'\n',2)[2],body)
  def test_missing_phase_fails_closed(self):
   (self.src/'pack.mcmeta').write_text(json.dumps({'pack':{'pack_format':18}}));self.generate();text=(self.out/'data/test/functions/work.mcfunction').read_text(encoding='utf-8');self.assertIn('execute unless data storage',text);self.assertIn('{phase:1} run return 0',text)
  def test_test_fixture_not_treated_as_function(self):

@@ -70,7 +70,9 @@ def _generate(source,output,pack_id,acknowledge=False):
     # Legacy and modern layout coexist where the original pack supplies both.
     suffix=hashlib.sha256(pack_id.encode()).hexdigest()[:10];ns='vf_eol_'+suffix;obj='vfE'+suffix
     if (source/'data'/ns).exists() or any(obj in f.read_text(encoding='utf-8') for f in functions):raise ValueError('Lifecycle identifier collision')
-    originals={f.relative_to(source).as_posix():f.read_text(encoding='utf-8') for f in functions}
+    # read_text() performs universal-newline conversion; decoding raw bytes keeps
+    # CRLF and a missing final newline intact after the modern entry guard.
+    originals={f.relative_to(source).as_posix():f.read_bytes().decode('utf-8') for f in functions}
     ids={':'.join([f.relative_to(source).parts[1],'/'.join(f.relative_to(source).parts[3:])[:-11]]) for f in functions}
     # Refuse continuation syntax until version-specific parsing is validated.
     if not modern and any(re.search(r'\\[ \t]*\r?$',line) for text in originals.values() for line in text.split('\n') if not line.lstrip().startswith('#')):
