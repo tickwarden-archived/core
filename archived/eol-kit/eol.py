@@ -70,7 +70,6 @@ def _generate(source,output,pack_id,acknowledge=False):
     # Legacy and modern layout coexist where the original pack supplies both.
     suffix=hashlib.sha256(pack_id.encode()).hexdigest()[:10];ns='vf_eol_'+suffix;obj='vfE'+suffix
     if (source/'data'/ns).exists() or any(obj in f.read_text(encoding='utf-8') for f in functions):raise ValueError('Lifecycle identifier collision')
-    target_data=output/'data'/ns/next(iter(styles))
     originals={f.relative_to(source).as_posix():f.read_text(encoding='utf-8') for f in functions}
     ids={':'.join([f.relative_to(source).parts[1],'/'.join(f.relative_to(source).parts[3:])[:-11]]) for f in functions}
     # Refuse continuation syntax until version-specific parsing is validated.
@@ -85,7 +84,7 @@ def _generate(source,output,pack_id,acknowledge=False):
     for style in styles:(output/'data'/ns/style).mkdir(parents=True)
     guarded=[];readonly=[]
     for rel,text in originals.items():
-        lines=text.split('\n');is_pure=pure(lines);threshold='3..' if is_pure else '2..'
+        lines=text.split('\n');is_pure=pure(lines)
         # 1.20.2+: early function-level guard preserves all original command bytes,
         # including multiline commands and macros. Older versions lack /return.
         if modern:
@@ -107,7 +106,7 @@ def _generate(source,output,pack_id,acknowledge=False):
         for style in styles:(output/'data'/ns/style/(name+'.mcfunction')).write_text('\n'.join(lines)+'\n',encoding='utf-8')
     def warn(text):return 'tellraw @a '+json.dumps({'text':'[VortaForge EOL] '+text,'color':'gold'},ensure_ascii=False)
     write('refresh',[f'scoreboard players set #phase {obj} 1',f'execute if score #ticks {obj} matches {READ_ONLY_TICKS}.. run scoreboard players set #phase {obj} 2',f'execute if score #ticks {obj} matches {LOCK_TICKS}.. run scoreboard players set #phase {obj} 3',f'execute store result storage {ns}:lifecycle phase int 1 run scoreboard players get #phase {obj}'])
-    notices=[f'execute if score #phase {obj} matches 1 run '+warn(pack_id+': warning phase; read-only after 72 online hours, locked after 168 online hours at 20 TPS.'),f'execute if score #phase {obj} matches 2 run '+warn(pack_id+': restricted functions phase; non-function data and external commands are not blocked. Persistent world data is NOT erased.'),f'execute if score #phase {obj} matches 3 run '+warn(pack_id+': EOL locked. Use function '+ns+':status for lifecycle state.'),f'scoreboard players operation #last {obj} = #phase {obj}']
+    notices=[f'execute if score #phase {obj} matches 1 run '+warn(pack_id+': warning phase; function restrictions after 5184000 ticks and lock after 12096000 ticks (72 and 168 hours only at 20 TPS).'),f'execute if score #phase {obj} matches 2 run '+warn(pack_id+': restricted functions phase; non-function data and external commands are not blocked. Persistent world data is NOT erased.'),f'execute if score #phase {obj} matches 3 run '+warn(pack_id+': EOL locked. Use function '+ns+':status for lifecycle state.'),f'scoreboard players operation #last {obj} = #phase {obj}']
     write('notice',notices)
     write('load',[f'execute unless data storage {ns}:lifecycle initialized run scoreboard objectives add {obj} dummy',f'data modify storage {ns}:lifecycle initialized set value 1b',*[f'scoreboard players add {n} {obj} 0' for n in ['#ticks','#phase','#last','#cleaned']],f'function {ns}:refresh',f'execute unless score #last {obj} = #phase {obj} run function {ns}:notice'])
     write('cleanup',[ '# No automatic schedule clearing: function identifiers may be shared across packs.', '# No world, player, storage, objective or entity deletion.', f'scoreboard players set #cleaned {obj} 1'])
