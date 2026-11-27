@@ -88,6 +88,19 @@ class ActionWiring(unittest.TestCase):
             self.assertIn(pin, root)
             self.assertIn(pin, toolchain)
 
+    def test_vf_script_does_not_print_dependency_debug(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / 'outputs'
+            env = dict(os.environ, GITHUB_WORKSPACE=tmp, GITHUB_OUTPUT=str(output),
+                       VF_CODE='import json; print("user output")', VF_SCRIPT_PATH='',
+                       VF_REQUIREMENTS='', VF_PACKAGES='', VF_AUTO_INSTALL='false',
+                       VF_IGNORE_IMPORTS='', VF_ARGS_JSON='[]')
+            result = subprocess.run([sys.executable, str(ROOT / 'actions/vf_script/vf_script.py')],
+                                    env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout, 'user output\n')
+            self.assertIn('imports=json\n', output.read_text())
+
     def test_reuses_local_actions_after_checkout(self):
         for name in ('quality.yml', 'backup-org.yml', 'macroengine-modules.yml'):
             text = (ROOT / '.github/workflows' / name).read_text(encoding='utf-8')

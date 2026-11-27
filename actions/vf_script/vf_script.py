@@ -91,9 +91,6 @@ def run(environ):
         # pip's isolated mode ignores caller pip environment settings, and only
         # wheels are allowed. Dependencies are still third-party code, not safe by fiat.
         pip = [str(python), '-m', 'pip', '--isolated', 'install', '--disable-pip-version-check', '--only-binary=:all:']
-        before = missing_imports(python, checked, script.parent if script else workspace, workspace)
-        print('Static imports:', ', '.join(imports) or '(none)', flush=True)
-        print('Initially missing:', ', '.join(before) or '(none)', flush=True)
         if requirements or packages:
             cmd = pip + (['-r', str(requirements)] if requirements else []) + (['--'] + packages if packages else [])
             install(cmd, workspace)
